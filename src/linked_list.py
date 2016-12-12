@@ -12,6 +12,12 @@ class LinkedList(object):
         """Insert val at the head of linked list."""
         self.head = Node(val, self.head)
 
+    def pop(self):
+        """Pop the first value off of the head and return it."""
+        first = self.head
+        self.head = self.head.next
+        return first
+
 
 class Node(object):
     """Node class."""
