@@ -4,9 +4,13 @@
 class LinkedList(object):
     """Classic linked list data structure."""
 
-    def __init__(self, head=None):
+    def __init__(self, iterable=None):
         """Initialize LinkedList instance."""
-        self.head = head
+        self.head = None
+        if iterable:
+            for el in iterable:
+                self.push(el)
+
 
     def push(self, val):
         """Insert val at the head of linked list."""
