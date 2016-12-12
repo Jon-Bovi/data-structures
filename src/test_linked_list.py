@@ -64,7 +64,7 @@ def test_empty_linked_list_size():
 def test_linked_list_search():
     """Test linked list search method."""
     search_list = LinkedList([1, "boomshakalaka", 3])
-    assert search_list.search("boomshakalaka").val == "boomshakalaka"
     assert search_list.search('boomy') is None
     assert search_list.search(3).val == 3
     assert search_list.search(1).val == 1
+    assert search_list.search(1).next.val == "boomshakalaka"

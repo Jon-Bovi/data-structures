@@ -41,6 +41,19 @@ class LinkedList(object):
             search = search.next
         return None
 
+    def remove(self, node):
+        """Remove a node from linked list."""
+        prev = None
+        curr = self.head
+        while curr:
+            if curr is node:
+                if prev:
+                    prev.next = curr.next
+                else:
+                    self.head = curr.next
+            prev = curr
+            curr = curr.next
+
 
 class Node(object):
     """Node class."""
