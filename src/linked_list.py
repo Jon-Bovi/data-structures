@@ -29,6 +29,16 @@ class LinkedList(object):
             curr = curr.next
         return length
 
+    def search(self, val):
+        """Will return the node from the list if present, otherwise none."""
+        search = self.head
+        if search is not None:
+            while search.next is not None:
+                if search == val:
+                    return search
+                search = search.next
+        return None
+
 
 class Node(object):
     """Node class."""
