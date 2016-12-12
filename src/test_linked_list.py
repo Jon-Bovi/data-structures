@@ -33,6 +33,19 @@ def test_linked_list_push():
     assert LINKED_LIST.head.next.next.next is None
 
 
+def test_linked_list_pop():
+    """Testing the pop method to return the head."""
+    linked_lst = LinkedList()
+    assert linked_lst.pop() is None
+
+
+def test_linked_list_pop_first():
+    """Testing the first variable in the pop method."""
+    linked_lst = LinkedList()
+    linked_lst.push(12)
+    assert linked_lst.pop() == 12
+
+
 def test_linked_list_size():
     """Test linked list size method."""
     assert LINKED_LIST.size() == 3
