@@ -71,6 +71,8 @@ def test_linked_list_search():
 
 def test_linked_list_remove():
     """Remove the given node from the list."""
-    linked_lst = ([1, 3, 3, "hey"])
-    assert linked_lst.remove(3) == ([1, 3, "hey"])
-    assert linked_lst.remove("hey") is None
+    linked_lst = LinkedList([1, 2, 3])
+    linked_lst.remove(linked_lst.head.next)
+    assert linked_lst.head.next.val == 3
+    linked_lst.remove(linked_lst.head)
+    assert linked_lst.head.val == 3
