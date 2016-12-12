@@ -7,10 +7,9 @@ class LinkedList(object):
     def __init__(self, iterable=None):
         """Initialize LinkedList instance."""
         self.head = None
-        if iterable:
-            for el in iterable:
+        if iterable is not None:
+            for el in iterable[::-1]:
                 self.push(el)
-
 
     def push(self, val):
         """Insert val at the head of linked list."""
@@ -32,6 +31,15 @@ class LinkedList(object):
             length += 1
             curr = curr.next
         return length
+
+    def search(self, val):
+        """Will return the node from the list if present, otherwise none."""
+        search = self.head
+        while search:
+            if search.val == val:
+                return search
+            search = search.next
+        return None
 
 
 class Node(object):
