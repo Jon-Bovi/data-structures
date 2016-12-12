@@ -3,10 +3,7 @@ from linked_list import LinkedList
 from linked_list import Node
 
 
-LINKED_LIST = LinkedList()
-LINKED_LIST.push(3)
-LINKED_LIST.push("boomshakalaka")
-LINKED_LIST.push(4)
+LINKED_LIST = LinkedList([3, "boomshakalaka", 4])
 
 
 def test_linked_list_init():
@@ -14,9 +11,9 @@ def test_linked_list_init():
     lst1 = LinkedList()
     assert lst1.head is None
     lst2 = LinkedList([1, 2, 3])
-    assert lst2.head.val == 1
+    assert lst2.head.val == 3
     assert lst2.head.next.val == 2
-    assert lst2.head.next.next.val == 3
+    assert lst2.head.next.next.val == 1
 
 
 def test_node_init():
@@ -73,6 +70,13 @@ def test_linked_list_remove():
     """Remove the given node from the list."""
     linked_lst = LinkedList([1, 2, 3])
     linked_lst.remove(linked_lst.head.next)
-    assert linked_lst.head.next.val == 3
+    assert linked_lst.head.next.val == 1
     linked_lst.remove(linked_lst.head)
-    assert linked_lst.head.val == 3
+    assert linked_lst.head.val == 1
+
+
+def test_linked_list_display():
+    """Test display method."""
+    empty_list = LinkedList()
+    assert empty_list.display() == "()"
+    assert LINKED_LIST.display() == "(4, 'boomshakalaka', 3)"
