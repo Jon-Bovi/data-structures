@@ -36,3 +36,9 @@ def test_linked_list_push():
 def test_linked_list_size():
     """Test linked list size method."""
     assert LINKED_LIST.size() == 3
+
+
+def test_empty_linked_list_size():
+    """Test linked list size method for an empty linked list."""
+    empty_list = LinkedList()
+    assert empty_list.size() == 0
