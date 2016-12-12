@@ -68,3 +68,10 @@ def test_linked_list_search():
     assert search_list.search('boomy') is None
     assert search_list.search(3).val == 3
     assert search_list.search(1).val == 1
+
+
+def test_linked_list_remove():
+    """Remove the given node from the list."""
+    linked_lst = ([1, 3, 3, "hey"])
+    assert linked_lst.remove(3) == ([1, 3, "hey"])
+    assert linked_lst.remove("hey") is None
