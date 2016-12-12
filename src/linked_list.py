@@ -18,6 +18,15 @@ class LinkedList(object):
         self.head = self.head.next
         return first
 
+    def size(self):
+        """Return length of linked list."""
+        length = 0
+        curr = self.head
+        while curr is not None:
+            length += 1
+            curr = curr.next
+        return length
+
 
 class Node(object):
     """Node class."""
