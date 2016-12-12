@@ -14,7 +14,9 @@ class LinkedList(object):
 
     def pop(self):
         """Pop the first value off of the head and return it."""
-        first = self.head
+        if self.head is None:
+            return None
+        first = self.head.val
         self.head = self.head.next
         return first
 
