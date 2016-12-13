@@ -7,13 +7,15 @@ class LinkedList(object):
     def __init__(self, iterable=None):
         """Initialize LinkedList instance."""
         self.head = None
-        if iterable:
+        self._length = 0
+        if iterable and hasattr(iterable, '__iter__'):
             for el in iterable:
                 self.push(el)
 
     def push(self, val):
         """Insert val at the head of linked list."""
         self.head = Node(val, self.head)
+        self._length += 1
 
     def pop(self):
         """Pop the first value off of the head and return it."""
@@ -21,16 +23,12 @@ class LinkedList(object):
             return None
         first = self.head.val
         self.head = self.head.next
+        self._length -= 1
         return first
 
     def size(self):
         """Return length of linked list."""
-        length = 0
-        curr = self.head
-        while curr:
-            length += 1
-            curr = curr.next
-        return length
+        return self._length
 
     def search(self, val):
         """Will return the node from the list if present, otherwise none."""
@@ -51,6 +49,7 @@ class LinkedList(object):
                     prev.next = curr.next
                 else:
                     self.head = curr.next
+                self._length -= 1
             prev = curr
             curr = curr.next
 
@@ -70,11 +69,15 @@ class LinkedList(object):
             curr = curr.next
         return res + ')'
 
+    def __len__(self):
+        """Return length of linked_list."""
+        return self.size()
+
 
 class Node(object):
     """Node class."""
 
-    def __init__(self, val, next):
+    def __init__(self, val, next=None):
         """Initialize Node instance."""
         self.val = val
         self.next = next

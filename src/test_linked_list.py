@@ -1,24 +1,34 @@
 """Testing module for linked_list module."""
-from linked_list import LinkedList
-from linked_list import Node
+import pytest
 
 
-LINKED_LIST = LinkedList([3, "boomshakalaka", 4])
+@pytest.fixture
+def new_list():
+    """Empty linked-list fixture."""
+    from linked_list import LinkedList
+    return LinkedList()
 
 
-def test_linked_list_init():
+@pytest.fixture
+def initialized_list():
+    """Non-empty linked-list fixture."""
+    from linked_list import LinkedList
+    return LinkedList([3, "boomshakalaka", 4])
+
+
+def test_linked_list_init(new_list, initialized_list):
     """Test LinkedList class init method."""
-    lst1 = LinkedList()
-    assert lst1.head is None
-    lst2 = LinkedList([1, 2, 3])
-    assert lst2.head.val == 3
-    assert lst2.head.next.val == 2
-    assert lst2.head.next.next.val == 1
+    assert new_list.head is None
+    ll = initialized_list
+    assert ll.head.val == 4
+    assert ll.head.next.val == "boomshakalaka"
+    assert ll.head.next.next.val == 3
 
 
 def test_node_init():
     """Test Node class init method."""
-    node1 = Node(1, None)
+    from linked_list import Node
+    node1 = Node(1)
     node2 = Node(2, node1)
     assert node1.val == 1
     assert node1.next is None
@@ -26,48 +36,48 @@ def test_node_init():
     assert node2.next is node1
 
 
-def test_linked_list_push():
+def test_linked_list_push(initialized_list):
     """Test linked list push method."""
-    assert LINKED_LIST.head.val == 4
-    assert LINKED_LIST.head.next.val == "boomshakalaka"
-    assert LINKED_LIST.head.next.next.val == 3
-    assert LINKED_LIST.head.next.next.next is None
+    ll = initialized_list
+    assert ll.head.val == 4
+    assert ll.head.next.val == "boomshakalaka"
+    assert ll.head.next.next.val == 3
+    assert ll.head.next.next.next is None
 
 
-def test_linked_list_pop():
+def test_linked_list_pop(new_list):
     """Testing the pop method to return the head."""
-    linked_lst = LinkedList()
-    assert linked_lst.pop() is None
+    assert new_list.pop() is None
 
 
-def test_linked_list_pop_first():
+def test_linked_list_pop_first(new_list):
     """Testing the first variable in the pop method."""
-    linked_lst = LinkedList()
-    linked_lst.push(12)
-    assert linked_lst.pop() == 12
+    ll = new_list
+    ll.push(12)
+    assert ll.pop() == 12
 
 
-def test_linked_list_size():
+def test_linked_list_size(initialized_list):
     """Test linked list size method."""
-    assert LINKED_LIST.size() == 3
+    assert initialized_list.size() == 3
 
 
-def test_empty_linked_list_size():
+def test_empty_linked_list_size(new_list):
     """Test linked list size method for an empty linked list."""
-    empty_list = LinkedList()
-    assert empty_list.size() == 0
+    assert new_list.size() == 0
 
 
-def test_linked_list_search():
+def test_linked_list_search(initialized_list):
     """Test linked list search method."""
-    search_list = LinkedList([1, "boomshakalaka", 3])
+    search_list = initialized_list
     assert search_list.search('boomy') is None
     assert search_list.search(3).val == 3
-    assert search_list.search(1).val == 1
+    assert search_list.search(4).val == 4
 
 
 def test_linked_list_remove():
     """Remove the given node from the list."""
+    from linked_list import LinkedList
     linked_lst = LinkedList([1, 2, 3])
     linked_lst.remove(linked_lst.head.next)
     assert linked_lst.head.next.val == 1
@@ -75,8 +85,17 @@ def test_linked_list_remove():
     assert linked_lst.head.val == 1
 
 
-def test_linked_list_display():
+def test_linked_list_display(new_list, initialized_list):
     """Test display method."""
-    empty_list = LinkedList()
-    assert empty_list.display() == "()"
-    assert LINKED_LIST.display() == "(4, 'boomshakalaka', 3)"
+    assert new_list.display() == "()"
+    assert initialized_list.display() == "(4, 'boomshakalaka', 3)"
+
+
+def test_empty_linked_list_len(new_list):
+    """Test empty linked list has length of 0."""
+    assert len(new_list) == 0
+
+
+def test_linked_list_len(initialized_list):
+    """Test empty linked list has length of 0."""
+    assert len(initialized_list) == 3
