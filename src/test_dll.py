@@ -53,6 +53,17 @@ def test_append(new_dll):
     assert new_dll.tail.val == "11"
 
 
+def test_append_to_non_empty(new_dll):
+    """Testing append to Node with value."""
+    new_dll.append(3)
+    new_dll.append(2)
+    new_dll.append(1)
+    assert new_dll.tail.val == 1
+    assert new_dll.tail.prev.val == 2
+    assert new_dll.tail.prev.next.val == 1
+    assert new_dll.tail.prev.prev.val == 3
+
+
 def test_pop_empty(new_dll):
     """Test to pop the head off from the node and return it."""
     with pytest.raises(IndexError):

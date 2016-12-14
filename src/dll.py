@@ -23,8 +23,12 @@ class DoublyLinkedList(object):
         if self.tail is None:
             self._insert_new(val)
         else:
-            self.tail = DoubleNode(val, self.tail, None)
+            self._insert_end(val)
         self._length += 1
+
+    def _insert_end(self, val):
+        self.tail = DoubleNode(val, self.tail, None)
+        self.tail.prev.next = self.tail
 
     def _insert_new(self, val):
         dnode = DoubleNode(val)
@@ -34,8 +38,6 @@ class DoublyLinkedList(object):
     def _insert_beginning(self, val):
         self.head = DoubleNode(val, None, self.head)
         self.head.next.prev = self.head
-        if self.head.next is self.tail:
-            self.tail.prev = self.head
 
     def pop(self):
         """Remove the head and return the value."""
