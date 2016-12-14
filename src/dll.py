@@ -12,8 +12,23 @@ class DoublyLinkedList(object):
 
     def push(self, val):
         """Insert new node at head of dll."""
-        self.head = DoubleNode(val, None, self.head)
+        if self.head is None:
+            self._insert_new(val)
+        else:
+            self.head = DoubleNode(val, None, self.head)
         self._length += 1
+
+    def append(self, val):
+        """Add new node at tail of dll."""
+        if self.tail is None:
+            self._insert_new(val)
+        else:
+            self.tail = DoubleNode(val, self.tail, None)
+        self._length += 1
+
+    def _insert_new(self, val):
+        self.head = DoubleNode(val)
+        self.tail = DoubleNode(val)
 
 
 class DoubleNode(object):

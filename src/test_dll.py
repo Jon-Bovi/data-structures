@@ -14,10 +14,10 @@ def test_init(new_dll):
     assert new_dll.head is None and new_dll.tail is None
 
 
-def test_push(new_dll):
+def test_push_to_empty(new_dll):
     """Test push to empty dll."""
     new_dll.push(21)
-    assert new_dll.head.val == 21 and new_dll.tail is None
+    assert new_dll.head.val == 21 and new_dll.head.next is None
 
 
 def test_new_node(new_dll):
