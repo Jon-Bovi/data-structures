@@ -8,7 +8,12 @@ class DoublyLinkedList(object):
         """Construct new doubly-linked list."""
         self.head = None
         self.tail = None
-        pass
+        self._length = 0
+
+    def push(self, val):
+        """Insert new node at head of dll."""
+        self.head = DoubleNode(val, None, self.head)
+        self._length += 1
 
 
 class DoubleNode(object):
@@ -16,5 +21,6 @@ class DoubleNode(object):
 
     def __init__(self, val, prev=None, next=None):
         """Construct new DoubleNode."""
-        pass
-
+        self.val = val
+        self.prev = prev
+        self.next = next

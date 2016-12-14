@@ -24,4 +24,4 @@ def test_new_node(new_dll):
     """Test if new node is created."""
     from dll import DoubleNode
     node = DoubleNode(27)
-    assert node.previous is None and node.next is None and node.val == (27)
+    assert node.prev is None and node.next is None and node.val == 27
