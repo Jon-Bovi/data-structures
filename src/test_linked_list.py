@@ -47,7 +47,8 @@ def test_linked_list_push(initialized_list):
 
 def test_linked_list_pop(new_list):
     """Testing the pop method to return the head."""
-    assert new_list.pop() is None
+    with pytest.raises(IndexError):
+        new_list.pop()
 
 
 def test_linked_list_pop_first(new_list):

@@ -8,9 +8,11 @@ class LinkedList(object):
         """Initialize LinkedList instance."""
         self.head = None
         self._length = 0
-        if iterable and hasattr(iterable, '__iter__'):
+        try:
             for el in iterable:
                 self.push(el)
+        except TypeError:
+            self.head = iterable
 
     def push(self, val):
         """Insert val at the head of linked list."""
@@ -20,7 +22,7 @@ class LinkedList(object):
     def pop(self):
         """Pop the first value off of the head and return it."""
         if self.head is None:
-            return None
+            raise IndexError("Cannot pop from an empty linked list.")
         first = self.head.val
         self.head = self.head.next
         self._length -= 1
