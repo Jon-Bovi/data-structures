@@ -169,3 +169,10 @@ def test_remove_tail(init_dll):
     assert init_dll.tail.val == 2
     assert init_dll.tail.next is None
     assert init_dll.tail.prev is init_dll.head
+
+
+def test_pop_off(init_dll):
+    """Testing to see if head equals none when popped."""
+    init_dll.pop()
+    assert init_dll.head.prev is None
+
