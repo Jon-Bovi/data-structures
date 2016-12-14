@@ -4,7 +4,7 @@
 class DoublyLinkedList(object):
     """Doubly-linked list class."""
 
-    def __init__(self, iterable):
+    def __init__(self, iterable=None):
         """Construct new doubly-linked list."""
         self.head = None
         self.tail = None
