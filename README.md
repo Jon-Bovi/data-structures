@@ -44,14 +44,14 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 - Methods:
 
-    - push
+    - push(value): insert value at head of list
 
-    - append
+    - append(value): add value to tail of list
 
-    - pop
+    - pop(): remove head and return its value
 
-    - shift
+    - shift(): remove tail and return its value
 
-    - remove
+    - remove(val): remove first instance of value in list, or raise exception if no matches
 
 
