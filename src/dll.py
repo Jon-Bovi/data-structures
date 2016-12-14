@@ -30,6 +30,16 @@ class DoublyLinkedList(object):
         self.head = DoubleNode(val)
         self.tail = DoubleNode(val)
 
+    def pop(self):
+        """Remove the head and return the value."""
+        if self.head is None:
+            raise IndexError('Cannot pop from an empty linked list.')
+        first = self.head.val
+        self.head = self.head.next
+        if self.head is None:
+            self.tail = None
+        return first
+
 
 class DoubleNode(object):
     """Node class."""

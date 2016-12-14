@@ -40,3 +40,9 @@ def test_append(new_dll):
     """Testing the append function to add to the tail of the node."""
     new_dll.append('11')
     assert new_dll.tail.val == "11"
+
+
+def test_pop(new_dll):
+    """Test to pop the head off from the node and return it."""
+    with pytest.raises(IndexError):
+        new_dll.pop()
