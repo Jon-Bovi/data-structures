@@ -1,11 +1,20 @@
-"""Testing dll.py."""
-import pytest
+"""Module containing DoublyLinkedList class."""
 
 
-@pytest.fixture
-def new_dll():
-    """Return empty dll."""
+class DoublyLinkedList(object):
+    """Doubly-linked list class."""
+
+    def __init__(self, iterable):
+        """Construct new doubly-linked list."""
+        self.head = None
+        self.tail = None
+        pass
 
 
-def test_init():
-    """Test initialization of empty doubly linked list."""
+class DoubleNode(object):
+    """Node class."""
+
+    def __init__(self, val, prev=None, next=None):
+        """Construct new DoubleNode."""
+        pass
+
