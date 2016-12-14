@@ -25,3 +25,18 @@ def test_new_node(new_dll):
     from dll import DoubleNode
     node = DoubleNode(27)
     assert node.prev is None and node.next is None and node.val == 27
+
+
+def test_new_node_optional(new_dll):
+    """Testing optional parameters on the newly created node."""
+    from dll import DoubleNode
+    node2 = DoubleNode(10)
+    node3 = DoubleNode(11)
+    node1 = DoubleNode(17, node2, node3)
+    assert node1.prev is node2 and node1.next is node3
+
+
+def test_append(new_dll):
+    """Testing the append function to add to the tail of the node."""
+    new_dll.append('11')
+    assert new_dll.tail.val == "11"
