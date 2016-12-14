@@ -18,3 +18,10 @@ def test_push(new_dll):
     """Test push to empty dll."""
     new_dll.push(21)
     assert new_dll.head.val == 21 and new_dll.tail is None
+
+
+def test_new_node(new_dll):
+    """Test if new node is created."""
+    from dll import DoubleNode
+    node = DoubleNode(27)
+    assert node.previous is None and node.next is None and node.val == (27)
