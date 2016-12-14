@@ -9,6 +9,17 @@ def new_dll():
     return DoublyLinkedList()
 
 
+@pytest.fixture
+def init_dll():
+    """Return non empty dll."""
+    from dll import DoublyLinkedList
+    dll = DoublyLinkedList()
+    dll.push(1)
+    dll.push(2)
+    dll.push(3)
+    return dll
+
+
 def test_init(new_dll):
     """Test initialization of empty doubly linked list."""
     assert new_dll.head is None and new_dll.tail is None
@@ -42,7 +53,33 @@ def test_append(new_dll):
     assert new_dll.tail.val == "11"
 
 
-def test_pop(new_dll):
+def test_pop_empty(new_dll):
     """Test to pop the head off from the node and return it."""
     with pytest.raises(IndexError):
         new_dll.pop()
+
+
+def test_pop_length_one(new_dll):
+    """Test pop on dll of length one."""
+    new_dll.push(42)
+    new_dll.pop()
+    assert new_dll.head is None and new_dll.tail is None
+
+
+def test_pop_length_one_return_val(new_dll):
+    """Test pop return value."""
+    new_dll.push(42)
+    assert new_dll.pop() == 42
+
+
+def test_push_twice(new_dll):
+    """Test ability to push more than once."""
+    new_dll.push("brandy")
+    new_dll.push("chardonnay")
+    assert new_dll.head.val == "chardonnay" and new_dll.tail.val == "brandy"
+
+
+def test_push_multiple(init_dll):
+    """Test ability to push more than once."""
+    assert init_dll.head.val == 3 and init_dll.tail.val == 1
+    assert init_dll.head.next.val == 2
