@@ -60,6 +60,28 @@ class DoublyLinkedList(object):
             self.head = None
         return value
 
+    def remove(self, val):
+        """Remove node from dll."""
+        try:
+            curr = self.head
+            found = False
+            while not found and curr:
+                if curr.val == val:
+                    found = True
+                    if curr.prev is None:
+                        self.head = self.head.next
+                    else:
+                        curr.prev.next = curr.next
+                    if curr.next is None:
+                        self.tail = self.tail.prev
+                    else:
+                        curr.next.prev = curr.prev
+                curr = curr.next
+        except:
+            raise IndexError("Cannot remove from an empty list.")
+        if not found:
+            raise ValueError("Value not in list.")
+
 
 class DoubleNode(object):
     """Node class."""

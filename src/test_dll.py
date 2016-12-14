@@ -119,8 +119,15 @@ def test_shift_on_two_long(new_dll):
     assert new_dll.tail is new_dll.head
 
 
-
 def test_shift_on_more_than_two_long(init_dll):
     """Test shift on dll longer than one."""
     init_dll.shift()
     assert init_dll.tail.val == 2 and init_dll.head.val == 3
+
+
+def test_remove(init_dll):
+    """Remove node from dll."""
+    init_dll.remove(2)
+    assert init_dll.head.next.val == 1
+    assert init_dll.tail.prev.val == 3
+
