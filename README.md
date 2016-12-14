@@ -4,7 +4,7 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 ## Linked List
 
-- Can be initialized with or without iterable argument.
+- Can be initialized with (or without) iterable argument.
 
 - Attributes:
 
@@ -24,7 +24,7 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 ## Stack
 
-- Can be initialized with or without iterable argument.
+- Can be initialized with (or without) iterable argument.
 
 - Attributes:
 
@@ -37,3 +37,21 @@ Sample code (with tests) for classic data structures implemented in Python.
     - push(value): insert new node at head of list
 
     - size/len: return size of stack
+
+## Doubly-Linked List
+
+- Can be initialized with (or without) iterable argument.
+
+- Methods:
+
+    - push
+
+    - append
+
+    - pop
+
+    - shift
+
+    - remove
+
+
