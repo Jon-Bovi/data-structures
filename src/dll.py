@@ -41,13 +41,24 @@ class DoublyLinkedList(object):
 
     def pop(self):
         """Remove the head and return the value."""
-        if self.head is None:
-            raise IndexError('Cannot pop from an empty linked list.')
-        first = self.head.val
-        self.head = self.head.next
-        if self.head is None:
+        return self._popshift(self.head, 'pop')
+
+    def shift(self):
+        """Remove the tail and return its value."""
+        return self._popshift(self.tail, 'shift')
+
+    def _popshift(self, node, name):
+        if node is None:
+            raise IndexError('Cannot ' + name + ' from an empty linked list.')
+        value = node.val
+        if name == 'pop':
+            self.head = self.head.next
+        else:
+            self.tail = self.tail.prev
+        if self.head is None or self.tail is None:
             self.tail = None
-        return first
+            self.head = None
+        return value
 
 
 class DoubleNode(object):

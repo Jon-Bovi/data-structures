@@ -95,3 +95,32 @@ def test_push_multiple(init_dll):
     assert init_dll.head.val == 3
     assert init_dll.head.next.val == 2
     assert init_dll.head.next.next.val == init_dll.tail.val
+
+
+def test_shift_from_empty(new_dll):
+    """Test shift from empty raises exception."""
+    with pytest.raises(IndexError):
+        new_dll.shift()
+
+
+def test_shift_on_one_long(new_dll):
+    """Test shift on dll with length of one."""
+    new_dll.push("spaghetti")
+    new_dll.shift()
+    assert new_dll.head is None and new_dll.tail is None
+
+
+def test_shift_on_two_long(new_dll):
+    """Test shift on dll with length of two."""
+    new_dll.push(3)
+    new_dll.push(4)
+    new_dll.shift()
+    assert new_dll.head.val == 4
+    assert new_dll.tail is new_dll.head
+
+
+
+def test_shift_on_more_than_two_long(init_dll):
+    """Test shift on dll longer than one."""
+    init_dll.shift()
+    assert init_dll.tail.val == 2 and init_dll.head.val == 3
