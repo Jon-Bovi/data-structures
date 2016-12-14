@@ -81,5 +81,6 @@ def test_push_twice(new_dll):
 
 def test_push_multiple(init_dll):
     """Test ability to push more than once."""
-    assert init_dll.head.val == 3 and init_dll.tail.val == 1
+    assert init_dll.head.val == 3
     assert init_dll.head.next.val == 2
+    assert init_dll.head.next.next.val == init_dll.tail.val
