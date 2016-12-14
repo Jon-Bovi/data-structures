@@ -1,7 +1,8 @@
 """Module containing DoublyLinkedList class."""
+from linked_list import LinkedList
 
 
-class DoublyLinkedList(object):
+class DoublyLinkedList(LinkedList):
     """Doubly-linked list class."""
 
     def __init__(self, iterable=None):
@@ -51,34 +52,36 @@ class DoublyLinkedList(object):
         if node is None:
             raise IndexError('Cannot ' + name + ' from an empty linked list.')
         value = node.val
-        if name == 'pop':
-            self.head = self.head.next
-        else:
-            self.tail = self.tail.prev
-        if self.head is None or self.tail is None:
+        if self.head.next is None or self.tail.prev is None:
             self.tail = None
             self.head = None
+        else:
+            if name == 'pop':
+                self.head = self.head.next
+                self.head.prev = None
+            else:
+                self.tail = self.tail.prev
+                self.tail.next = None
         return value
 
     def remove(self, val):
         """Remove node from dll."""
-        try:
-            curr = self.head
-            found = False
-            while not found and curr:
-                if curr.val == val:
-                    found = True
-                    if curr.prev is None:
-                        self.head = self.head.next
-                    else:
-                        curr.prev.next = curr.next
-                    if curr.next is None:
-                        self.tail = self.tail.prev
-                    else:
-                        curr.next.prev = curr.prev
-                curr = curr.next
-        except:
+        curr = self.head
+        if not curr:
             raise IndexError("Cannot remove from an empty list.")
+        found = False
+        while not found and curr:
+            if curr.val == val:
+                found = True
+                if curr.prev is None:
+                    self.head = self.head.next
+                else:
+                    curr.prev.next = curr.next
+                if curr.next is None:
+                    self.tail = self.tail.prev
+                else:
+                    curr.next.prev = curr.prev
+            curr = curr.next
         if not found:
             raise ValueError("Value not in list.")
 

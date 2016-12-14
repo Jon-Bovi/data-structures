@@ -125,9 +125,47 @@ def test_shift_on_more_than_two_long(init_dll):
     assert init_dll.tail.val == 2 and init_dll.head.val == 3
 
 
+def test_shift_tail_next_is_none(init_dll):
+    """Test shift sets tail.next to None."""
+    init_dll.shift()
+    assert init_dll.tail.next is None
+
+
 def test_remove(init_dll):
     """Remove node from dll."""
     init_dll.remove(2)
     assert init_dll.head.next.val == 1
     assert init_dll.tail.prev.val == 3
 
+
+def test_remove_empty(new_dll):
+    """Test remove will raise exception."""
+    with pytest.raises(IndexError):
+        new_dll.remove("the answer is")
+
+
+def test_remove_length_one(new_dll):
+    """Test remove on dll with length of one."""
+    new_dll.push("heydo")
+    new_dll.remove("heydo")
+    assert new_dll.head is None and new_dll.tail is None
+
+
+def test_remove_not_in_list(init_dll):
+    """Test remove raises exception if value to be removed is not in list."""
+    with pytest.raises(ValueError):
+        init_dll.remove(42)
+
+
+def test_remove_head(init_dll):
+    """Test remove on first node."""
+    init_dll.remove(3)
+    assert init_dll.head.val == 2 and init_dll.head.prev is None
+
+
+def test_remove_tail(init_dll):
+    """Test remove on last node."""
+    init_dll.remove(1)
+    assert init_dll.tail.val == 2
+    assert init_dll.tail.next is None
+    assert init_dll.tail.prev is init_dll.head
