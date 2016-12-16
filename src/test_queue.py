@@ -13,11 +13,7 @@ def new_queue():
 def init_queue():
     """Return non empty queue."""
     from queue import Queue
-    queue = Queue()
-    queue.push(1)
-    queue.push(2)
-    queue.push(3)
-    return queue
+    return Queue([1, 2, 3])
 
 
 def test_init(new_queue):
@@ -25,20 +21,14 @@ def test_init(new_queue):
     assert new_queue.head is None and new_queue.tail is None
 
 
-def test_pop_empty(new_queue):
-    """Test to pop the head off from the node and return it."""
-    with pytest.raises(IndexError):
-        new_queue.pop()
-
-
-def test_pop_length_one(new_queue):
-    """Test pop on queue of length one."""
-    new_queue.push(42)
-    new_queue.pop()
+def test_dequeue_length_one(new_queue):
+    """Test dequeue on queue of length one."""
+    new_queue.enqueue(42)
+    new_queue.dequeue()
     assert new_queue.head is None and new_queue.tail is None
 
 
 def test_pop_length_one_return_val(new_queue):
     """Test pop return value."""
-    new_queue.push(42)
-    assert new_queue.pop() == 42
+    new_queue.enqueue(42)
+    assert new_queue.dequeue() == 42
