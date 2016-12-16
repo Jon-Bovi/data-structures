@@ -29,6 +29,12 @@ class Queue(object):
         """Return the size of the queue, if empty return 0."""
         return self._dll._length
 
+    def clear(self):
+        """Empty queue."""
+        self._dll.head = None
+        self._dll.tail = None
+        self._dll._length = 0
+
     def __len__(self):
         """Return length of queue."""
         return self.size()
@@ -37,8 +43,3 @@ class Queue(object):
     def head(self):
         """Read only head property."""
         return self._dll.head
-
-    @property
-    def tail(self):
-        """Read only tail property."""
-        return self._dll.tail

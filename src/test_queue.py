@@ -27,25 +27,25 @@ def once_queue():
 
 def test_init(new_queue):
     """Test initialization of empty queue."""
-    assert new_queue.head is None and new_queue.tail is None
+    assert new_queue.head is None and new_queue._dll.tail is None
 
 
 def test_enqueue_on_empty(new_queue):
     """Test enqueue on empty queue."""
     new_queue.enqueue(144)
-    assert new_queue.head.val == 144 and new_queue.tail.val == 144
+    assert new_queue.head.val == 144 and new_queue._dll.tail.val == 144
 
 
 def test_enqueue_on_queue_length_one(once_queue):
     """Test enqueue on queue of length one."""
     once_queue.enqueue(14)
-    assert once_queue.head.val == "once" and once_queue.tail.val == 14
+    assert once_queue.head.val == "once" and once_queue._dll.tail.val == 14
 
 
 def test_enqueue_on_non_empty(init_queue):
     """Test enqueue adds to tail of queue of length > 1."""
     init_queue.enqueue("bees")
-    assert init_queue.tail.val == "bees"
+    assert init_queue._dll.tail.val == "bees"
 
 
 def test_dequeue_on_empty(new_queue):
@@ -57,7 +57,7 @@ def test_dequeue_on_empty(new_queue):
 def test_dequeue_length_one(once_queue):
     """Test dequeue on queue of length one."""
     once_queue.dequeue()
-    assert once_queue.head is None and once_queue.tail is None
+    assert once_queue.head is None and once_queue._dll.tail is None
 
 
 def test_dequeue_length_one_return_val(once_queue):
@@ -107,21 +107,12 @@ def test_len(once_queue):
     assert len(once_queue) == 1
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def test_clear(init_queue):
+    """Test clear removes all nodes in queue."""
+    nodes = []
+    curr = init_queue.head
+    while curr:
+        nodes.append(curr)
+        curr = curr.next
+    init_queue.clear()
+    assert len(nodes) == 0
