@@ -16,22 +16,22 @@ class Queue(object):
     def dequeue(self):
         """Remove item from the queue and returns an error if queue empty."""
         try:
-            head = self._dll.pop()
-            return head
+            return self._dll.pop()
         except:
             raise IndexError('Cannot dequeue from an empty queue.')
 
-    def peek(self, val):
+    def peek(self):
         """Return the next value in the queue without dequeueing it. If the."""
         """queue is empty, returns None."""
-        return self.head
+        return self.head.val if self.head else None
 
     def size(self):
         """Return the size of the queue, if empty return 0."""
-        if self.head is None:
-            raise IndexError('There is no items in the queue.')
-        else:
-            return self._dll._length
+        return self._dll._length
+
+    def __len__(self):
+        """Return length of queue."""
+        return self.size()
 
     @property
     def head(self):
