@@ -60,6 +60,12 @@ def test_stack_pop(initialized_stack):
     assert initialized_stack.pop() == "discombobulate"
 
 
+def test_empty_stack_pop(new_stack):
+    """Testing the pop method to return the head."""
+    with pytest.raises(IndexError):
+        new_stack.pop()
+
+
 def test_len_empty(new_stack):
     """Test __len__ method on empty stack."""
     assert len(new_stack) == 0
