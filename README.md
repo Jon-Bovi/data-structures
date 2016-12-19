@@ -64,3 +64,17 @@ Doubly-linked lists vs Singly-linked Lists:
     to look back as you're traversing along the list, doubly-linked lists are easy while,
     with a singly-linked list, you either have to keep track of the node behind as you traverse,
     or you have to traverse all the way up to it from the head.
+
+## Queue
+
+- can be initialized with (or without) iterable argument
+
+- Methods:
+
+    - enqueue(value): add value to end of queue
+
+    - dequeue(): remove head of queue and return its value
+
+    - peek(): return value of head of queue
+
+    - len()/size(): return size of queue
