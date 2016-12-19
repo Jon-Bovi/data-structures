@@ -176,3 +176,9 @@ def test_pop_off(init_dll):
     init_dll.pop()
     assert init_dll.head.prev is None
 
+
+def test_invalid_iterable_constructor_parameter():
+    """Test error is raised if invalid iterable is passed as arg to init."""
+    from dll import DoublyLinkedList
+    with pytest.raises(ValueError):
+        DoublyLinkedList(34)

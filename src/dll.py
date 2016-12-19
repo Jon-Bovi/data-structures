@@ -10,6 +10,12 @@ class DoublyLinkedList(LinkedList):
         self.head = None
         self.tail = None
         self._length = 0
+        if iterable:
+            try:
+                for item in iterable:
+                    self.push(item)
+            except:
+                raise ValueError("DoublyLinkedList optional parameter must be iterable.")
 
     def push(self, val):
         """Insert new node at head of dll."""
