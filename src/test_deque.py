@@ -19,7 +19,4 @@ def initialized_deque():
 
 def test_init(new_deque):
     """."""
-    assert new_deque.head is None and new_deque.tail is None
-
-
-
+    assert new_deque._dll.head is None and new_deque._dll.tail is None
