@@ -57,6 +57,7 @@ class DoublyLinkedList(LinkedList):
     def _popshift(self, node, name):
         if node is None:
             raise IndexError('Cannot ' + name + ' from an empty linked list.')
+        self._length -= 1
         value = node.val
         if self.head.next is None or self.tail.prev is None:
             self.tail = None
@@ -79,6 +80,7 @@ class DoublyLinkedList(LinkedList):
         while not found and curr:
             if curr.val == val:
                 found = True
+                self._length -= 1
                 if curr.prev is None:
                     self.head = self.head.next
                 else:

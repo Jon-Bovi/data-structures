@@ -30,3 +30,21 @@ class Deque(object):
             return self._dll.pop()
         except IndexError:
             raise IndexError('Cannot pop from an empty deque.')
+
+    def size(self):
+        """Return size of deque."""
+        return self._dll._length
+
+    def __len__(self):
+        """Return size of deque."""
+        return self.size()
+
+    @property
+    def head(self):
+        """Return head."""
+        return self._dll.head
+
+    @property
+    def tail(self):
+        """Return tail."""
+        return self._dll.tail
