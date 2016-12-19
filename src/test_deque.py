@@ -17,15 +17,8 @@ def initialized_deque():
     return Deque([3, 2, 1])
 
 
-@pytest.fixture
-def length_one_deque():
-    """Return deque of length one."""
-    from deque import Deque
-    return Deque(['one'])
-
-
 def test_init(new_deque):
-    """."""
+    """Test initialization of empty deque."""
     assert new_deque.head is None and new_deque.tail is None
 
 
@@ -42,13 +35,13 @@ def test_appendleft_on_empty(new_deque):
 
 
 def test_append_on_non_empty(initialized_deque):
-    """."""
+    """Test append adds to the tail and prev tail points to new tail."""
     initialized_deque.append('ok')
     assert initialized_deque.tail.val == 'ok' and initialized_deque.tail.prev.val == 3
 
 
 def test_appendleft_on_non_empty(initialized_deque):
-    """Test appendleft adds value to head of deque."""
+    """Test appendleft adds value to head of deque and new head points to prev head."""
     initialized_deque.appendleft(45)
     assert initialized_deque.head.val == 45 and initialized_deque.head.next.val == 1
 
@@ -96,8 +89,26 @@ def test_popboth(initialized_deque):
     assert initialized_deque.size() == 1
 
 
+def test_peek(initialized_deque):
+    """Test return of last value a deque."""
+    assert initialized_deque.peek() == 3
 
 
+def test_peekleft(initialized_deque):
+    """Test return of first value of deque."""
+    assert initialized_deque.peekleft() == 1
 
 
+def test_peek_empty(new_deque):
+    """Test peek of empty deque returns None."""
+    assert new_deque.peek() is None
 
+
+def test_peekleft_empty(new_deque):
+    """Test peekleft of empty deque returns None."""
+    assert new_deque.peekleft() is None
+
+
+def test_len(initialized_deque):
+    """Test to return length of deque."""
+    return len(initialized_deque) == 3

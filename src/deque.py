@@ -3,7 +3,7 @@ from dll import DoublyLinkedList
 
 
 class Deque(object):
-    """."""
+    """Implementation of double-ended queue."""
 
     def __init__(self, iterable=None):
         """Construct deque."""
@@ -30,6 +30,14 @@ class Deque(object):
             return self._dll.pop()
         except IndexError:
             raise IndexError('Cannot pop from an empty deque.')
+
+    def peek(self):
+        """Return last value of deque."""
+        return self.tail.val if self.tail else None
+
+    def peekleft(self):
+        """Return first value of deque."""
+        return self.head.val if self.head else None
 
     def size(self):
         """Return size of deque."""
