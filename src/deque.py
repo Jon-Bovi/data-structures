@@ -1,0 +1,1 @@
+"""Module with implementation of deque data structure."""
