@@ -7,7 +7,10 @@ class Queue(object):
 
     def __init__(self, iterable=None):
         """Construct queue."""
-        self._dll = DoublyLinkedList(iterable)
+        try:
+            self._dll = DoublyLinkedList(iterable)
+        except ValueError:
+            raise ValueError("Queue optional parameter must be iterable.")
 
     def enqueue(self, val):
         """Add value to the queue."""
