@@ -78,3 +78,29 @@ Doubly-linked lists vs Singly-linked Lists:
     - peek(): return value of head of queue
 
     - len()/size(): return size of queue
+    
+## Deque (Double-Ended Queue)
+
+- can be initialized with or without iterable argument
+
+- Attributes:
+
+    - head
+    
+    - tail
+
+- Methods:
+    
+    - append(value): add value to end of deque
+    
+    - appendleft(value): add value to front of deque
+    
+    - pop(): remove last item in deque and return its value
+    
+    - popleft(): remove first item in deque and return its value
+    
+    - peek(): return value of last item in deque
+    
+    - peekleft(): return value of first item in deque
+    
+    - len(deque) / deque.size(): return size of deque
