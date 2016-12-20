@@ -78,3 +78,55 @@ Doubly-linked lists vs Singly-linked Lists:
     - peek(): return value of head of queue
 
     - len()/size(): return size of queue
+    
+## Deque (Double-Ended Queue)
+
+- can be initialized with or without iterable argument
+
+- Attributes:
+
+    - head
+    
+    - tail
+
+- Methods:
+    
+    - append(value): add value to end of deque
+    
+    - appendleft(value): add value to front of deque
+    
+    - pop(): remove last item in deque and return its value
+    
+    - popleft(): remove first item in deque and return its value
+    
+    - peek(): return value of last item in deque
+    
+    - peekleft(): return value of first item in deque
+    
+    - len(deque) / deque.size(): return size of deque
+
+
+## Authors:
+- Ford Fowler
+- Sera Smith
+
+## Coverage:
+
+```
+---------- coverage: platform darwin, python 3.5.2-final-0 -----------
+Name                      Stmts   Miss  Cover   Missing
+-------------------------------------------------------
+src/deque.py                 30      0   100%
+src/dll.py                   73      0   100%
+src/linked_list.py           58      0   100%
+src/queue.py                 26      5    81%   12-13, 37-39
+src/stack.py                 21      0   100%
+src/test_deque.py            53      0   100%
+src/test_dll.py             103      0   100%
+src/test_linked_list.py      57      0   100%
+src/test_queue.py            49      0   100%
+src/test_stack.py            32      0   100%
+-------------------------------------------------------
+TOTAL                       502      5    99%
+
+```
