@@ -18,15 +18,22 @@ def non_empty_bin_heap():
 
 def test_empty_init(empty_bin_heap):
     """Test Binary Heap init without iterable."""
-    assert len(empty_bin_heap) == 0
+    assert len(empty_bin_heap._list) == 0
 
 
 def test_non_empty_init(non_empty_bin_heap):
     """Test Binary Heap init without iterable."""
-    assert len(non_empty_bin_heap) == 5
+    assert len(non_empty_bin_heap._list) == 5
 
 
 def test_non_empty_init_values(non_empty_bin_heap):
     """Test Binary Heap init without iterable."""
     for idx, el in enumerate(non_empty_bin_heap._list):
-        assert el == non_empty_bin_heap._list[idx + 1]
+        assert el == idx + 1
+
+
+def test_init_with_invalid_iterable():
+    """Test Binary Heap init with invalid iterable."""
+    from bin_heap import Binary_Heap
+    with pytest.raises(TypeError, message="Optional binary heap argument must be iterable."):
+        Binary_Heap(42)

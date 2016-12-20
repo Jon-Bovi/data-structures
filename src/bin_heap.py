@@ -6,9 +6,10 @@ class Binary_Heap(object):
     def __init__(self, iterable=None):
         """Construct new binary heap."""
         self._list = []
-        try:
-            for item in sorted(iterable):
-                self._list.append(item)
-        except TypeError:
-            raise TypeError("Optional binary heap argument must be iterable.")
+        if iterable:
+            try:
+                for item in sorted(iterable):
+                    self._list.append(item)
+            except TypeError:
+                raise TypeError("Optional binary heap argument must be iterable.")
 
