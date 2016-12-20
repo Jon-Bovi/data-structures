@@ -105,12 +105,11 @@ Doubly-linked lists vs Singly-linked Lists:
     
     - len(deque) / deque.size(): return size of deque
 
-
-## Authors:
+### Authors:
 - Ford Fowler
 - Sera Smith
 
-## Coverage:
+### Coverage:
 
 ```
 ---------- coverage: platform darwin, python 3.5.2-final-0 -----------
@@ -130,3 +129,4 @@ src/test_stack.py            32      0   100%
 TOTAL                       502      5    99%
 
 ```
+
