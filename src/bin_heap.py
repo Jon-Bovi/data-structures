@@ -1,8 +1,8 @@
 """Module containing implementation of a binary heap."""
 
 
-class Binary_Heap(object):
-    """Binary heap: methods: push and pop."""
+class BinaryHeap(object):
+    """Implementation of Binary heap: methods: push and pop."""
 
     def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
@@ -42,7 +42,7 @@ class Binary_Heap(object):
             i = self._parent(i)
 
     def _organize_children(self, i):
-        """Organize from the root down."""
+        """Organize from node at index i down."""
         self._organize_branch(i, 2 * i + 1)
         self._organize_branch(i, 2 * i + 2)
 

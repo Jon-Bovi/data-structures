@@ -4,7 +4,7 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 ## Linked List
 
-- Can be initialized with (or without) iterable argument.
+- Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
 
 - Attributes:
 
@@ -24,7 +24,7 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 ## Stack
 
-- Can be initialized with (or without) iterable argument.
+- Can be initialized with (or without) iterable argument: Stack(iterable=None)
 
 - Attributes:
 
@@ -40,7 +40,7 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 ## Doubly-Linked List
 
-- Can be initialized with (or without) iterable argument.
+- Can be initialized with (or without) iterable argument: DoublyLinkedList(iterable=None)
 
 - Methods:
 
@@ -67,7 +67,7 @@ Doubly-linked lists vs Singly-linked Lists:
 
 ## Queue
 
-- can be initialized with (or without) iterable argument
+- can be initialized with (or without) iterable argument: Queue(iterable=None)
 
 - Methods:
 
@@ -104,7 +104,21 @@ Doubly-linked lists vs Singly-linked Lists:
     - peekleft(): return value of first item in deque
     
     - len(deque) / deque.size(): return size of deque
+    
+## Binary Heap
 
+- Optional arguments:
+    
+    - an iterable
+    
+    - minheap or maxheap ('min' or 'max') defaulted to 'min'
+
+- Methods:
+    
+    - push(value): add value to bottom of heap and sort as needed
+    
+    - pop(value): remove first/root node and return its value, move last node to root, sort as needed
+    
 ### Authors:
 - Ford Fowler
 - Sera Smith
@@ -112,21 +126,23 @@ Doubly-linked lists vs Singly-linked Lists:
 ### Coverage:
 
 ```
+
 ---------- coverage: platform darwin, python 3.5.2-final-0 -----------
 Name                      Stmts   Miss  Cover   Missing
 -------------------------------------------------------
+src/bin_heap.py              44      0   100%
 src/deque.py                 30      0   100%
 src/dll.py                   73      0   100%
 src/linked_list.py           58      0   100%
 src/queue.py                 26      5    81%   12-13, 37-39
 src/stack.py                 21      0   100%
+src/test_bin_heap.py         73      0   100%
 src/test_deque.py            53      0   100%
 src/test_dll.py             103      0   100%
 src/test_linked_list.py      57      0   100%
 src/test_queue.py            49      0   100%
 src/test_stack.py            32      0   100%
 -------------------------------------------------------
-TOTAL                       502      5    99%
+TOTAL                       619      5    99%
 
 ```
-
