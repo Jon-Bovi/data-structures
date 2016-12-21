@@ -15,5 +15,5 @@ def test_pq_init(test_pq):
 
 def test_pq_insert(test_pq):
     """Test insert into empty pqueue."""
-    test_pq.insert((1, 'val'))
-    assert len(test_pq._heap._list) == 0
+    test_pq.insert('data', 1)
+    assert len(test_pq._heap._list) == 1
