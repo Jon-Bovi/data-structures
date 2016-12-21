@@ -116,8 +116,8 @@ def test_max_option():
 
 def test_max_pop():
     """Test pop on max heap."""
-    from bin_heap import Binary_Heap
-    maxheap = Binary_Heap([1, 2, 3], 'max')
+    from bin_heap import BinaryHeap
+    maxheap = BinaryHeap([1, 2, 3], 'max')
     assert maxheap.pop() == 3
 
 
