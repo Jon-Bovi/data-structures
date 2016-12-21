@@ -26,16 +26,13 @@ class Binary_Heap(object):
         self._organize_up(len(self._list) - 1)
 
     def pop(self):
-        """
-        Swap root of heap with last heap item,
-        remove old root, reorganize heap as needed.
-        """
+        """Swap root with last item -> remove old root -> heapify heap."""
         try:
             self._swap(0, len(self._list) - 1)
             res = self._list.pop()
             self._organize_children(0)
             return res
-        except:
+        except IndexError:
             raise IndexError('Cannot pop from an empty heap.')
 
     def _organize_up(self, i):
@@ -46,22 +43,22 @@ class Binary_Heap(object):
 
     def _organize_children(self, i):
         """Organize from the root down."""
-        self._organize_left(i)
-        self._organize_right(i)
+        self._organize_branch(i, 2 * i + 1)
+        self._organize_branch(i, 2 * i + 2)
 
-    def _swap(self, parent, child):
-        self._list[parent], self._list[child] = self._list[child], self._list[parent]
+    def _swap(self, i, k):
+        """Swap nodes at indexes i and k."""
+        self._list[i], self._list[k] = self._list[k], self._list[i]
 
     def _parent(self, i):
+        """Return index of node i's parent."""
         return i // 2 + (i % 2 - 1)
 
-    def _organize_left(self, i):
-        if 2 * i + 1 < len(self._list) and self._minmax * (self._list[2 * i + 1]) < self._minmax * (self._list[i]):
-            self._swap(i, 2 * i + 1)
-            self._organize_children(2 * i + 1)
-
-    def _organize_right(self, i):
-        if 2 * i + 2 < len(self._list) and self._minmax * (self._list[2 * i + 2]) < self._minmax * (self._list[i]):
-            print('hey')
-            self._swap(i, 2 * i + 2)
-            self._organize_children(2 * i + 2)
+    def _organize_branch(self, parent_i, child_i):
+        """Compare parent with child, swap and continue to organize if needed."""
+        if child_i < len(self._list):
+            parent_value = self._minmax * self._list[parent_i]
+            child_value = self._minmax * self._list[child_i]
+            if child_value < parent_value:
+                self._swap(parent_i, child_i)
+                self._organize_children(child_i)
