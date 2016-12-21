@@ -23,10 +23,13 @@ class Binary_Heap(object):
         Swap root of heap with last heap item,
         remove old root, reorganize heap as needed.
         """
-        self._swap(0, len(self._list) - 1)
-        res = self._list.pop()
-        self._organize_children(0)
-        return res
+        try:
+            self._swap(0, len(self._list) - 1)
+            res = self._list.pop()
+            self._organize_children(0)
+            return res
+        except:
+            raise IndexError('Cannot pop from an empty heap.')
 
     def _organize_up(self, i):
         """Organize heap starting from node i and moving up towards root."""
