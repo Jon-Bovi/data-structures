@@ -3,6 +3,7 @@
 
 class Binary_Heap(object):
     """Binary heap: methods: push and pop."""
+
     def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
         self._list = []
@@ -61,10 +62,6 @@ class Binary_Heap(object):
 
     def _organize_right(self, i):
         if 2 * i + 2 < len(self._list) and self._minmax * (self._list[2 * i + 2]) < self._minmax * (self._list[i]):
+            print('hey')
             self._swap(i, 2 * i + 2)
             self._organize_children(2 * i + 2)
-
-
-
-
-

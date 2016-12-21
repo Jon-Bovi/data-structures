@@ -73,7 +73,7 @@ def test_valid_heap_non_basic():
     assert bin_hp._list == [1, 1.5, 2.5, 2, 2, 3, 6, 4, 8, 5.5, 3.5]
 
 
-def test_pop_heap_():
+def test_pop_heap():
     """Test heap function orders value correctly after pop."""
     from bin_heap import Binary_Heap
     bin_hp = Binary_Heap([1, 1.5, 3, 4, 2, 2.5, 6, 2, 8, 5.5, 3.5])
@@ -81,9 +81,23 @@ def test_pop_heap_():
     assert bin_hp._list == [1.5, 2, 2.5, 3.5, 2, 3, 6, 4, 8, 5.5]
 
 
-def test_push_heap_():
+def test_push_heap():
     """Test heap function orders value correctly after pop."""
     from bin_heap import Binary_Heap
     bin_hp = Binary_Heap([1.5, 1, 3, 4, 2, 2.5, 6, 2, 8, 5.5])
     bin_hp.push(3.5)
     assert bin_hp._list == [1, 1.5, 2.5, 2, 2, 3, 6, 4, 8, 5.5, 3.5]
+
+
+def test_max_option():
+    """Test Binary_Heap with max heap option."""
+    from bin_heap import Binary_Heap
+    maxheap = Binary_Heap([1, 2, 3], 'max')
+    assert maxheap._list == [3, 1, 2]
+
+
+def test_max_pop():
+    """Test pop on max heap."""
+    from bin_heap import Binary_Heap
+    maxheap = Binary_Heap([1, 2, 3], 'max')
+    assert maxheap.pop() == 3
