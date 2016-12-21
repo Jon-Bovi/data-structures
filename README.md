@@ -112,21 +112,24 @@ Doubly-linked lists vs Singly-linked Lists:
 ### Coverage:
 
 ```
+
 ---------- coverage: platform darwin, python 3.5.2-final-0 -----------
 Name                      Stmts   Miss  Cover   Missing
 -------------------------------------------------------
+src/bin_heap.py              44      0   100%
 src/deque.py                 30      0   100%
 src/dll.py                   73      0   100%
 src/linked_list.py           58      0   100%
 src/queue.py                 26      5    81%   12-13, 37-39
 src/stack.py                 21      0   100%
+src/test_bin_heap.py         73      0   100%
 src/test_deque.py            53      0   100%
 src/test_dll.py             103      0   100%
 src/test_linked_list.py      57      0   100%
 src/test_queue.py            49      0   100%
 src/test_stack.py            32      0   100%
 -------------------------------------------------------
-TOTAL                       502      5    99%
+TOTAL                       619      5    99%
 
 ```
 

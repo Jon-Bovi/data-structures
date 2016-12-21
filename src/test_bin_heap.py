@@ -89,8 +89,8 @@ def test_push_heap_():
     assert bin_hp._list == [1, 1.5, 2.5, 2, 2, 3, 6, 4, 8, 5.5, 3.5]
 
 
-def test_swap():
-    """."""
+def test_swap_parent_child():
+    """Test the parent and child values after swap."""
     from bin_heap import BinaryHeap
     bin_hp = BinaryHeap([3, 1.5])
     assert bin_hp._list[0] == 1.5 and bin_hp._list[1] == 3
@@ -98,8 +98,8 @@ def test_swap():
     assert bin_hp._list[1] == 1.5 and bin_hp._list[0] == 3
 
 
-def test_swap2():
-    """."""
+def test_swap_list():
+    """Test the list after swap."""
     from bin_heap import BinaryHeap
     bin_hp = BinaryHeap([3, 1.5])
     assert bin_hp._list == [1.5, 3]
@@ -119,3 +119,18 @@ def test_max_pop():
     from bin_heap import BinaryHeap
     maxheap = BinaryHeap([1, 2, 3], 'max')
     assert maxheap.pop() == 3
+
+
+def test_organize_right():
+    """Test organize right after pop."""
+    from bin_heap import BinaryHeap
+    bin_hp = BinaryHeap([12, 13, 9, 15, 16, 3, 5])
+    bin_hp.pop()
+    bin_hp._list == [5, 13, 3, 15, 16, 9]
+
+
+def test_init_no_minmax():
+    """Test for when optional paramater is not 'min' or 'max'."""
+    from bin_heap import BinaryHeap
+    with pytest.raises(ValueError, message="min/max optional parameter must be 'min' or 'max'"):
+        BinaryHeap(1.5, "apple")
