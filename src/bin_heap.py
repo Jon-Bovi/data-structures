@@ -3,9 +3,15 @@
 
 class Binary_Heap(object):
     """Binary heap: methods: push and pop."""
-    def __init__(self, iterable=None):
+    def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
         self._list = []
+        if minmax == 'min':
+            self._minmax = 1
+        elif minmax == 'max':
+            self._minmax = -1
+        else:
+            raise ValueError("min/max optional parameter must be 'min' or 'max'")
         if iterable:
             try:
                 for item in iterable:
@@ -33,7 +39,7 @@ class Binary_Heap(object):
 
     def _organize_up(self, i):
         """Organize heap starting from node i and moving up towards root."""
-        while i > 0 and self._list[i] < self._list[self._parent(i)]:
+        while i > 0 and self._minmax * (self._list[i]) < self._minmax * (self._list[self._parent(i)]):
             self._swap(self._parent(i), i)
             i = self._parent(i)
 
@@ -49,12 +55,12 @@ class Binary_Heap(object):
         return i // 2 + (i % 2 - 1)
 
     def _organize_left(self, i):
-        if 2 * i + 1 < len(self._list) and self._list[2 * i + 1] < self._list[i]:
+        if 2 * i + 1 < len(self._list) and self._minmax * (self._list[2 * i + 1]) < self._minmax * (self._list[i]):
             self._swap(i, 2 * i + 1)
             self._organize_children(2 * i + 1)
 
     def _organize_right(self, i):
-        if 2 * i + 2 < len(self._list) and self._list[2 * i + 2] < self._list[i]:
+        if 2 * i + 2 < len(self._list) and self._minmax * (self._list[2 * i + 2]) < self._minmax * (self._list[i]):
             self._swap(i, 2 * i + 2)
             self._organize_children(2 * i + 2)
 
