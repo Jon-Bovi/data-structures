@@ -1,8 +1,9 @@
 """Module containing implementation of a binary heap."""
 
 
-class Binary_Heap(object):
-    """Binary heap: methods: push and pop."""
+class BinaryHeap(object):
+    """Implementation of Binary heap: methods: push and pop."""
+
     def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
         self._list = []
@@ -25,10 +26,7 @@ class Binary_Heap(object):
         self._organize_up(len(self._list) - 1)
 
     def pop(self):
-        """
-        Swap root of heap with last heap item,
-        remove old root, reorganize heap as needed.
-        """
+        """Swap root of heap with last heap item, remove old root, reorganize heap as needed."""
         try:
             self._swap(0, len(self._list) - 1)
             res = self._list.pop()
@@ -48,8 +46,8 @@ class Binary_Heap(object):
         self._organize_left(i)
         self._organize_right(i)
 
-    def _swap(self, parent, child):
-        self._list[parent], self._list[child] = self._list[child], self._list[parent]
+    def _swap(self, parent_index, child_index):
+        self._list[parent_index], self._list[child_index] = self._list[child_index], self._list[parent_index]
 
     def _parent(self, i):
         return i // 2 + (i % 2 - 1)
@@ -63,8 +61,3 @@ class Binary_Heap(object):
         if 2 * i + 2 < len(self._list) and self._minmax * (self._list[2 * i + 2]) < self._minmax * (self._list[i]):
             self._swap(i, 2 * i + 2)
             self._organize_children(2 * i + 2)
-
-
-
-
-
