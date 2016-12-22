@@ -22,12 +22,12 @@ class PriorityQueue(object):
     def pop(self):
         """."""
         try:
-            return self._heap.pop()
+            return tuple(reversed(list(self._heap.pop())))
         except IndexError:
             raise IndexError('Cannot pop from empty priority queue.')
 
     def peek(self):
-        """Peeks at the highest priority tuple."""
+        """Peek at the highest priority tuple."""
         return self._heap._list[0]
 
 
