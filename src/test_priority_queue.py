@@ -38,12 +38,11 @@ def test_pq_init(empty_pq):
     assert len(empty_pq._heap._list) == 0
 
 
-def test_pq_init_iterable(long_pq):
-    """Assert items of same priority are still FIFO."""
-    long_pq.pop()
-    assert long_pq.pop() == ('data8', 8)
-    assert long_pq.pop() == ('dataeight', 8)
-    assert long_pq.pop() == ('dataate', 8)
+def test_pq_invalid_iterable():
+    """Test TypeError is raised if invalid iterable argument is provided."""
+    from priority_queue import PriorityQueue
+    with pytest.raises(TypeError, message="Optional argument of priority queue must be iterable."):
+        PriorityQueue(42)
 
 
 def test_pq_insert(empty_pq):
@@ -72,3 +71,16 @@ def test_pop_empty(empty_pq):
 def test_pop_non_empty(two_long_pq):
     """Test pop returns correct item."""
     assert two_long_pq.pop() == ('value2', 1)
+
+
+def test_pq_init_iterable(long_pq):
+    """Assert items of same priority are still FIFO."""
+    long_pq.pop()
+    assert long_pq.pop() == ('data8', 8)
+    assert long_pq.pop() == ('dataeight', 8)
+    assert long_pq.pop() == ('dataate', 8)
+
+
+def test_peek_empty(empty_pq):
+    """Test peek returns None if pq is empty."""
+    assert empty_pq.peek() is None

@@ -17,12 +17,12 @@ class PriorityQueue(object):
                 raise TypeError("Optional argument of priority queue must be iterable.")
 
     def insert(self, data, priority=0):
-        """."""
+        """Add item to queue given data and item's priority."""
         self._heap.push((priority, self._count, data))
         self._count += 1
 
     def pop(self):
-        """."""
+        """Remove and return first inserted item of highest priority."""
         try:
             return self._reformat(self._heap.pop())
             self._count -= 1
