@@ -14,6 +14,14 @@ def test_pq_init(empty_pq):
     assert empty_pq is not None
 
 
+def test_pq_iter_not_none():
+    """Test insert into pq when iter is not None."""
+    from priority_queue import PriorityQueue
+    new_pq = PriorityQueue([('kibble', 3)])
+    new_pq.insert('mix', 2)
+    assert new_pq.pop() == 'mix'
+
+
 def test_pq_insert(empty_pq):
     """Test insert into empty pqueue."""
     empty_pq.insert('val', 1)
