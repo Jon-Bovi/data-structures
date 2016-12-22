@@ -28,6 +28,6 @@ class PriorityQueue(object):
 
     def peek(self):
         """Peek at the highest priority tuple."""
-        return self._heap._list[0]
+        return tuple(reversed(list(self._heap._list[0])))
 
 
