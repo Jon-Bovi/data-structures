@@ -24,15 +24,15 @@ def long_pq():
     """Return an extensive priority queue."""
     from priority_queue import PriorityQueue
     return PriorityQueue([
-        ('data1', 1),
+        ('data5', 5),
         ('data2', 2),
+        ('data8', 8),
+        ('data1', 1),
+        ('data9', 9),
         ('data3', 3),
         ('data4', 4),
-        ('data5', 5),
         ('data6', 6),
         ('data7', 7),
-        ('data8', 8),
-        ('data9', 9),
         ('data10', 10),
     ])
 
@@ -50,8 +50,8 @@ def test_pq_insert(empty_pq):
 
 def test_pq_insert_default_priority(empty_pq):
     """Assert insert without provided priority."""
-    empty_pq.push(34)
-    assert
+    empty_pq.insert(34)
+    assert empty_pq.peek()[0] == 34
 
 
 def test_pq_double_insert(two_long_pq):
