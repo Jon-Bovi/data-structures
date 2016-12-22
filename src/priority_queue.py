@@ -5,7 +5,7 @@ from bin_heap import BinaryHeap
 class PriorityQueue(object):
     """Priority list queue."""
 
-    def __init___(self, iterable=None):
+    def __init__(self, iterable=None):
         """Construct priority queue."""
         self._heap = BinaryHeap()
         if iterable:
@@ -29,4 +29,5 @@ class PriorityQueue(object):
     def peek(self):
         """Peeks at the highest priority tuple."""
         return self._heap._list[0]
+
 
