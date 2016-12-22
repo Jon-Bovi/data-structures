@@ -44,4 +44,3 @@ def test_pop_empty(empty_pq):
 def test_pop_non_empty(two_long_pq):
     """Test pop returns correct item."""
     assert two_long_pq.pop() == ('value1', 3)
-

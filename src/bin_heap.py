@@ -4,13 +4,13 @@
 class BinaryHeap(object):
     """Implementation of Binary heap: methods: push and pop."""
 
-    def __init__(self, iterable=None, minmax='max'):
+    def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
         self._list = []
         if minmax == 'min':
-            self._minmax = -1
-        elif minmax == 'max':
             self._minmax = 1
+        elif minmax == 'max':
+            self._minmax = -1
         else:
             raise TypeError("min/max optional parameter must be 'min' or 'max'")
         if iterable:
