@@ -26,14 +26,14 @@ def long_pq():
     return PriorityQueue([
         ('data5', 5),
         ('data2', 2),
-        ('data8', 8),
+        ('data8', 5),
         ('data1', 1),
         ('data9', 9),
         ('data3', 3),
         ('data4', 4),
         ('data6', 6),
         ('data7', 7),
-        ('data10', 10),
+        ('data10', 6),
     ])
 
 
@@ -68,3 +68,4 @@ def test_pop_empty(empty_pq):
 def test_pop_non_empty(two_long_pq):
     """Test pop returns correct item."""
     assert two_long_pq.pop() == ('value2', 1)
+
