@@ -1,36 +1,29 @@
 """Implementation of Priority Queue."""
-from bin_heap import BinaryHeap
 
 
 class PriorityQueue(object):
     """Priority list queue."""
 
-    def __init__(self, iterable=None):
+    def __init__(self):
         """Construct priority queue."""
-        self._heap = BinaryHeap()
-        if iterable:
-            try:
-                for item in iterable:
-                    self._insert(*item)
-            except TypeError:
-                raise TypeError("Optional argument of priority queue must be iterable.")
+        self.queues = {}
 
     def insert(self, data, priority=0):
         """."""
-        self._heap.push((priority, data))
+        if priority in self.queues:
+            self.queues[priority].insert(0, data)
+        else:
+            self.queues[priority] = [data]
 
     def pop(self):
         """."""
-        try:
-            return tuple(reversed(list(self._heap.pop())))
-        except IndexError:
-            raise IndexError('Cannot pop from empty priority queue.')
+        for priority in sorted(self.queues):
+            if len(self.queues[priority]) > 0:
+                return self.queues[priority].pop()
+        raise IndexError('Cannot pop from empty priority queue.')
 
     def peek(self):
         """Peek at the highest priority tuple."""
-        return tuple(reversed(list(self._heap._list[0])))
-
-
-    
-
-
+        for priority in sorted(self.queues):
+            if len(self.queues[priority]) > 0:
+                return self.queues[priority][-1]

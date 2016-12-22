@@ -9,54 +9,21 @@ def empty_pq():
     return PriorityQueue()
 
 
-@pytest.fixture
-def two_long_pq():
-    """Return PriorityQueue of length two."""
-    from priority_queue import PriorityQueue
-    pq = PriorityQueue()
-    pq.insert('value1', 3)
-    pq.insert('value2', 1)
-    return pq
-
-
-@pytest.fixture
-def long_pq():
-    """Return an extensive priority queue."""
-    from priority_queue import PriorityQueue
-    return PriorityQueue([
-        ('data5', 5),
-        ('data2', 2),
-        ('data8', 5),
-        ('data1', 1),
-        ('data9', 9),
-        ('data3', 3),
-        ('data4', 4),
-        ('data6', 6),
-        ('data7', 7),
-        ('data10', 6),
-    ])
-
-
 def test_pq_init(empty_pq):
     """Test priority queue init."""
-    assert len(empty_pq._heap._list) == 0
+    assert empty_pq is not None
 
 
 def test_pq_insert(empty_pq):
     """Test insert into empty pqueue."""
     empty_pq.insert('val', 1)
-    assert len(empty_pq._heap._list) == 1
+    assert empty_pq.pop() == 'val'
 
 
 def test_pq_insert_default_priority(empty_pq):
     """Assert insert without provided priority."""
-    empty_pq.insert(34)
-    assert empty_pq.peek()[0] == 34
-
-
-def test_pq_double_insert(two_long_pq):
-    """Test multiple inserts on pqueue."""
-    assert len(two_long_pq._heap._list) == 2
+    empty_pq.insert('mongo')
+    assert empty_pq.peek() == 'mongo'
 
 
 def test_pop_empty(empty_pq):
@@ -65,7 +32,19 @@ def test_pop_empty(empty_pq):
         empty_pq.pop()
 
 
-def test_pop_non_empty(two_long_pq):
+def test_pop_non_empty(empty_pq):
     """Test pop returns correct item."""
-    assert two_long_pq.pop() == ('value2', 1)
+    empty_pq.insert('mix', 2)
+    empty_pq.insert('meow', 1)
+    assert empty_pq.pop() == 'meow'
+    assert empty_pq.pop() == 'mix'
 
+
+def test_pop_insert_pq():
+    """Test insert to pq."""
+    from priority_queue import PriorityQueue
+    pq = PriorityQueue()
+    pq.insert('mix', 2)
+    pq.insert('meow', 2)
+    assert pq.pop() == "mix"
+    assert pq.pop() == "meow"
