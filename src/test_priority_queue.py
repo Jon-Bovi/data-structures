@@ -10,6 +10,20 @@ def empty_pq():
 
 
 @pytest.fixture
+def long_pq():
+    """Return an extensive priority queue."""
+    from priority_queue import PriorityQueue
+    return PriorityQueue([
+        ('data5', 15),
+        ('data8', 8),
+        ('dataeight', 8),
+        ('data4', 4),
+        ('dataate', 8),
+        ('data7', 9),
+    ])
+
+
+@pytest.fixture
 def two_long_pq():
     """Return PriorityQueue of length two."""
     from priority_queue import PriorityQueue
@@ -19,27 +33,17 @@ def two_long_pq():
     return pq
 
 
-@pytest.fixture
-def long_pq():
-    """Return an extensive priority queue."""
-    from priority_queue import PriorityQueue
-    return PriorityQueue([
-        ('data5', 5),
-        ('data2', 2),
-        ('data8', 8),
-        ('data1', 1),
-        ('data9', 9),
-        ('data3', 3),
-        ('data4', 4),
-        ('data6', 6),
-        ('data7', 7),
-        ('data10', 10),
-    ])
-
-
 def test_pq_init(empty_pq):
     """Test priority queue init."""
     assert len(empty_pq._heap._list) == 0
+
+
+def test_pq_init_iterable(long_pq):
+    """Assert items of same priority are still FIFO."""
+    long_pq.pop()
+    assert long_pq.pop() == ('data8', 8)
+    assert long_pq.pop() == ('dataeight', 8)
+    assert long_pq.pop() == ('dataate', 8)
 
 
 def test_pq_insert(empty_pq):
