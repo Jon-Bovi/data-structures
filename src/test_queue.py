@@ -30,6 +30,13 @@ def test_init(new_queue):
     assert new_queue.head is None and new_queue._dll.tail is None
 
 
+def test_init_invalid_iterable():
+    """Test init raises error if passed non-iterable argument."""
+    from queue import Queue
+    with pytest.raises(ValueError):
+        Queue(1234)
+
+
 def test_enqueue_on_empty(new_queue):
     """Test enqueue on empty queue."""
     new_queue.enqueue(144)
@@ -92,6 +99,15 @@ def test_size(once_queue):
     assert once_queue.size() == 1
 
 
+def test_size_in_concurrence_with_enqueue_dequeue(new_queue):
+    """Test size changes properly with enqueue and dequeue calls."""
+    assert new_queue.size() == 0
+    new_queue.enqueue(23)
+    assert new_queue.size() == 1
+    new_queue.dequeue()
+    assert new_queue.size() == 0
+
+
 def test_len_on_empty(new_queue):
     """Test len of empty queue is zero."""
     assert len(new_queue) == 0
@@ -107,12 +123,9 @@ def test_len(once_queue):
     assert len(once_queue) == 1
 
 
-# def test_clear(init_queue):
-#     """Test clear removes all nodes in queue."""
-#     nodes = []
-#     curr = init_queue.head
-#     while curr:
-#         nodes.append(curr)
-#         curr = curr.next
-#     init_queue.clear()
-#     assert len(nodes) == 0
+def test_clear(init_queue):
+    """Test clear removes all nodes in queue."""
+    init_queue.clear()
+    assert len(init_queue) == 0
+    assert init_queue.head is None
+    assert init_queue.tail is None
