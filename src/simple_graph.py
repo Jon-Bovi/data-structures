@@ -31,14 +31,12 @@ class Graph(object):
         self.node_list.append(n)
 
     def add_edge(self, n1, n2):
-        """Add an edge to the graph with source, dest of n1, n2.
-        if one of the nodes add_edge takes doesn't exist in the graph, it has to be added."""
+        """Add an edge to the graph with source, dest of n1, n2."""
         if n1 not in self.node_list:
             self.add_node(n1)
         if n2 not in self.node_list:
             self.add_node(n2)
-        new_edge = Edge(n1, n2)
-        self.edges.append(new_edge)
+        self.edges.append(Edge(n1, n2))
 
     def del_node(self, n):
         """Delete the node 'n' from the graph."""
@@ -60,9 +58,11 @@ class Graph(object):
         """True or False based on if node 'n' is contained in the graph."""
         return n in self.node_list
 
-    def neighbors(self, n):
-        """Return the list of all nodes connected to 'n' by edges."""
+   def neighbors(self, n):
+    """Return the list of all nodes connected to 'n' by edges. Raise error if n is not in g."""
         edge_sources = []
+        if n not in self.node_list:
+            raise IndexError("Cannot return neighbors of node that does not exist.")
         for i in self.edges:
             if i.dest == n:
                 edge_sources.append(i.source)
