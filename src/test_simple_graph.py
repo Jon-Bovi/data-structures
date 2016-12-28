@@ -16,6 +16,7 @@ def another_node():
     return Node()
 
 
+@pytest.fixture
 def edge(node, another_node):
     """Return an edge object."""
     from simple_graph import Edge
