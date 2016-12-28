@@ -38,7 +38,7 @@ class Graph(object):
         """Add a node 'n' to the graph."""
         new_node = Node()
         new_node.name = n
-        self.node_list.append(n)
+        self.node_list.append(new_node)
 
     def add_edge(self, n1, n2):
         """Add an edge to the graph with source, dest of n1, n2."""

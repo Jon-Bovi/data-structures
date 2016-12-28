@@ -3,24 +3,10 @@ import pytest
 
 
 @pytest.fixture
-def node():
-    """Return node."""
-    from simple_graph import Node
-    return Node()
-
-
-@pytest.fixture
-def another_node():
-    """Return another_node."""
-    from simple_graph import Node
-    return Node()
-
-
-@pytest.fixture
-def edge(node, another_node):
+def edge():
     """Return an edge object."""
     from simple_graph import Edge
-    return Edge(node, another_node)
+    return Edge('node', 'another_node')
 
 
 @pytest.fixture
@@ -30,16 +16,10 @@ def graph():
     return Graph()
 
 
-def test_node_init(node):
-    """Test node init method does what it's supposed to."""
-    assert node.name is None
-
-
 def test_edge_init(edge):
     """Test edge init method does what it's supposed to."""
-    from simple_graph import Node
-    assert type(edge.source) is Node
-    assert type(edge.dest) is Node
+    assert edge.source == 'node'
+    assert edge.dest == 'another_node'
 
 
 def test_graph_init(graph):
@@ -48,21 +28,21 @@ def test_graph_init(graph):
     assert graph.edges == []
 
 
-def test_add_node(graph, node):
+def test_add_node(graph):
     """Test add_node adds node to graph."""
-    graph.add_node(node)
-    assert node in graph.node_list
+    graph.add_node('node')
+    assert 'node' in graph.node_list
 
 
-def test_add_edge(graph, node, another_node):
+def test_add_edge(graph):
     """Test that add_edge adds edge with source and dest."""
-    graph.add_edge(node, another_node)
-    assert graph.edges[0].source is node
-    assert graph.edges[0].dest is another_node
+    graph.add_edge('node', 'another_node')
+    assert graph.edges[0].source == 'node'
+    assert graph.edges[0].dest == 'another_node'
 
 
-def test_del_node(node, graph):
+def test_del_node(graph):
     """."""
-    graph.add_node(node)
-    graph.del_node(node)
-    assert node not in graph.node_list
+    graph.add_node('node')
+    graph.del_node('node')
+    assert 'node' not in graph.node_list
