@@ -132,5 +132,5 @@ def test_organize_right():
 def test_init_no_minmax():
     """Test for when optional paramater is not 'min' or 'max'."""
     from bin_heap import BinaryHeap
-    with pytest.raises(ValueError, message="min/max optional parameter must be 'min' or 'max'"):
+    with pytest.raises(TypeError, message="min/max optional parameter must be 'min' or 'max'"):
         BinaryHeap(1.5, "apple")
