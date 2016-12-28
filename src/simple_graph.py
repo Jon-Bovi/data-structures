@@ -38,7 +38,7 @@ class Graph(object):
         self.edges.append(new_edge)
 
     def del_node(self, n):
-        """Delete the node n from the graph."""
+        """Delete the node 'n' from the graph."""
         for i in self.node_list:
             if i == n:
                 self.node_list.remove(n)
@@ -46,7 +46,7 @@ class Graph(object):
         raise IndexError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
-        """Delete edge from n1 to n2."""
+        """Delete edge from 'n1' to 'n2'."""
         for i in self.edges:
             if i.source == n1 and i.dest == n2:
                 self.edges.remove(i)
@@ -54,11 +54,11 @@ class Graph(object):
         raise IndexError("Cannot remove edge that does not exist.")
 
     def has_node(self, n):
-        """True or False based on if node n is contained in the graph."""
+        """True or False based on if node 'n' is contained in the graph."""
         return n in self.node_list
 
     def neighbors(self, n):
-        """Return the list of all nodes connected to n by edges."""
+        """Return the list of all nodes connected to 'n' by edges."""
         edge_sources = []
         for i in self.edges:
             if i.dest == n:
@@ -66,7 +66,7 @@ class Graph(object):
         return edge_sources
 
     def adjacent(self, n1, n2):
-        """Return True or False for if there is an edge connecting n1 and n2."""
+        """Return True/False for if an edge connects 'n1' and 'n2'."""
         for i in self.edges:
             if i.source == n1 and i.dest == n2:
                 return True
