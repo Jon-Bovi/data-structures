@@ -43,17 +43,23 @@ class LinkedList(object):
 
     def remove(self, node):
         """Remove a node from linked list."""
-        prev = None
-        curr = self.head
-        while curr:
-            if curr is node:
-                if prev:
-                    prev.next = curr.next
-                else:
-                    self.head = curr.next
-                self._length -= 1
-            prev = curr
-            curr = curr.next
+        if type(node) is Node:
+            prev = None
+            curr = self.head
+            while curr:
+                if curr is node:
+                    if prev:
+                        prev.next = curr.next
+                    else:
+                        self.head = curr.next
+                    self._length -= 1
+                    break
+                prev = curr
+                curr = curr.next
+            else:
+                raise ValueError("Cannot remove node not in list.")
+        else:
+            raise ValueError("Argument to remove must be of node type.")
 
     def display(self):
         """Display linked list in tuple literal form."""
@@ -74,6 +80,10 @@ class LinkedList(object):
     def __len__(self):
         """Return length of linked_list."""
         return self.size()
+
+    def __repr__(self):
+        """Shortcut for displaying representation of list."""
+        return self.display()
 
 
 class Node(object):
