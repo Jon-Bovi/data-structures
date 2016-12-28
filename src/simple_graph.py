@@ -32,10 +32,11 @@ class Graph(object):
 
     def add_edge(self, n1, n2):
         """Add an edge to the graph with source, dest of n1, n2."""
-        new_edge = Edge()
-        new_edge.source = n1
-        new_edge.dest = n2
-        self.edges.append(new_edge)
+        if n1 not in self.node_list:
+            self.add_node(n1)
+        if n2 not in self.node_list:
+            self.add_node(n2)
+        self.edges.append(Edge(n1, n2))
 
     def del_node(self, n):
         """Delete the node n from the graph."""
@@ -59,6 +60,15 @@ class Graph(object):
 
     def neighbors(self, n):
         """Return the list of all nodes connected to n by edges."""
+        edge_sources = []
+        for i in self.edges:
+            if i.dest == n:
+                edge_sources.append(i.source)
+        return edge_sources
 
     def adjacent(self, n1, n2):
         """Return True or False for if there is an edge connecting n1 and n2."""
+        for i in self.edges:
+            if i.source == n1 and i.dest == n2:
+                return True
+        return False

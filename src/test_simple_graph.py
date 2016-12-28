@@ -46,3 +46,50 @@ def test_del_node(graph):
     graph.add_node('node')
     graph.del_node('node')
     assert 'node' not in graph.node_list
+
+
+def test_del_node_error(graph):
+    """."""
+    graph.add_node('mama')
+    with pytest.raises(IndexError):
+        graph.del_node('dada')
+
+
+def test_del_edge(graph):
+    """."""
+    graph.add_edge('node', 'edon')
+    graph.del_edge('node', 'edon')
+    assert len(graph.edges) == 0
+
+
+def test_del_edge_error(graph):
+    """."""
+    graph.add_edge('node', 'edon')
+    with pytest.raises(IndexError):
+        graph.del_edge('node', 'noooode')
+
+
+def test_has_node_true(graph):
+    """."""
+    graph.add_node('mama')
+    assert graph.has_node('mama')
+
+
+def test_has_node_false(graph):
+    """."""
+    graph.add_node('mama')
+    assert graph.has_node('dada') is False
+
+
+def test_neighbors(graph):
+    """."""
+    graph.add_edge('bank', 'car')
+    graph.add_edge('wheels', 'car')
+    assert graph.neighbors('car') == ['bank', 'wheels']
+
+
+def test_adjacent(graph):
+    """."""
+    graph.add_edge('beer', 'wine')
+    assert graph.adjacent('beer', 'wine')
+    assert graph.adjacent('wine', 'beer')
