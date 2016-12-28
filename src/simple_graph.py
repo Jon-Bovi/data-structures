@@ -23,12 +23,12 @@ class Graph(object):
 
     def __init__(self):
         """Construct Graph."""
-        self.nodes = []
+        self.node_list = []
         self.edges = []
 
     def nodes(self):
         """Return a list of all nodes in the graph."""
-        return self.nodes
+        return self.node_list
 
     def edges(self):
         """Return a list of all edges in the graph."""
@@ -38,7 +38,7 @@ class Graph(object):
         """Add a node 'n' to the graph."""
         new_node = Node()
         new_node.name = n
-        self.nodes.append(n)
+        self.node_list.append(n)
 
     def add_edge(self, n1, n2):
         """Add an edge to the graph with source, dest of n1, n2."""
@@ -49,6 +49,11 @@ class Graph(object):
 
     def del_node(self, n):
         """Delete the node n from the graph."""
+        for i in self.node_list:
+            if i.name == n:
+                self.node_list.remove(n)
+                return
+        raise IndexError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
         """Delete edge from n1 to n2."""

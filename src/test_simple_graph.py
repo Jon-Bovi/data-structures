@@ -44,14 +44,14 @@ def test_edge_init(edge):
 
 def test_graph_init(graph):
     """Test graph init method does what it's supposed to."""
-    assert graph.nodes == []
+    assert graph.node_list == []
     assert graph.edges == []
 
 
 def test_add_node(graph, node):
     """Test add_node adds node to graph."""
     graph.add_node(node)
-    assert node in graph.nodes
+    assert node in graph.node_list
 
 
 def test_add_edge(graph, node, another_node):
@@ -59,3 +59,10 @@ def test_add_edge(graph, node, another_node):
     graph.add_edge(node, another_node)
     assert graph.edges[0].source is node
     assert graph.edges[0].dest is another_node
+
+
+def test_del_node(node, graph):
+    """."""
+    graph.add_node(node)
+    graph.del_node(node)
+    assert node not in graph.node_list
