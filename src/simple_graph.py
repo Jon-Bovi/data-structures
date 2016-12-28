@@ -1,5 +1,6 @@
 """Implementation of the simple graph module."""
 
+
 class Edge(object):
     """Edge data structure Edge class."""
 
@@ -54,10 +55,19 @@ class Graph(object):
 
     def has_node(self, n):
         """True or False based on if node n is contained in the graph."""
-        return n in node_list
+        return n in self.node_list
 
     def neighbors(self, n):
         """Return the list of all nodes connected to n by edges."""
+        edge_sources = []
+        for i in self.edges:
+            if i.dest == n:
+                edge_sources.append(i.source)
+        return edge_sources
 
     def adjacent(self, n1, n2):
         """Return True or False for if there is an edge connecting n1 and n2."""
+        for i in self.edges:
+            if i.source == n1 and i.dest == n2:
+                return True
+        return False
