@@ -1,14 +1,14 @@
 """Implementation of the simple graph module."""
 
 
-class Node:
+class Node(object):
     """Edge data structure Node class."""
 
     def __init__(self, name=None):
         """Construct Node."""
        self.name = name
 
-class Edge:
+class Edge(object):
     """Edge data structure Edge class."""
 
     def __init__(self, source=None, dest=None):
@@ -16,7 +16,7 @@ class Edge:
     self.source = source
     self.dest = dest
 
-class Graph:
+class Graph(object):
     """Edge data structure Graph class."""
 
     def __init__(self):
@@ -47,6 +47,11 @@ class Graph:
 
     def del_node(self, n):
         """Delete the node n from the graph."""
+        for i in nodes:
+            if i.name == n:
+                nodes.remove(n)
+                return
+        raise IndexError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
         """Delete edge from n1 to n2."""
