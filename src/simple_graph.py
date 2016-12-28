@@ -4,21 +4,25 @@
 class Node:
     """Edge data structure Node class."""
 
-    name = None
-
+    def __init__(self, name=None):
+        """Construct Node."""
+       self.name = name
 
 class Edge:
     """Edge data structure Edge class."""
 
-    source = None
-    dest = None
-
+    def __init__(self, source=None, dest=None):
+    """Construct Edge."""
+    self.source = source
+    self.dest = dest
 
 class Graph:
     """Edge data structure Graph class."""
 
-    nodes = []
-    edges = []
+    def __init__(self):
+    """Construct Graph."""
+    self.nodes = []
+    self.edges = []
 
     def nodes(self):
         """Return a list of all nodes in the graph."""
@@ -36,6 +40,10 @@ class Graph:
 
     def add_edge(self, n1, n2):
         """Add an edge to the graph with source, dest of n1, n2."""
+        new_edge = Edge()
+        new_edge.source = n1
+        new_edge.dest = n2
+        self.edges.append(new_edge)
 
     def del_node(self, n):
         """Delete the node n from the graph."""
