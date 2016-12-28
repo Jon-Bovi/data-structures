@@ -1,14 +1,5 @@
 """Implementation of the simple graph module."""
 
-
-class Node(object):
-    """Edge data structure Node class."""
-
-    def __init__(self, name=None):
-        """Construct Node."""
-        self.name = name
-
-
 class Edge(object):
     """Edge data structure Edge class."""
 
@@ -36,8 +27,6 @@ class Graph(object):
 
     def add_node(self, n):
         """Add a node 'n' to the graph."""
-        new_node = Node()
-        new_node.name = n
         self.node_list.append(n)
 
     def add_edge(self, n1, n2):
@@ -50,16 +39,22 @@ class Graph(object):
     def del_node(self, n):
         """Delete the node n from the graph."""
         for i in self.node_list:
-            if i.name == n:
+            if i == n:
                 self.node_list.remove(n)
                 return
         raise IndexError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
         """Delete edge from n1 to n2."""
+        for i in self.edges:
+            if i.source == n1 and i.dest == n2:
+                self.edges.remove(i)
+                return
+        raise IndexError("Cannot remove edge that does not exist.")
 
     def has_node(self, n):
         """True or False based on if node n is contained in the graph."""
+        return n in node_list
 
     def neighbors(self, n):
         """Return the list of all nodes connected to n by edges."""
