@@ -31,10 +31,13 @@ class Graph(object):
         self.node_list.append(n)
 
     def add_edge(self, n1, n2):
-        """Add an edge to the graph with source, dest of n1, n2."""
-        new_edge = Edge()
-        new_edge.source = n1
-        new_edge.dest = n2
+        """Add an edge to the graph with source, dest of n1, n2.
+        if one of the nodes add_edge takes doesn't exist in the graph, it has to be added."""
+        if n1 not in self.node_list:
+            self.add_node(n1)
+        if n2 not in self.node_list:
+            self.add_node(n2)
+        new_edge = Edge(n1, n2)
         self.edges.append(new_edge)
 
     def del_node(self, n):
