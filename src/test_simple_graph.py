@@ -41,6 +41,12 @@ def test_add_edge(graph):
     assert graph.edges[0].dest == 'another_node'
 
 
+def test_same_edge(graph):
+    graph.add_edge('node', 'another_node')
+    graph.add_edge('node', 'another_node')
+    assert len(graph.edges) == 1
+
+
 def test_del_node(graph):
     """."""
     graph.add_node('node')
@@ -92,4 +98,4 @@ def test_adjacent(graph):
     """."""
     graph.add_edge('beer', 'wine')
     assert graph.adjacent('beer', 'wine')
-    assert graph.adjacent('wine', 'beer')
+

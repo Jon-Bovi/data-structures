@@ -9,6 +9,10 @@ class Edge(object):
         self.source = source
         self.dest = dest
 
+    def __repr__(self):
+        """Return readable representation of edge."""
+        return "({}, {})".format(self.source, self.dest)
+
 
 class Graph(object):
     """Edge data structure Graph class."""
@@ -36,7 +40,8 @@ class Graph(object):
             self.add_node(n1)
         if n2 not in self.node_list:
             self.add_node(n2)
-        self.edges.append(Edge(n1, n2))
+        if not self.adjacent(n1, n2):
+            self.edges.append(Edge(n1, n2))
 
     def del_node(self, n):
         """Delete the node 'n' from the graph."""
