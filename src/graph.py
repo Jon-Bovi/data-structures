@@ -55,4 +55,4 @@ class Graph(object):
         """Return True/False for if an edge connects 'n1' and 'n2'. Raises error if either nodes not present."""
         if n1 in self.node_dict and n2 in self.node_dict:
             return n2 in self.node_dict[n1]
-        raise KeyError("Nodes not in graph")
+        raise KeyError("Nodes not in graph!")
