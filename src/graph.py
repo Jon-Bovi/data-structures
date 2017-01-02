@@ -57,13 +57,13 @@ class Graph(object):
             return n2 in self.node_dict[n1]
         raise KeyError("Nodes not in graph!")
 
-    def depth_first_traversal(self, start, track=set()):
+    def depth_first_traversal(self, start, track=None):
         """List."""
         res = [start]
-        print(track)
+        if track is None:
+            track = set()
         track.add(start)
         for n in self.node_dict[start]:
             if n not in track:
                 res += self.depth_first_traversal(n, track)
-        track = set()
         return res
