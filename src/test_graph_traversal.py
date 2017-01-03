@@ -11,6 +11,7 @@ def graph():
 
 @pytest.fixture
 def complex_g(graph):
+    """."""
     graph.add_edge('A', 'B')
     graph.add_edge('A', 'C')
     graph.add_edge('B', 'D')
