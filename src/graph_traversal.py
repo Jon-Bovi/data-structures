@@ -81,16 +81,16 @@ class Graph(object):
     def breadth_first_traversal(self, start):
         """Breadth version of graph traversal."""
         try:
-            res = [start]
-            queue = Queue(res)
-            track = set(res)
-            while queue:
-                children = self.node_dict[queue.dequeue()]
-                for child in children:
-                    if child not in track:
+            res = []
+            queue = Queue([start])
+            track = set()
+            while queue.head:
+                cur_node = queue.dequeue()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node]:
                         queue.enqueue(child)
-                        track.add(child)
-                        res.append(child)
         except KeyError:
             raise KeyError(str(start) + ' not in graph')
         return res
@@ -100,15 +100,14 @@ class Graph(object):
         try:
             res = []
             stack = Stack([start])
-            track = set([start])
-            while stack:
+            track = set()
+            while stack.top:
                 cur_node = stack.pop()
-                children = reversed(self.node_dict[cur_node])
-                for child in children:
-                    if child not in track:
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node][::-1]:
                         stack.push(child)
-                        track.add(child)
-                res.append(cur_node)
         except KeyError:
             raise KeyError(str(start) + ' not in graph')
         return res
@@ -117,32 +116,36 @@ class Graph(object):
 if __name__ == '__main__': # pragma: no cover
     import timeit
     import random
+    from pprint import pprint
 
-    def complex_g():
-        """Return a somewhat convoluted graph."""
-        graph = Graph()
-        for i in range(100):
-            try:
-                graph.add_edge(random.randint(0, 30), random.randint(31, 60))
-            except:
-                pass
-        return graph
+    graph = Graph()
+    for i in range(100):
+        try:
+            graph.add_edge(random.randint(0, 20), random.randint(0, 20))
+        except:
+            pass
+    start = graph.nodes()[random.randint(0, len(graph.nodes()))]
+
+    pprint(graph.node_dict)
 
     depth = timeit.timeit(
-        stmt="graph=complex_g(); graph.depth_first_traversal(graph.nodes()[0])",
-        setup="from __main__ import complex_g",
+        stmt="graph.depth_first_traversal(start)",
+        setup="from __main__ import graph, start",
         number=1000,
     )
     depth_i = timeit.timeit(
-        stmt="graph=complex_g(); graph.depth_first_traversal_iterative(graph.nodes()[0])",
-        setup="from __main__ import complex_g",
+        stmt="graph.depth_first_traversal_iterative(start)",
+        setup="from __main__ import graph, start",
         number=1000,
     )
     breadth = timeit.timeit(
-        stmt="graph=complex_g(); graph.breadth_first_traversal(graph.nodes()[0])",
-        setup="from __main__ import complex_g",
+        stmt="graph.breadth_first_traversal(start)",
+        setup="from __main__ import graph, start",
         number=1000,
     )
-    print('1000 depth first traversals:\n\t{} seconds\n'.format(depth) +
-          '1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
-          '1000 breadth first traversals:\n\t{} seconds\n'.format(breadth))
+    print('\n1000 recursive depth first traversals:\n\t{} seconds\n'.format(depth) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal(start)) +
+          '\n1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal_iterative(start)) +
+          '\n1000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
+          '\tPath: {}\n'.format(graph.breadth_first_traversal(start)))
