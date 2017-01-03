@@ -1,5 +1,6 @@
 """Module with implementation of Graph Traversal."""
 from queue import Queue
+from stack import Stack
 
 
 class Graph(object):
@@ -78,7 +79,7 @@ class Graph(object):
         """Breadth version of graph traversal."""
         res = [start]
         queue = Queue(res)
-        track = set()
+        track = set(start)
         while queue:
             children = self.node_dict[queue.dequeue()]
             for child in children:
@@ -87,3 +88,54 @@ class Graph(object):
                     track.add(child)
                     res.append(child)
         return res
+
+    def depth_first_traversal_iterative(self, start, track=None):
+        """Breadth version of graph traversal."""
+        res = [start]
+        stack = Stack(res)
+        track = set(start)
+        while stack:
+            children = self.node_dict[stack.pop()]
+            for child in children:
+                if child not in track:
+                    stack.push(child)
+                    track.add(child)
+                    res.append(child)
+        return res
+
+
+if __name__ == '__main__':
+    import timeit
+
+    def complex_g():
+        """Return a somewhat convoluted graph."""
+        graph = Graph()
+        graph.add_edge('A', 'B')
+        graph.add_edge('A', 'C')
+        graph.add_edge('B', 'D')
+        graph.add_edge('B', 'E')
+        graph.add_edge('D', 'H')
+        graph.add_edge('D', 'I')
+        graph.add_edge('E', 'J')
+        graph.add_edge('E', 'K')
+        graph.add_edge('C', 'F')
+        graph.add_edge('C', 'G')
+        graph.add_edge('B', 'C')
+        graph.add_edge('C', 'A')
+        return graph
+
+    depth = timeit.timeit(
+        stmt="complex_g().depth_first_traversal",
+        setup="from __main__ import complex_g",
+        number=100000,
+    )
+    breadth = timeit.timeit(
+        stmt="complex_g().breadth_first_traversal",
+        setup="from __main__ import complex_g",
+        number=100000,
+    )
+
+    print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +
+          '\tPath: {}\n'.format(complex_g().depth_first_traversal('A')) +
+          '100,000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
+          '\tPath: {}'.format(complex_g().breadth_first_traversal('A')))
