@@ -143,7 +143,6 @@ if __name__ == '__main__': # pragma: no cover
         setup="from __main__ import complex_g",
         number=1000,
     )
-
     print('1000 depth first traversals:\n\t{} seconds\n'.format(depth) +
           '1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
           '1000 breadth first traversals:\n\t{} seconds\n'.format(breadth))
