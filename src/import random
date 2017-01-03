@@ -1,0 +1,17 @@
+import random 
+import timeit
+
+fill_me = []
+
+def fill_random():
+    for i in range(50):
+        fill_me.append(random.random())
+
+if __name__ == "__main__":
+    import timeit
+    timeit.repeat(
+        stmt="fill_random()", 
+        setup="from __main__ import fill_random",
+        number=100000,
+        repeat=3
+        )
