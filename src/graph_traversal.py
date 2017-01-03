@@ -91,16 +91,17 @@ class Graph(object):
 
     def depth_first_traversal_iterative(self, start, track=None):
         """Breadth version of graph traversal."""
-        res = [start]
-        stack = Stack(res)
+        res = []
+        stack = Stack([start])
         track = set(start)
         while stack:
-            children = self.node_dict[stack.pop()]
+            n = stack.pop()
+            children = reversed(self.node_dict[n])
             for child in children:
                 if child not in track:
                     stack.push(child)
                     track.add(child)
-                    res.append(child)
+            res.append(n)
         return res
 
 
@@ -125,17 +126,24 @@ if __name__ == '__main__':
         return graph
 
     depth = timeit.timeit(
-        stmt="complex_g().depth_first_traversal",
+        stmt="complex_g().depth_first_traversal('A')",
+        setup="from __main__ import complex_g",
+        number=100000,
+    )
+    depth_i = timeit.timeit(
+        stmt="complex_g().depth_first_traversal_iterative('A')",
         setup="from __main__ import complex_g",
         number=100000,
     )
     breadth = timeit.timeit(
-        stmt="complex_g().breadth_first_traversal",
+        stmt="complex_g().breadth_first_traversal('A')",
         setup="from __main__ import complex_g",
         number=100000,
     )
 
     print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +
           '\tPath: {}\n'.format(complex_g().depth_first_traversal('A')) +
+          '100,000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
+          '\tPath: {}\n'.format(complex_g().depth_first_traversal_iterative('A')) +
           '100,000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
           '\tPath: {}'.format(complex_g().breadth_first_traversal('A')))
