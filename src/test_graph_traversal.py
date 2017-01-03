@@ -50,7 +50,7 @@ def test_add_edge_error(complex_g):
 def test_delete_edge_error(complex_g):
     """Test del_edge raises error if edge to be deleted doesn't exist."""
     complex_g.add_edge('node', 'edon')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         complex_g.del_edge('node', 'noooode')
 
 
@@ -64,7 +64,7 @@ def test_del_node(complex_g):
 def test_del_node_error(complex_g):
     """Test del_node raises error if node to be deleted doesn't exist."""
     complex_g.add_node('mama')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         complex_g.del_node('dada')
 
 
@@ -78,7 +78,7 @@ def test_del_edge(graph):
 def test_del_edge_error(graph):
     """Test del_edge raises error if edge to be deleted doesn't exist."""
     graph.add_edge('node', 'edon')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         graph.del_edge('node', 'noooode')
 
 
@@ -105,7 +105,7 @@ def test_neighbors_error(graph):
     """Test neighbors returns all nodes connected to a single node."""
     graph.add_edge('car', 'bank')
     graph.add_edge('car', 'wheels')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         graph.neighbors('house') == ['bank', 'wheels']
 
 
@@ -166,7 +166,7 @@ def test_edges_no_edges(graph):
 
 def test_neighbors_of_non_existing_node(graph):
     """Test neighbors raises error when called for non-existent node."""
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         graph.neighbors('node')
 
 
