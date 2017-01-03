@@ -153,19 +153,19 @@ def test_add_node(graph):
 
 def test_depth_complex(complex_g):
     """."""
-    depth_first_traversal('A')
+    res = complex_g.depth_first_traversal('A')
     assert res == list('ABDXYEZ1CFG')
 
 def test_breadth_complex(complex_g):
     """."""
-    breadth_first_traversal('A')
+    res = complex_g.breadth_first_traversal('A')
     assert res == list('ABCDEFGXYZ1')
 
 def test_add_edge_depth(complex_g):
     """."""
-    add_edge('B', 'C')
-    breadth_first_traversal('A')
-    assert res == list('')
+    complex_g.add_edge('B', 'C')
+    res = complex_g.breadth_first_traversal('A')
+    assert res == list('ABCDEFGXYZ1')
 
 
 # g.add_edge('B', 'C')
