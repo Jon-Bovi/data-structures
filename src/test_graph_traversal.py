@@ -152,21 +152,22 @@ def test_add_node(graph):
 #         graph.neighbors('node')
 
 def test_depth_complex(complex_g):
-    """."""
-    res = complex_g.depth_first_traversal('A')
+    """Test the depth traversal graph."""
+    g = complex_g
+    res = g.depth_first_traversal('A')
     assert res == list('ABDXYEZ1CFG')
 
+
 def test_breadth_complex(complex_g):
-    """."""
-    res = complex_g.breadth_first_traversal('A')
+    """Test the breadth traversal graph."""
+    g = complex_g
+    res = g.breadth_first_traversal('A')
     assert res == list('ABCDEFGXYZ1')
+
 
 def test_add_edge_depth(complex_g):
-    """."""
-    complex_g.add_edge('B', 'C')
-    res = complex_g.breadth_first_traversal('A')
+    """Test traversal after adding edge."""
+    g = complex_g
+    g.add_edge('B', 'C')
+    res = g.breadth_first_traversal('A')
     assert res == list('ABCDEFGXYZ1')
-
-
-# g.add_edge('B', 'C')
-# g.breadth_first_traversal('A')
