@@ -4,7 +4,7 @@ from stack import Stack
 
 
 class Graph(object):
-    """."""
+    """Implementation of Graph Traversal."""
 
     def __init__(self):
         """."""
