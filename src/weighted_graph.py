@@ -49,7 +49,7 @@ class Graph(object):
         else:
             raise KeyError("Cannot remove node that does not exist.")
 
-    def del_edge(self, n1, n2, weight=0):
+    def del_edge(self, n1, n2):
         """Delete edge from 'n1' to 'n2'. Raise error if no such edge exists."""
         if n1 in self.node_dict and n2 in self.node_dict[n1]:
             del self.node_dict[n1][n2]

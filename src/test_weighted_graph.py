@@ -153,9 +153,7 @@ def test_nodes(graph):
     graph.add_node('blah')
     graph.add_node('whamo')
     graph.add_node('zeno')
-    assert 'blah' in (graph.nodes())
-    assert 'whamo' in (graph.nodes())
-    assert 'zeno' in (graph.nodes())
+    assert sorted(graph.nodes()) == ['blah', 'whamo', 'zeno']
 
 
 def test_nodes_no_nodes(graph):
