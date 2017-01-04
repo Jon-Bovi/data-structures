@@ -132,6 +132,23 @@ Doubly-linked lists vs Singly-linked Lists:
     - pop(value): remove first/root node and return its value, move last node to root, sort as needed
 
 
+## Priority Queue
+
+- can be initialized with (or without) iterable argument: Queue(iterable=None)
+
+- Module: priority_queue
+
+- Methods:
+
+    - insert(data, priority): enqueue data with priority (defaults to 0), lower is
+                higher priority
+
+    - pop(): remove and return item of highest priority. If multiple items of the same
+                priority exist, pop item first inserted.
+
+    - peek(): return value of next item to be popped
+
+
 ## Graph
 
 - Module: graph
