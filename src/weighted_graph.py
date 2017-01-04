@@ -1,4 +1,4 @@
-"""Module with implementation of Graph Traversal."""
+"""Module with implementation of Weighted Graph."""
 from queue import Queue
 from stack import Stack
 from collections import OrderedDict
@@ -29,7 +29,7 @@ class Graph(object):
         """Add a node 'n' to the graph."""
         self.node_dict.setdefault(n, OrderedDict())
 
-    def add_edge(self, n1, n2, weight):
+    def add_edge(self, n1, n2, weight=0):
         """Add an edge to the graph with source, dest of 'n1', 'n2'. Add node if either not present."""
         self.add_node(n1)
         self.add_node(n2)
@@ -49,7 +49,7 @@ class Graph(object):
         else:
             raise KeyError("Cannot remove node that does not exist.")
 
-    def del_edge(self, n1, n2):
+    def del_edge(self, n1, n2, weight=0):
         """Delete edge from 'n1' to 'n2'. Raise error if no such edge exists."""
         if n1 in self.node_dict and n2 in self.node_dict[n1]:
             del self.node_dict[n1][n2]
@@ -64,7 +64,7 @@ class Graph(object):
         """Return the list of all nodes connected to 'n' by edges. Raise error if n is not present."""
         if n not in self.node_dict:
             raise KeyError("Cannot return neighbors of node that does not exist.")
-        return self.node_dict[n]
+        return list(self.node_dict[n].keys())
 
     def adjacent(self, n1, n2):
         """Return True/False for if an edge connects 'n1' and 'n2'. Raises error if either nodes not present."""
@@ -118,18 +118,16 @@ if __name__ == '__main__':
     def complex_g():
         """Return a somewhat convoluted graph."""
         graph = Graph()
-        graph.add_edge('A', 'B')
-        graph.add_edge('A', 'C')
-        graph.add_edge('B', 'D')
-        graph.add_edge('B', 'E')
-        graph.add_edge('D', 'H')
-        graph.add_edge('D', 'I')
-        graph.add_edge('E', 'J')
-        graph.add_edge('E', 'K')
-        graph.add_edge('C', 'F')
-        graph.add_edge('C', 'G')
-        graph.add_edge('B', 'C')
-        graph.add_edge('C', 'A')
+        graph.add_edge('A', 'B', 10)
+        graph.add_edge('A', 'C', 6)
+        graph.add_edge('B', 'D', 3)
+        graph.add_edge('B', 'E', 5)
+        graph.add_edge('C', 'F', 8)
+        graph.add_edge('C', 'G', 7)
+        graph.add_edge('D', 'X', 4)
+        graph.add_edge('D', 'Y', 9)
+        graph.add_edge('E', 'B', 3)
+        graph.add_edge('E', 'Z', 1)
         return graph
 
     depth = timeit.timeit(
