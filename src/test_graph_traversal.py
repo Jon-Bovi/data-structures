@@ -1,4 +1,4 @@
-"""Testing module for Stack class."""
+"""Testing module for graph class."""
 import pytest
 
 
@@ -50,7 +50,7 @@ def test_add_edge_error(complex_g):
 def test_delete_edge_error(complex_g):
     """Test del_edge raises error if edge to be deleted doesn't exist."""
     complex_g.add_edge('node', 'edon')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         complex_g.del_edge('node', 'noooode')
 
 
@@ -64,7 +64,7 @@ def test_del_node(complex_g):
 def test_del_node_error(complex_g):
     """Test del_node raises error if node to be deleted doesn't exist."""
     complex_g.add_node('mama')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         complex_g.del_node('dada')
 
 
@@ -78,7 +78,7 @@ def test_del_edge(graph):
 def test_del_edge_error(graph):
     """Test del_edge raises error if edge to be deleted doesn't exist."""
     graph.add_edge('node', 'edon')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         graph.del_edge('node', 'noooode')
 
 
@@ -105,7 +105,7 @@ def test_neighbors_error(graph):
     """Test neighbors returns all nodes connected to a single node."""
     graph.add_edge('car', 'bank')
     graph.add_edge('car', 'wheels')
-    with pytest.raises(IndexError):
+    with pytest.raises(KeyError):
         graph.neighbors('house') == ['bank', 'wheels']
 
 
@@ -129,60 +129,80 @@ def test_adjacent_reverse_is_false(graph):
         graph.adjacent('wine', 'sake')
 
 
-# def test_add_duplicate_edge(graph):
-#     """Test add_edge raises error if edge to add already exists on graph."""
-#     graph.add_edge('rock', 'paper')
-#     with pytest.raises(ValueError):
-#         graph.add_edge('rock', 'paper')
+def test_add_duplicate_edge(graph):
+    """Test add_edge raises error if edge to add already exists on graph."""
+    graph.add_edge('rock', 'paper')
+    with pytest.raises(ValueError):
+        graph.add_edge('rock', 'paper')
 
 
-# def test_nodes(graph):
-#     """Test nodes returns list of all nodes in graph."""
-#     graph.add_node('blah')
-#     graph.add_node('whamo')
-#     graph.add_node(2)
-#     assert graph.nodes() == ['blah', 'whamo', 2]
+def test_nodes(graph):
+    """Test nodes returns list of all nodes in graph."""
+    graph.add_node('blah')
+    graph.add_node('whamo')
+    graph.add_node('zeno')
+    assert sorted(graph.nodes()) == ['blah', 'whamo', 'zeno']
 
 
-# def test_nodes_no_nodes(graph):
-#     """Test nodes returns list of all nodes in graph even if no nodes."""
-#     assert graph.nodes() == []
+def test_nodes_no_nodes(graph):
+    """Test nodes returns list of all nodes in graph even if no nodes."""
+    assert graph.nodes() == []
 
 
-# def test_edges(graph):
-#     """Test edges returns list of all edges in graph."""
-#     graph.add_edge('blah', 'whamo')
-#     graph.add_edge('whamo', 'blah')
-#     graph.add_edge(2, 'whamo')
-#     assert str(graph.edges()) == "[('blah', 'whamo'), ('whamo', 'blah'), (2, 'whamo')]"
+def test_edges(graph):
+    """Test edges returns list of all edges in graph."""
+    graph.add_edge('blah', 'whamo')
+    graph.add_edge('whamo', 'blah')
+    graph.add_edge(2, 'whamo')
+    assert ('blah', 'whamo') in graph.edges()
+    assert ('whamo', 'blah') in graph.edges()
+    assert (2, 'whamo') in graph.edges()
 
 
-# def test_edges_no_edges(graph):
-#     """Test edges returns list of all edges in graph even if no edges."""
-#     assert graph.edges() == []
+def test_edges_no_edges(graph):
+    """Test edges returns list of all edges in graph even if no edges."""
+    assert graph.edges() == []
 
 
-# def test_repr_edge(edge):
-#     """Test __repr__ returns edge formatted as tuple."""
-#     assert repr(edge) == "('node', 'another_node')"
+def test_neighbors_of_non_existing_node(graph):
+    """Test neighbors raises error when called for non-existent node."""
+    with pytest.raises(KeyError):
+        graph.neighbors('node')
 
 
-# def test_neighbors_of_non_existing_node(graph):
-#     """Test neighbors raises error when called for non-existent node."""
-#     with pytest.raises(IndexError):
-#         graph.neighbors('node')
+def test_depth_non_existant_node(graph):
+    """Test depth first traversal for node not in graph."""
+    with pytest.raises(KeyError):
+        graph.depth_first_traversal('a')
+
+
+def test_depth_iterative_non_existant_node(graph):
+    """Test depth first traversal for node not in graph."""
+    with pytest.raises(KeyError):
+        graph.depth_first_traversal_iterative('a')
+
+
+def test_breadth_non_existant_node(graph):
+    """Test depth first traversal for node not in graph."""
+    with pytest.raises(KeyError):
+        graph.breadth_first_traversal('a')
+
 
 def test_depth_complex(complex_g):
     """Test the depth traversal graph."""
-    g = complex_g
-    res = g.depth_first_traversal('A')
+    res = complex_g.depth_first_traversal('A')
+    assert res == list('ABDXYEZ1CFG')
+
+
+def test_depth_iterative_complex(complex_g):
+    """Test the depth traversal graph."""
+    res = complex_g.depth_first_traversal_iterative('A')
     assert res == list('ABDXYEZ1CFG')
 
 
 def test_breadth_complex(complex_g):
     """Test the breadth traversal graph."""
-    g = complex_g
-    res = g.breadth_first_traversal('A')
+    res = complex_g.breadth_first_traversal('A')
     assert res == list('ABCDEFGXYZ1')
 
 

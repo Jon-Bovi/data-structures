@@ -12,6 +12,7 @@ def graph():
 @pytest.fixture
 def complex_g(graph):
     """."""
+<<<<<<< HEAD
     graph.add_edge('A', 'B', 10)
     graph.add_edge('A', 'C', 6)
     graph.add_edge('B', 'D', 3)
@@ -22,6 +23,18 @@ def complex_g(graph):
     graph.add_edge('D', 'Y', 9)
     graph.add_edge('E', 'B', 3)
     graph.add_edge('E', 'Z', 1)
+=======
+    graph.add_edge('A', 'B', 1)
+    graph.add_edge('A', 'C', 1)
+    graph.add_edge('B', 'D', 1)
+    graph.add_edge('B', 'E', 1)
+    graph.add_edge('D', 'X', 1)
+    graph.add_edge('D', 'Y', 1)
+    graph.add_edge('E', 'Z', 1)
+    graph.add_edge('E', '1', 1)
+    graph.add_edge('C', 'F', 1)
+    graph.add_edge('C', 'G', 1)
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
     return graph
 
 
@@ -153,9 +166,13 @@ def test_nodes(graph):
     graph.add_node('blah')
     graph.add_node('whamo')
     graph.add_node('zeno')
+<<<<<<< HEAD
     assert 'blah' in (graph.nodes())
     assert 'whamo' in (graph.nodes())
     assert 'zeno' in (graph.nodes())
+=======
+    assert sorted(graph.nodes()) == ['blah', 'whamo', 'zeno']
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
 
 
 def test_nodes_no_nodes(graph):
@@ -168,9 +185,15 @@ def test_edges(graph):
     graph.add_edge('blah', 'whamo', 0)
     graph.add_edge('whamo', 'blah', 1)
     graph.add_edge(2, 'whamo', 1)
+<<<<<<< HEAD
     assert ('blah', 'whamo', 'weight: 0') in list((graph.edges()))
     assert ('whamo', 'blah', 'weight: 1') in list((graph.edges()))
     assert (2, 'whamo', 'weight: 1') in list((graph.edges()))
+=======
+    assert ('blah', 'whamo') in graph.edges()
+    assert ('whamo', 'blah') in graph.edges()
+    assert (2, 'whamo') in graph.edges()
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
 
 
 def test_edges_no_edges(graph):
@@ -205,6 +228,7 @@ def test_breadth_non_existant_node(graph):
 def test_depth_complex(complex_g):
     """Test the depth traversal graph."""
     res = complex_g.depth_first_traversal('A')
+<<<<<<< HEAD
     assert res == list('ABDXYEZCFG')
 
 
@@ -212,12 +236,25 @@ def test_depth_complex(complex_g):
 #     """Test the depth traversal graph."""
 #     res = complex_g.depth_first_traversal_iterative('A')
 #     assert res == list('ABDXYEZCFG')
+=======
+    assert res == list('ABDXYEZ1CFG')
+
+
+def test_depth_iterative_complex(complex_g):
+    """Test the depth traversal graph."""
+    res = complex_g.depth_first_traversal_iterative('A')
+    assert res == list('ABDXYEZ1CFG')
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
 
 
 def test_breadth_complex(complex_g):
     """Test the breadth traversal graph."""
     res = complex_g.breadth_first_traversal('A')
+<<<<<<< HEAD
     assert res == list('ABCDEFGXYZ')
+=======
+    assert res == list('ABCDEFGXYZ1')
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
 
 
 def test_add_edge_depth(complex_g):
@@ -225,4 +262,8 @@ def test_add_edge_depth(complex_g):
     g = complex_g
     g.add_edge('B', 'C', 3)
     res = g.breadth_first_traversal('A')
+<<<<<<< HEAD
     assert res == list('ABCDEFGXYZ')
+=======
+    assert res == list('ABCDEFGXYZ1')
+>>>>>>> c672262425d8812212995a1b218b6c96cc26157a
