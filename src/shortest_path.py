@@ -1,0 +1,1 @@
+"""Implementation of the shortest path module"""
