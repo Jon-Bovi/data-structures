@@ -203,8 +203,8 @@ Doubly-linked lists vs Singly-linked Lists:
 
 ### Coverage:
 
-```
 
+```
 ============================= test session starts ==============================
 platform darwin -- Python 3.5.2, pytest-3.0.5, py-1.4.31, pluggy-0.4.0
 plugins: cov-2.4.0
@@ -213,7 +213,7 @@ collected 192 items
 test_bin_heap.py ..................
 test_deque.py .................
 test_dll.py ........................
-test_graph_traversal.py .............................
+test_graph.py .............................
 test_linked_list.py ...............
 test_priority_queue.py .......
 test_queue.py ..................
@@ -222,34 +222,32 @@ test_stack.py .............
 test_weighted_graph.py ..............................
 
 ---------- coverage: platform darwin, python 3.5.2-final-0 -----------
-Name                      Stmts   Miss  Cover   Missing
--------------------------------------------------------
-bin_heap.py                  43      0   100%
-deque.py                     30      0   100%
-dll.py                       73      0   100%
-graph.py                      0      0   100%
-graph_traversal.py           81      0   100%
-linked_list.py               64      0   100%
-priority_queue.py            19      0   100%
-queue.py                     28      0   100%
-simple_graph.py              56      0   100%
-stack.py                     21      0   100%
-test_bin_heap.py             73      0   100%
-test_deque.py                53      0   100%
-test_dll.py                 103      0   100%
-test_graph_traversal.py     118      0   100%
-test_grph.py                  0      0   100%
-test_linked_list.py          68      0   100%
-test_priority_queue.py       32      0   100%
-test_queue.py                64      0   100%
-test_simple_graph.py         79      0   100%
-test_stack.py                32      0   100%
-test_weighted_graph.py      127      0   100%
-weighted_graph.py            87      0   100%
--------------------------------------------------------
-TOTAL                      1251      0   100%
+Name                     Stmts   Miss  Cover   Missing
+------------------------------------------------------
+bin_heap.py                 43      0   100%
+deque.py                    30      0   100%
+dll.py                      73      0   100%
+graph.py                    86      0   100%
+linked_list.py              64      0   100%
+priority_queue.py           19      0   100%
+queue.py                    28      0   100%
+simple_graph.py             56      0   100%
+stack.py                    21      0   100%
+test_bin_heap.py            73      0   100%
+test_deque.py               53      0   100%
+test_dll.py                103      0   100%
+test_graph.py              118      0   100%
+test_linked_list.py         68      0   100%
+test_priority_queue.py      32      0   100%
+test_queue.py               64      0   100%
+test_simple_graph.py        79      0   100%
+test_stack.py               32      0   100%
+test_weighted_graph.py     127      0   100%
+weighted_graph.py           87      0   100%
+------------------------------------------------------
+TOTAL                     1256      0   100%
 
 
-========================== 192 passed in 0.85 seconds ==========================
+========================== 192 passed in 1.33 seconds ==========================
 
 ```
