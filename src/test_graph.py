@@ -5,7 +5,7 @@ import pytest
 @pytest.fixture
 def graph():
     """Return initialized graph."""
-    from graph_traversal import Graph
+    from graph import Graph
     return Graph()
 
 
