@@ -113,40 +113,39 @@ class Graph(object):
         return res
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     import timeit
+    import random
+    from pprint import pprint
 
-    def complex_g():
-        """Return a somewhat convoluted graph."""
-        graph = Graph()
-        graph.add_edge('A', 'B')
-        graph.add_edge('A', 'C')
-        graph.add_edge('B', 'D')
-        graph.add_edge('B', 'E')
-        graph.add_edge('D', 'H')
-        graph.add_edge('D', 'I')
-        graph.add_edge('E', 'J')
-        graph.add_edge('E', 'K')
-        graph.add_edge('C', 'F')
-        graph.add_edge('C', 'G')
-        graph.add_edge('B', 'C')
-        graph.add_edge('C', 'A')
-        return graph
+    graph = Graph()
+    for i in range(100):
+        try:
+            graph.add_edge(random.randint(0, 20), random.randint(0, 20))
+        except:
+            pass
+    start = graph.nodes()[random.randint(0, len(graph.nodes()))]
+
+    pprint(graph.node_dict)
 
     depth = timeit.timeit(
-        stmt="complex_g().depth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        stmt="graph.depth_first_traversal(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
+    )
+    depth_i = timeit.timeit(
+        stmt="graph.depth_first_traversal_iterative(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
     )
     breadth = timeit.timeit(
-        stmt="complex_g().breadth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        stmt="graph.breadth_first_traversal(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
     )
-
-    print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +
-          '\tPath: {}\n'.format(complex_g().depth_first_traversal('A')) +
-          '100,000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
-          '\tPath: {}'.format(complex_g().breadth_first_traversal('A')))
+    print('\n1000 recursive depth first traversals:\n\t{} seconds\n'.format(depth) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal(start)) +
+          '\n1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal_iterative(start)) +
+          '\n1000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
+          '\tPath: {}\n'.format(graph.breadth_first_traversal(start)))
