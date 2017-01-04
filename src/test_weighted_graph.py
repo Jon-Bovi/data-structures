@@ -208,10 +208,10 @@ def test_depth_complex(complex_g):
     assert res == list('ABDXYEZCFG')
 
 
-# def test_depth_iterative_complex(complex_g):
-#     """Test the depth traversal graph."""
-#     res = complex_g.depth_first_traversal_iterative('A')
-#     assert res == list('ABDXYEZCFG')
+def test_depth_iterative_complex(complex_g):
+    """Test the depth traversal graph."""
+    res = complex_g.depth_first_traversal_iterative('A')
+    assert res == list('ABDXYEZCFG')
 
 
 def test_breadth_complex(complex_g):
