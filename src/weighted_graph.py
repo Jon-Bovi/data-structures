@@ -78,72 +78,82 @@ class Graph(object):
         if track is None:
             track = set()
         track.add(start)
-        for n in self.node_dict[start]:
-            if n not in track:
-                res += self.depth_first_traversal(n, track)
+        try:
+            for n in self.node_dict[start]:
+                if n not in track:
+                    res += self.depth_first_traversal(n, track)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def breadth_first_traversal(self, start, track=None):
+    def breadth_first_traversal(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        queue = Queue(res)
-        track = set(start)
-        while queue:
-            children = self.node_dict[queue.dequeue()]
-            for child in children:
-                if child not in track:
-                    queue.enqueue(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            queue = Queue([start])
+            track = set()
+            while queue.head:
+                cur_node = queue.dequeue()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node]:
+                        queue.enqueue(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def depth_first_traversal_iterative(self, start, track=None):
+    def depth_first_traversal_iterative(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        stack = Stack(res)
-        track = set(start)
-        while stack:
-            children = self.node_dict[stack.pop()]
-            for child in children:
-                if child not in track:
-                    stack.push(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            stack = Stack([start])
+            track = set()
+            while stack.top:
+                cur_node = stack.pop()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in reversed(self.node_dict[cur_node]):
+                        stack.push(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     import timeit
+    import random
+    from pprint import pprint
 
-    def complex_g():
-        """Return a somewhat convoluted graph."""
-        graph = Graph()
-        graph.add_edge('A', 'B', 10)
-        graph.add_edge('A', 'C', 6)
-        graph.add_edge('B', 'D', 3)
-        graph.add_edge('B', 'E', 5)
-        graph.add_edge('C', 'F', 8)
-        graph.add_edge('C', 'G', 7)
-        graph.add_edge('D', 'X', 4)
-        graph.add_edge('D', 'Y', 9)
-        graph.add_edge('E', 'B', 3)
-        graph.add_edge('E', 'Z', 1)
-        return graph
+    graph = Graph()
+    for i in range(100):
+        try:
+            graph.add_edge(random.randint(0, 20), random.randint(0, 20))
+        except:
+            pass
+    start = graph.nodes()[random.randint(0, len(graph.nodes()))]
+
+    pprint(graph.node_dict)
 
     depth = timeit.timeit(
-        stmt="complex_g().depth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        stmt="graph.depth_first_traversal(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
+    )
+    depth_i = timeit.timeit(
+        stmt="graph.depth_first_traversal_iterative(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
     )
     breadth = timeit.timeit(
-        stmt="complex_g().breadth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        stmt="graph.breadth_first_traversal(start)",
+        setup="from __main__ import graph, start",
+        number=1000,
     )
-
-    print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +
-          '\tPath: {}\n'.format(complex_g().depth_first_traversal('A')) +
-          '100,000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
-          '\tPath: {}'.format(complex_g().breadth_first_traversal('A')))
+    print('\n1000 recursive depth first traversals:\n\t{} seconds\n'.format(depth) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal(start)) +
+          '\n1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
+          '\tPath: {}\n'.format(graph.depth_first_traversal_iterative(start)) +
+          '\n1000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
+          '\tPath: {}\n'.format(graph.breadth_first_traversal(start)))
