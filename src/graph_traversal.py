@@ -39,14 +39,14 @@ class Graph(object):
         if n in self.node_dict:
             del self.node_dict[n]
         else:
-            raise IndexError("Cannot remove node that does not exist.")
+            raise KeyError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
         """Delete edge from 'n1' to 'n2'. Raise error if no such edge exists."""
         if n1 in self.node_dict and n2 in self.node_dict[n1]:
             self.node_dict[n1].remove(n2)
         else:
-            raise IndexError("Cannot remove edge that does not exist.")
+            raise KeyError("Cannot remove edge that does not exist.")
 
     def has_node(self, n):
         """True or False based on if node 'n' is present in the graph."""
@@ -55,7 +55,7 @@ class Graph(object):
     def neighbors(self, n):
         """Return the list of all nodes connected to 'n' by edges. Raise error if n is not present."""
         if n not in self.node_dict:
-            raise IndexError("Cannot return neighbors of node that does not exist.")
+            raise KeyError("Cannot return neighbors of node that does not exist.")
         return self.node_dict[n]
 
     def adjacent(self, n1, n2):
@@ -70,37 +70,46 @@ class Graph(object):
         if track is None:
             track = set()
         track.add(start)
-        for n in self.node_dict[start]:
-            if n not in track:
-                res += self.depth_first_traversal(n, track)
+        try:
+            for n in self.node_dict[start]:
+                if n not in track:
+                    res += self.depth_first_traversal(n, track)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def breadth_first_traversal(self, start, track=None):
+    def breadth_first_traversal(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        queue = Queue(res)
-        track = set(start)
-        while queue:
-            children = self.node_dict[queue.dequeue()]
-            for child in children:
-                if child not in track:
-                    queue.enqueue(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            queue = Queue([start])
+            track = set()
+            while queue.head:
+                cur_node = queue.dequeue()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node]:
+                        queue.enqueue(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def depth_first_traversal_iterative(self, start, track=None):
+    def depth_first_traversal_iterative(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        stack = Stack(res)
-        track = set(start)
-        while stack:
-            children = self.node_dict[stack.pop()]
-            for child in children:
-                if child not in track:
-                    stack.push(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            stack = Stack([start])
+            track = set()
+            while stack.top:
+                cur_node = stack.pop()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node][::-1]:
+                        stack.push(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
 
