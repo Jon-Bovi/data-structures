@@ -46,3 +46,8 @@ class Queue(object):
     def head(self):
         """Read only head property."""
         return self._dll.head
+
+    @property
+    def tail(self):
+        """Read only tail property."""
+        return self._dll.tail

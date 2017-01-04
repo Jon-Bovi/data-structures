@@ -38,6 +38,11 @@ class Graph(object):
         """Delete the node 'n' from the graph. Raise error if no such node exists."""
         if n in self.node_dict:
             del self.node_dict[n]
+            for node in self.node_dict:
+                try:
+                    self.del_edge(node, n)
+                except:
+                    pass
         else:
             raise KeyError("Cannot remove node that does not exist.")
 

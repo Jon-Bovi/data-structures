@@ -12,16 +12,16 @@ def graph():
 @pytest.fixture
 def complex_g(graph):
     """."""
-    graph.add_edge('A', 'B', 1)
-    graph.add_edge('A', 'C', 1)
-    graph.add_edge('B', 'D', 1)
-    graph.add_edge('B', 'E', 1)
-    graph.add_edge('D', 'X', 1)
-    graph.add_edge('D', 'Y', 1)
+    graph.add_edge('A', 'B', 10)
+    graph.add_edge('A', 'C', 6)
+    graph.add_edge('B', 'D', 3)
+    graph.add_edge('B', 'E', 5)
+    graph.add_edge('C', 'F', 8)
+    graph.add_edge('C', 'G', 7)
+    graph.add_edge('D', 'X', 4)
+    graph.add_edge('D', 'Y', 9)
+    graph.add_edge('E', 'B', 3)
     graph.add_edge('E', 'Z', 1)
-    graph.add_edge('E', '1', 1)
-    graph.add_edge('C', 'F', 1)
-    graph.add_edge('C', 'G', 1)
     return graph
 
 
@@ -166,9 +166,9 @@ def test_edges(graph):
     graph.add_edge('blah', 'whamo', 0)
     graph.add_edge('whamo', 'blah', 1)
     graph.add_edge(2, 'whamo', 1)
-    assert ('blah', 'whamo') in graph.edges()
-    assert ('whamo', 'blah') in graph.edges()
-    assert (2, 'whamo') in graph.edges()
+    assert ('blah', 'whamo', 'weight: 0') in list((graph.edges()))
+    assert ('whamo', 'blah', 'weight: 1') in list((graph.edges()))
+    assert (2, 'whamo', 'weight: 1') in list((graph.edges()))
 
 
 def test_edges_no_edges(graph):
@@ -203,19 +203,19 @@ def test_breadth_non_existant_node(graph):
 def test_depth_complex(complex_g):
     """Test the depth traversal graph."""
     res = complex_g.depth_first_traversal('A')
-    assert res == list('ABDXYEZ1CFG')
+    assert res == list('ABDXYEZCFG')
 
 
 def test_depth_iterative_complex(complex_g):
     """Test the depth traversal graph."""
     res = complex_g.depth_first_traversal_iterative('A')
-    assert res == list('ABDXYEZ1CFG')
+    assert res == list('ABDXYEZCFG')
 
 
 def test_breadth_complex(complex_g):
     """Test the breadth traversal graph."""
     res = complex_g.breadth_first_traversal('A')
-    assert res == list('ABCDEFGXYZ1')
+    assert res == list('ABCDEFGXYZ')
 
 
 def test_add_edge_depth(complex_g):
@@ -223,4 +223,4 @@ def test_add_edge_depth(complex_g):
     g = complex_g
     g.add_edge('B', 'C', 3)
     res = g.breadth_first_traversal('A')
-    assert res == list('ABCDEFGXYZ1')
+    assert res == list('ABCDEFGXYZ')

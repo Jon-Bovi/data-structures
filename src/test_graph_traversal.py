@@ -1,4 +1,4 @@
-"""Testing module for Stack class."""
+"""Testing module for graph class."""
 import pytest
 
 

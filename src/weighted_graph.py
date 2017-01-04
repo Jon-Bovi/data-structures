@@ -1,4 +1,4 @@
-"""Module with implementation of Graph Traversal."""
+"""Module with implementation of Weighted Graph."""
 from queue import Queue
 from stack import Stack
 from collections import OrderedDict
@@ -29,7 +29,7 @@ class Graph(object):
         """Add a node 'n' to the graph."""
         self.node_dict.setdefault(n, OrderedDict())
 
-    def add_edge(self, n1, n2, weight):
+    def add_edge(self, n1, n2, weight=0):
         """Add an edge to the graph with source, dest of 'n1', 'n2'. Add node if either not present."""
         self.add_node(n1)
         self.add_node(n2)
@@ -64,7 +64,7 @@ class Graph(object):
         """Return the list of all nodes connected to 'n' by edges. Raise error if n is not present."""
         if n not in self.node_dict:
             raise KeyError("Cannot return neighbors of node that does not exist.")
-        return self.node_dict[n]
+        return list(self.node_dict[n].keys())
 
     def adjacent(self, n1, n2):
         """Return True/False for if an edge connects 'n1' and 'n2'. Raises error if either nodes not present."""
@@ -114,7 +114,7 @@ class Graph(object):
                 if cur_node not in track:
                     res.append(cur_node)
                     track.add(cur_node)
-                    for child in self.node_dict[cur_node][::-1]:
+                    for child in reversed(self.node_dict[cur_node]):
                         stack.push(child)
         except KeyError:
             raise KeyError(str(start) + ' not in graph')
@@ -157,4 +157,3 @@ if __name__ == '__main__': # pragma: no cover
           '\tPath: {}\n'.format(graph.depth_first_traversal_iterative(start)) +
           '\n1000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
           '\tPath: {}\n'.format(graph.breadth_first_traversal(start)))
-

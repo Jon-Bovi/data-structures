@@ -86,6 +86,20 @@ def test_linked_list_remove():
     assert linked_lst.head.val == 1
 
 
+def test_remove_non_node(initialized_list):
+    """Test remove raises error when called with non-node."""
+    with pytest.raises(ValueError):
+        initialized_list.remove(4)
+
+
+def test_remove_not_in_list(initialized_list):
+    """Test remove raises error when node to be removed is not in list."""
+    from linked_list import Node
+    with pytest.raises(ValueError):
+        n = Node(33)
+        initialized_list.remove(n)
+
+
 def test_linked_list_display(new_list, initialized_list):
     """Test display method."""
     assert new_list.display() == "()"
@@ -100,3 +114,9 @@ def test_empty_linked_list_len(new_list):
 def test_linked_list_len(initialized_list):
     """Test empty linked list has length of 0."""
     assert len(initialized_list) == 3
+
+
+def test_repr(new_list, initialized_list):
+    """Test repr displays list properly."""
+    assert repr(new_list) == "()"
+    assert repr(initialized_list) == "(4, 'boomshakalaka', 3)"
