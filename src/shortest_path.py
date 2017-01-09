@@ -29,6 +29,10 @@ class Graph(object):
                                  'weight: {}'.format(self.node_dict[node1][node2])))
         return edge_list
 
+    def weight(self, n1, n2):
+        """."""
+        return self.node_dict[n1][n2]
+
     def add_node(self, n):
         """Add a node 'n' to the graph."""
         self.node_dict.setdefault(n, OrderedDict())
@@ -115,18 +119,34 @@ class Graph(object):
                     res.append(child)
         return res
 
-    def dijkstras(self, start, end):
-    """Dykstras shortest path implementation."""
-    visited = []
-    unvisited = []
-    distance = {}
-    for node in nodes:
-        distance[nodes] = sys.maxsize
-        unvisited.append(node)
-    distance[start] = 0
-    while curr
-
-
+    def dijkstra(self, start, end):
+        """Dykstras shortest path implementation."""
+        unvisited = self.nodes()
+        distance = {}
+        previous = {}
+        for node in unvisited:
+            distance[node] = sys.maxsize
+        distance[start] = 0
+        while len(unvisited) > 0:
+            node = unvisited[0]
+            smallest_curr = sys.maxsize
+            for d in distance:
+                if d in unvisited and distance[d] < smallest_curr:
+                    node = d
+                    smallest_curr = distance[d]
+            unvisited.remove(node)
+            for neighbor in self.neighbors(node):
+                alt_path = distance[node] + self.weight(node, neighbor)
+                if alt_path < distance[neighbor]:
+                    distance[neighbor] = alt_path
+                    previous[neighbor] = node
+        result = []
+        result.append(end)
+        curr = end
+        while curr in previous:
+            result.append(previous[curr])
+            curr = previous[curr]
+        return result
 
 
 # ---------Time It-----------
