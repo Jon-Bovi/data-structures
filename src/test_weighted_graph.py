@@ -153,9 +153,7 @@ def test_nodes(graph):
     graph.add_node('blah')
     graph.add_node('whamo')
     graph.add_node('zeno')
-    assert 'blah' in (graph.nodes())
-    assert 'whamo' in (graph.nodes())
-    assert 'zeno' in (graph.nodes())
+    assert sorted(graph.nodes()) == ['blah', 'whamo', 'zeno']
 
 
 def test_nodes_no_nodes(graph):
@@ -208,10 +206,10 @@ def test_depth_complex(complex_g):
     assert res == list('ABDXYEZCFG')
 
 
-# def test_depth_iterative_complex(complex_g):
-#     """Test the depth traversal graph."""
-#     res = complex_g.depth_first_traversal_iterative('A')
-#     assert res == list('ABDXYEZCFG')
+def test_depth_iterative_complex(complex_g):
+    """Test the depth traversal graph."""
+    res = complex_g.depth_first_traversal_iterative('A')
+    assert res == list('ABDXYEZCFG')
 
 
 def test_breadth_complex(complex_g):

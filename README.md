@@ -6,6 +6,8 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 - Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
 
+- Module: linked_list
+
 - Attributes:
 
     - head: first node in linked list
@@ -26,6 +28,8 @@ Sample code (with tests) for classic data structures implemented in Python.
 
 - Can be initialized with (or without) iterable argument: Stack(iterable=None)
 
+- Module: stack
+
 - Attributes:
 
     - top: top/first node on stack
@@ -41,6 +45,8 @@ Sample code (with tests) for classic data structures implemented in Python.
 ## Doubly-Linked List
 
 - Can be initialized with (or without) iterable argument: DoublyLinkedList(iterable=None)
+
+- Module: dll
 
 - Methods:
 
@@ -69,6 +75,8 @@ Doubly-linked lists vs Singly-linked Lists:
 
 - can be initialized with (or without) iterable argument: Queue(iterable=None)
 
+- Module: queue
+
 - Methods:
 
     - enqueue(value): add value to end of queue
@@ -82,6 +90,8 @@ Doubly-linked lists vs Singly-linked Lists:
 ## Deque (Double-Ended Queue)
 
 - can be initialized with or without iterable argument
+
+- Module: deque
 
 - Attributes:
 
@@ -107,6 +117,8 @@ Doubly-linked lists vs Singly-linked Lists:
     
 ## Binary Heap
 
+- Module: bin_heap
+
 - Optional arguments:
     
     - an iterable
@@ -118,31 +130,124 @@ Doubly-linked lists vs Singly-linked Lists:
     - push(value): add value to bottom of heap and sort as needed
     
     - pop(value): remove first/root node and return its value, move last node to root, sort as needed
-    
+
+
+## Priority Queue
+
+- can be initialized with (or without) iterable argument: Queue(iterable=None)
+
+- Module: priority_queue
+
+- Methods:
+
+    - insert(data, priority): enqueue data with priority (defaults to 0), lower is
+                higher priority
+
+    - pop(): remove and return item of highest priority. If multiple items of the same
+                priority exist, pop item first inserted.
+
+    - peek(): return value of next item to be popped
+
+
+## Graph
+
+- Module: graph
+
+- Methods:
+
+    - add_node(n): add node to graph
+
+    - del_node(n): delete node from graph along with edges it's part of
+
+    - add_edge(n1, n2): add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
+                n1 or n2 are not already present in the graph, they are added.
+
+    - del_edge(n1, n2): deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
+                raises an error if no such edge exists
+
+    - g.nodes(): return a list of all nodes in the graph
+
+    - g.edges(): return a list of all edges in the graph
+
+    - g.has_node(n): True if node ‘n’ is contained in the graph, False if not.
+
+    - g.neighbors(n): returns the list of all nodes connected to ‘n’ by edges,
+                raises an error if n is not in graph
+
+    - g.adjacent(n1, n2): returns if there is an edge connecting n1 and n2,
+                raises an error if either of the supplied nodes are not in graph
+
+    - g.depth_first_traversal(start): Traverses graph depth first starting from 'start',
+                returns path
+
+    - g.breadth_first_traversal(start): Traverses graph breadth first starting from 'start',
+                returns path
+
+    - g.depth_first_traversal_iterative(start): Traverses graph depth first starting from 'start',
+                returns path, slower than recursive version
+
+### Weighted Graph
+
+- Module: weighted_graph
+
+- Methods:
+
+    - same as graph
+
+    - g.add_edge(n1, n2, weight)
+
+
 ### Authors:
 - Ford Fowler
 - Sera Smith
 
 ### Coverage:
 
+
 ```
+============================= test session starts ==============================
+platform darwin -- Python 3.5.2, pytest-3.0.5, py-1.4.31, pluggy-0.4.0
+plugins: cov-2.4.0
+collected 192 items
+
+test_bin_heap.py ..................
+test_deque.py .................
+test_dll.py ........................
+test_graph.py .............................
+test_linked_list.py ...............
+test_priority_queue.py .......
+test_queue.py ..................
+test_simple_graph.py .....................
+test_stack.py .............
+test_weighted_graph.py ..............................
 
 ---------- coverage: platform darwin, python 3.5.2-final-0 -----------
-Name                      Stmts   Miss  Cover   Missing
--------------------------------------------------------
-src/bin_heap.py              44      0   100%
-src/deque.py                 30      0   100%
-src/dll.py                   73      0   100%
-src/linked_list.py           58      0   100%
-src/queue.py                 26      5    81%   12-13, 37-39
-src/stack.py                 21      0   100%
-src/test_bin_heap.py         73      0   100%
-src/test_deque.py            53      0   100%
-src/test_dll.py             103      0   100%
-src/test_linked_list.py      57      0   100%
-src/test_queue.py            49      0   100%
-src/test_stack.py            32      0   100%
--------------------------------------------------------
-TOTAL                       619      5    99%
+Name                     Stmts   Miss  Cover   Missing
+------------------------------------------------------
+bin_heap.py                 43      0   100%
+deque.py                    30      0   100%
+dll.py                      73      0   100%
+graph.py                    86      0   100%
+linked_list.py              64      0   100%
+priority_queue.py           19      0   100%
+queue.py                    28      0   100%
+simple_graph.py             56      0   100%
+stack.py                    21      0   100%
+test_bin_heap.py            73      0   100%
+test_deque.py               53      0   100%
+test_dll.py                103      0   100%
+test_graph.py              118      0   100%
+test_linked_list.py         68      0   100%
+test_priority_queue.py      32      0   100%
+test_queue.py               64      0   100%
+test_simple_graph.py        79      0   100%
+test_stack.py               32      0   100%
+test_weighted_graph.py     127      0   100%
+weighted_graph.py           87      0   100%
+------------------------------------------------------
+TOTAL                     1256      0   100%
+
+
+========================== 192 passed in 1.33 seconds ==========================
 
 ```
