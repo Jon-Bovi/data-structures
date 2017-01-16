@@ -196,6 +196,23 @@ Doubly-linked lists vs Singly-linked Lists:
 
     - g.add_edge(n1, n2, weight)
 
+### Shortest Path
+
+- Module: shortest_path
+
+- Methods:
+
+    - same as weighted graph
+
+    - g.dijkstra(start, end): return shortest path from start to end,
+                implemented with dijkstra's algorithm.
+
+    - g.floyd_warshall(): return path_dictionary, distance_dictionary for every
+                possible path.
+
+    - g.floyd_warshall_path(path, start, end): return shortest path from start
+                to end.
+
 
 ### Authors:
 - Ford Fowler
@@ -203,12 +220,11 @@ Doubly-linked lists vs Singly-linked Lists:
 
 ### Coverage:
 
-
 ```
 ============================= test session starts ==============================
 platform darwin -- Python 3.5.2, pytest-3.0.5, py-1.4.31, pluggy-0.4.0
 plugins: cov-2.4.0
-collected 192 items
+collected 228 items
 
 test_bin_heap.py ..................
 test_deque.py .................
@@ -217,6 +233,7 @@ test_graph.py .............................
 test_linked_list.py ...............
 test_priority_queue.py .......
 test_queue.py ..................
+test_shortest_path.py ....................................
 test_simple_graph.py .....................
 test_stack.py .............
 test_weighted_graph.py ..............................
@@ -231,6 +248,7 @@ graph.py                    86      0   100%
 linked_list.py              64      0   100%
 priority_queue.py           19      0   100%
 queue.py                    28      0   100%
+shortest_path.py           146      0   100%
 simple_graph.py             56      0   100%
 stack.py                    21      0   100%
 test_bin_heap.py            73      0   100%
@@ -240,14 +258,14 @@ test_graph.py              118      0   100%
 test_linked_list.py         68      0   100%
 test_priority_queue.py      32      0   100%
 test_queue.py               64      0   100%
+test_shortest_path.py      155      0   100%
 test_simple_graph.py        79      0   100%
 test_stack.py               32      0   100%
 test_weighted_graph.py     127      0   100%
 weighted_graph.py           87      0   100%
 ------------------------------------------------------
-TOTAL                     1256      0   100%
+TOTAL                     1557      0   100%
 
 
-========================== 192 passed in 1.33 seconds ==========================
-
+========================== 228 passed in 0.91 seconds ==========================
 ```
