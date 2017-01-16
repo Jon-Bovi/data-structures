@@ -1,15 +1,12 @@
-"""Implementation of the shortest path graph."""
-
-
+"""Module with implementation of Weighted Graph."""
 from queue import Queue
 from stack import Stack
 from collections import OrderedDict
-import timeit
 import sys
 
 
 class Graph(object):
-    """Implementation of Graph class."""
+    """Implementation of Graph Traversal."""
 
     def __init__(self):
         """."""
@@ -26,7 +23,7 @@ class Graph(object):
             for node2 in self.node_dict[node1]:
                 edge_list.append((node1,
                                   node2,
-                                 'weight: {}'.format(self.node_dict[node1][node2])))
+                                  self.node_dict[node1][node2]))
         return edge_list
 
     def weight(self, n1, n2):
@@ -57,7 +54,7 @@ class Graph(object):
         else:
             raise KeyError("Cannot remove node that does not exist.")
 
-    def del_edge(self, n1, n2, weight=0):
+    def del_edge(self, n1, n2):
         """Delete edge from 'n1' to 'n2'. Raise error if no such edge exists."""
         if n1 in self.node_dict and n2 in self.node_dict[n1]:
             del self.node_dict[n1][n2]
@@ -72,7 +69,7 @@ class Graph(object):
         """Return the list of all nodes connected to 'n' by edges. Raise error if n is not present."""
         if n not in self.node_dict:
             raise KeyError("Cannot return neighbors of node that does not exist.")
-        return list(self.node_dict[n].keys())
+        return self.node_dict[n]
 
     def adjacent(self, n1, n2):
         """Return True/False for if an edge connects 'n1' and 'n2'. Raises error if either nodes not present."""
@@ -86,37 +83,46 @@ class Graph(object):
         if track is None:
             track = set()
         track.add(start)
-        for n in self.node_dict[start]:
-            if n not in track:
-                res += self.depth_first_traversal(n, track)
+        try:
+            for n in self.node_dict[start]:
+                if n not in track:
+                    res += self.depth_first_traversal(n, track)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def breadth_first_traversal(self, start, track=None):
+    def breadth_first_traversal(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        queue = Queue(res)
-        track = set(start)
-        while queue:
-            children = self.node_dict[queue.dequeue()]
-            for child in children:
-                if child not in track:
-                    queue.enqueue(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            queue = Queue([start])
+            track = set()
+            while queue.head:
+                cur_node = queue.dequeue()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in self.node_dict[cur_node]:
+                        queue.enqueue(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
-    def depth_first_traversal_iterative(self, start, track=None):
+    def depth_first_traversal_iterative(self, start):
         """Breadth version of graph traversal."""
-        res = [start]
-        stack = Stack(res)
-        track = set(start)
-        while stack:
-            children = self.node_dict[stack.pop()]
-            for child in children:
-                if child not in track:
-                    stack.push(child)
-                    track.add(child)
-                    res.append(child)
+        try:
+            res = []
+            stack = Stack([start])
+            track = set()
+            while stack.top:
+                cur_node = stack.pop()
+                if cur_node not in track:
+                    res.append(cur_node)
+                    track.add(cur_node)
+                    for child in reversed(self.node_dict[cur_node]):
+                        stack.push(child)
+        except KeyError:
+            raise KeyError(str(start) + ' not in graph')
         return res
 
     def dijkstra(self, start, end):
@@ -135,7 +141,7 @@ class Graph(object):
                     node = d
                     smallest_curr = distance[d]
             unvisited.remove(node)
-            for neighbor in self.neighbors(node):
+            for neighbor in self.neighbors(node).keys():
                 alt_path = distance[node] + self.weight(node, neighbor)
                 if alt_path < distance[neighbor]:
                     distance[neighbor] = alt_path
@@ -148,42 +154,80 @@ class Graph(object):
             curr = previous[curr]
         return result
 
+    def floyd_warshall(self):
+        """Find all shortest paths and distances via floyd-warshall alg."""
+        distance = {}
+        path_dict = {}
+        for from_node in self.nodes():
+            distance[from_node] = {}
+            path_dict[from_node] = {}
+            for node in self.nodes():
+                distance[from_node][node] = sys.maxsize
+                path_dict[from_node][node] = None
+            distance[from_node][from_node] = 0
+            neighbors = self.neighbors(from_node)
+            for neighbor in neighbors:
+                distance[from_node][neighbor] = neighbors[neighbor]
+                path_dict[from_node][neighbor] = neighbor
+        for k in self.nodes():
+            for i in self.nodes():
+                for j in self.nodes():
+                    if distance[i][k] + distance[k][j] < distance[i][j]:
+                        distance[i][j] = distance[i][k] + distance[k][j]
+                        path_dict[i][j] = path_dict[i][k]
+        return path_dict, distance
+
+    def floyd_warshall_path(self, path_dict, start, end):
+            if path_dict[start][end] is None:
+                return []
+            path = [start]
+            while start != end:
+                start = path_dict[start][end]
+                path.append(start)
+            return path
+
 
 # ---------Time It-----------
 
 
-if __name__ == '__main__':
-    import timeit
+if __name__ == '__main__':  # pragma: no cover
+    import random
 
-    def complex_g():
-        """Return a somewhat convoluted graph."""
-        graph = Graph()
-        graph.add_edge('A', 'B', 10)
-        graph.add_edge('A', 'C', 6)
-        graph.add_edge('B', 'D', 3)
-        graph.add_edge('B', 'E', 5)
-        graph.add_edge('C', 'F', 8)
-        graph.add_edge('C', 'G', 7)
-        graph.add_edge('D', 'X', 4)
-        graph.add_edge('D', 'Y', 9)
-        graph.add_edge('E', 'B', 3)
-        graph.add_edge('E', 'Z', 1)
-        return graph
+    graph = Graph()
+    for i in range(100):
+        try:
+            graph.add_edge(random.randint(0, 20),
+                           random.randint(0, 20),
+                           random.randint(0, 5))
+        except:
+            pass
 
-    depth = timeit.timeit(
-        stmt="complex_g().depth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
-    )
-    breadth = timeit.timeit(
-        stmt="complex_g().breadth_first_traversal",
-        setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
-    )
+    if len(sys.argv) > 1 and sys.argv[1] == 'timeit':
+        import timeit
+        from pprint import pprint
 
-    print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +
-          '\tPath: {}\n'.format(complex_g().depth_first_traversal('A')) +
-          '100,000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
-          '\tPath: {}'.format(complex_g().breadth_first_traversal('A')))
+        start = graph.nodes()[random.randint(0, len(graph.nodes()))]
+
+        pprint(graph.node_dict)
+
+        depth = timeit.timeit(
+            stmt="graph.depth_first_traversal(start)",
+            setup="from __main__ import graph, start",
+            number=1000,
+        )
+        depth_i = timeit.timeit(
+            stmt="graph.depth_first_traversal_iterative(start)",
+            setup="from __main__ import graph, start",
+            number=1000,
+        )
+        breadth = timeit.timeit(
+            stmt="graph.breadth_first_traversal(start)",
+            setup="from __main__ import graph, start",
+            number=1000,
+        )
+        print('\n1000 recursive depth first traversals:\n\t{} seconds\n'.format(depth) +
+              '\tPath: {}\n'.format(graph.depth_first_traversal(start)) +
+              '\n1000 iterative depth first traversals:\n\t{} seconds\n'.format(depth_i) +
+              '\tPath: {}\n'.format(graph.depth_first_traversal_iterative(start)) +
+              '\n1000 breadth first traversals:\n\t{} seconds\n'.format(breadth) +
+              '\tPath: {}\n'.format(graph.breadth_first_traversal(start)))

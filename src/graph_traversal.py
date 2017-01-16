@@ -136,14 +136,12 @@ if __name__ == '__main__':
     depth = timeit.timeit(
         stmt="complex_g().depth_first_traversal",
         setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        number=100000
     )
     breadth = timeit.timeit(
         stmt="complex_g().breadth_first_traversal",
         setup="from __main__ import complex_g",
-        number=100000,
-        repeat=3
+        number=100000
     )
 
     print('100,000 depth first traversals:\n\t{} seconds\n'.format(depth) +

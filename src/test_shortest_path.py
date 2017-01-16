@@ -1,5 +1,6 @@
 """Testing module for shortest path graph class."""
 import pytest
+from collections import OrderedDict
 
 
 @pytest.fixture
@@ -110,7 +111,7 @@ def test_neighbors(graph):
     """Test neighbors returns all nodes connected to a single node."""
     graph.add_edge('car', 'bank', 13)
     graph.add_edge('car', 'wheels', 3)
-    assert graph.neighbors('car') == ['bank', 'wheels']
+    assert graph.neighbors('car') == OrderedDict([('bank', 13), ('wheels', 3)])
 
 
 def test_neighbors_error(graph):
@@ -168,9 +169,9 @@ def test_edges(graph):
     graph.add_edge('blah', 'whamo', 0)
     graph.add_edge('whamo', 'blah', 1)
     graph.add_edge(2, 'whamo', 1)
-    assert ('blah', 'whamo', 'weight: 0') in list((graph.edges()))
-    assert ('whamo', 'blah', 'weight: 1') in list((graph.edges()))
-    assert (2, 'whamo', 'weight: 1') in list((graph.edges()))
+    assert ('blah', 'whamo', 0) in graph.edges()
+    assert ('whamo', 'blah', 1) in graph.edges()
+    assert (2, 'whamo', 1) in graph.edges()
 
 
 def test_edges_no_edges(graph):
@@ -208,10 +209,10 @@ def test_depth_complex(complex_g):
     assert res == list('ABDXYEZCFG')
 
 
-# def test_depth_iterative_complex(complex_g):
-#     """Test the depth traversal graph."""
-#     res = complex_g.depth_first_traversal_iterative('A')
-#     assert res == list('ABDXYEZCFG')
+def test_depth_iterative_complex(complex_g):
+    """Test the depth traversal graph."""
+    res = complex_g.depth_first_traversal_iterative('A')
+    assert res == list('ABDXYEZCFG')
 
 
 def test_breadth_complex(complex_g):
@@ -241,3 +242,31 @@ def test_shortest_dijkstra_long(complex_g):
 def test_loop_dijkstra(complex_g):
     """."""
     assert complex_g.dijkstra('A', 'Z') == ['Z', 'E', 'B', 'A']
+
+
+def test_floyd_warshall_no_path(complex_g):
+    """Test fw returns empty list if there's no path between nodes."""
+    path, distances = complex_g.floyd_warshall()
+    assert complex_g.floyd_warshall_path(path, 'Z', 'A') == []
+
+
+def test_floyd_warshall(complex_g):
+    """Floyd warshall should return all shortest paths."""
+    path, distances = complex_g.floyd_warshall()
+    assert complex_g.floyd_warshall_path(path, 'A', 'Z') == ['A', 'B', 'E', 'Z']
+    assert complex_g.floyd_warshall_path(path, 'A', 'F') == ['A', 'C', 'F']
+    assert complex_g.floyd_warshall_path(path, 'A', 'X') == ['A', 'B', 'D', 'X']
+    assert distances['A']['Z'] == 16
+    assert distances['A']['F'] == 14
+    assert distances['A']['X'] == 17
+
+
+def test_alternative_routes(complex_g):
+    """Test fw with a graph with multiple alternative routes."""
+    complex_g.add_edge('C', 'B', 1)
+    complex_g.add_edge('A', 'X', 20)
+    path, distances = complex_g.floyd_warshall()
+    assert complex_g.floyd_warshall_path(path, 'A', 'B') == ['A', 'C', 'B']
+    assert complex_g.floyd_warshall_path(path, 'A', 'X') == ['A', 'C', 'B', 'D', 'X']
+    assert complex_g.dijkstra('A', 'B') == ['B', 'C', 'A']
+    assert complex_g.dijkstra('A', 'X') == ['X', 'D', 'B', 'C', 'A']
