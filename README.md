@@ -2,6 +2,28 @@
 
 Sample code (with tests) for classic data structures implemented in Python.
 
+## Hash Table
+
+- Module: hashtable
+
+- Initialize:
+    - HashTable()
+    - kwargs:
+        - size: set fixed number of buckets in table (default = 1024)
+        - hash_func: specify hashing function (default = 'additive')
+
+
+- Hashing Functions:
+    - 'additive': sum unicode number values of each character.
+    - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters
+                             and total accumulator.
+    - 'FNV': multiply everything by big prime numbers.
+
+- Methods:
+    - get(key): return value associated with key
+    - set(key, value): add key, value pair to hash table
+    - bracket notation supported:
+
 ## Linked List
 
 - Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
