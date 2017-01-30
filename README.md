@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fordf/data-structures.svg?branch=hash)](https://travis-ci.org/fordf/data-structures)
+
 # data-structures
 
 Sample code (with tests) for classic data structures implemented in Python.
