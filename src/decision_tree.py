@@ -25,7 +25,6 @@ class Clf(object):
     def _purity(self, splits, classes):
         """Determine the purity."""
         g_val = 0.0
-        smallest_len = min([len(x) for x in splits])
         for split in splits:
             h_val = 0
             for class_val in classes:
@@ -33,7 +32,7 @@ class Clf(object):
                     proportion = [row[-1] for row in split].count(class_val) / len(split)
                     h_val += (proportion * (1.0 - proportion))
             g_val += len(split) / self._size * h_val
-        return g_val, smallest_len
+        return g_val
 
     def _split(self, col_idx, boundary_val):
         """Split column data based on a boundary (data coordinate)."""
@@ -45,24 +44,15 @@ class Clf(object):
                 right.append(row)
         return left, right
 
-    def _find_best_split(self, columns=[]):
+    def _find_best_split(self, dataset, columns=[]):
         """Return the decision boundary where the total purity of both sides is best."""
         best_split = None
         best_purity = 1
-        best_smallest_len = 0
-        purs = []
         for col_idx in columns:
-            for row_idx, row in enumerate(self.dataset):
-                boundary_val = self.dataset[row_idx][col_idx]
-                purity, smallest_len = self._purity(self._split(col_idx, boundary_val), (0, 1))
-                purs.append((purity, smallest_len, boundary_val))
-                if purity == best_purity:
-                    if smallest_len > best_smallest_len:
-                        best_purity = purity
-                        best_split = (col_idx, boundary_val)
-                        best_smallest_len = smallest_len
-                elif purity < best_purity:
+            for row_idx, row in enumerate(dataset):
+                boundary_val = dataset[row_idx][col_idx]
+                purity = self._purity(self._split(col_idx, boundary_val), (0, 1))
+                if purity < best_purity:
                     best_purity = purity
                     best_split = (col_idx, boundary_val)
-                    best_smallest_len = smallest_len
         return best_split
