@@ -13,14 +13,27 @@ def convert_csv(filename):
     return data.transpose()
 
 
+class Node(object):
+    """Node."""
+
+    def __init__(self, split_value, col, left=None, right=None, label=None):
+        """Initailize Node."""
+        self.split_value = split_value
+        self.col = col
+        self.left = left
+        self.right = right
+        self.label = label
+
+
 class Clf(object):
     """."""
 
-    def __init__(self, iterable):
+    def __init__(self, iterable, min_leaf_size=1, max_depth=5):
         """Initialize clf."""
-        self.dataset = iterable
         self._size = len(iterable)
         self.num_cols = len(iterable[0])
+        self.min_leaf_size = min_leaf_size
+        self.max_depth = max_depth
 
     def _purity(self, splits, classes):
         """Determine the purity."""
@@ -34,10 +47,10 @@ class Clf(object):
             g_val += len(split) / self._size * h_val
         return g_val
 
-    def _split(self, col_idx, boundary_val):
+    def _split(self, dataset, col_idx, boundary_val):
         """Split column data based on a boundary (data coordinate)."""
         left, right = [], []
-        for row in self.dataset:
+        for row in dataset:
             if row[col_idx] <= boundary_val:
                 left.append(row)
             else:
@@ -56,3 +69,7 @@ class Clf(object):
                     best_purity = purity
                     best_split = (col_idx, boundary_val)
         return best_split
+
+    def fit(self, dataset):
+        """Construct a decision tree based on some incoming dataset; returns nothing."""
+        pass
