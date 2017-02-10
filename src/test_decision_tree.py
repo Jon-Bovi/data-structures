@@ -3,11 +3,17 @@
 import pytest
 
 
-# @pytest.fixture
-# def flowers():
-#     """Convert flower data for testing from csv."""
-#     from decision_tree import convert_csv
-#     return convert_csv('flowers_data.csv')
+@pytest.fixture
+def flowers():
+    """Convert flower data for testing from csv."""
+    from decision_tree import convert_csv
+    return convert_csv('flowers_data.csv')
+
+@pytest.fixture
+def clf():
+    """Create a clf to run tests on."""
+    from decision_tree import Clf
+    return Clf()
 
 
 DATASET = [
@@ -38,9 +44,12 @@ BEST_SPLIT = (
      [6.642287351, 3.319983761, 1]])
 
 
-def test_find_best_split():
-    """Test find_best_split."""
-    from decision_tree import Clf
-    clf = Clf()
-    print(clf._find_best_split(DATASET))
+def test_find_best_split(clf):
+    """Test find_best_split on small dataset."""
     assert clf._find_best_split(DATASET) == BEST_SPLIT
+
+
+def test_find_best_split_value(clf, flowers):
+    """Test find_best_split_gets_best_value."""
+    print(clf._find_best_split(flowers)[1])
+    assert clf._find_best_split(flowers)[1] == 3.0
