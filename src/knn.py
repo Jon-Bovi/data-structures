@@ -7,8 +7,10 @@ class Knn(object):
     Knn.predict(self, data): returns labels for your test data.
     """
 
-    def __init__(self, k=5, dataset=None):
+    def __init__(self, dataset, k=5):
         """Initialize classifier."""
+        if type(k) is not int or k > len(dataset) or k < 0:
+            raise ValueError("k must be an integer value between 1 and the length of the dataset")
         self.dataset = dataset
         self.k = 5
 
@@ -28,7 +30,8 @@ class Knn(object):
 
     def _get_majority_class(self, classes):
         """Find and return the majority class of a dataset."""
-        count = {c: classes.count(c) for c in classes}
+        classes_set = set(classes)
+        count = {c: classes.count(c) for c in classes_set}
         highest = max(count.values())
         return [k for k, v in count.items() if v == highest]
 
