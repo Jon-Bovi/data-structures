@@ -1,15 +1,38 @@
 [![Build Status](https://travis-ci.org/fordf/data-structures.svg?branch=decision-tree)](https://travis-ci.org/fordf/data-structures)
 
-# data-structures
+# Machine Learning - Supervised Classifiers
 
-Implementations of classic data structures implemented in Python, with tests!
+## K Nearest Neigbor (Knn) Classifier:
+
+- Module: knn
+
+K-Nearest Neigbour algorithm seeks to categorize new data based on the labels of the K closest data points. The distance between two points (p and q) is calculated as:
+```
+d = sqrt(sum(p - q) ** 2)
+```
+- Methods:
+    - predict(dataset): Predict class values for unclassified dataset.
+
+- Initialize:
+    - `Knn(dataset, k=5)`
+
+The advantages of using  the Knn classifier are:
+- A low cost of learning
+- Often Successful when data is well mixed.
+
+The disadvantages of using the Knn classifier are:
+- Very inefficient for large data sets
+- There’s no real model to interpret
+- Performance depends on the number of dimensions
+- Inconsistent results when there’s ties in votes
+
 
 ## Decision Tree Classifier
 
 - Module: decision_tree
 
 - Initialize:
-    - Clf(min_leaf_size=1, max_depth=3)
+    - `Clf(min_leaf_size=1, max_depth=3)`
         
 - Methods:
     - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
@@ -19,6 +42,12 @@ Implementations of classic data structures implemented in Python, with tests!
     - cross_validate(dataset, classes): Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
 
 - convert_csv(file): Reads csv file into useable format.
+
+
+# Data Structures
+
+Implementations of classic data structures implemented in Python, with tests!
+
 
 ## Hash Table
 
