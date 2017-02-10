@@ -3,24 +3,6 @@
 import pytest
 
 
-@pytest.fixture
-def flowers():
-    """Convert flower data for testing from csv."""
-    from decision_tree import convert_csv
-    return convert_csv('flowers_data.csv')
-
-@pytest.fixture
-def flowers_sepal(flowers):
-    """Create a fixture for the last column which contains overlap."""
-    return [row[3:] for row in flowers]
-
-@pytest.fixture
-def clf():
-    """Create a clf to run tests on."""
-    from decision_tree import Clf
-    return Clf()
-
-
 DATASET = [
     [2.771244718, 1.784783929, 0],
     [1.728571309, 1.169761413, 0],
@@ -49,6 +31,35 @@ BEST_SPLIT = (
      [6.642287351, 3.319983761, 1]])
 
 
+@pytest.fixture
+def flowers():
+    """Convert flower data for testing from csv."""
+    from decision_tree import convert_csv
+    return convert_csv('flowers_data.csv')
+
+
+@pytest.fixture
+def tree_sepal(clf, flowers):
+    """Create a fixture for the last column which contains overlap."""
+    sepal = [row[3:] for row in flowers]
+    clf.fit(sepal, (0, 1))
+    return clf
+
+
+@pytest.fixture
+def clf():
+    """Create a clf to run tests on."""
+    from decision_tree import Clf
+    return Clf()
+
+
+@pytest.fixture
+def tree(clf, flowers):
+    """Create a tree from flowers data."""
+    clf.fit(flowers, (0, 1))
+    return clf
+
+
 def test_find_best_split(clf):
     """Test find_best_split on small dataset."""
     assert clf._find_best_split(DATASET) == BEST_SPLIT
@@ -59,7 +70,17 @@ def test_find_best_split_value(clf, flowers):
     assert clf._find_best_split(flowers)[1] == 3.0
 
 
-def test_clf_has_root(clf, flowers):
+def test_clf_fit_has_root(tree):
     """Test fit method creates a tree."""
-    clf.fit(flowers)
-    assert clf.root
+    assert tree.root
+
+
+def test_clf_fit(tree):
+    """Test fit method creates a split."""
+    assert tree.root.split_value == 3.0
+
+
+def test_clf_fit_chilrend(tree):
+    """Test class on the left is 1."""
+    assert tree.root.left == 0.0
+    assert tree.root.right == 1.0
