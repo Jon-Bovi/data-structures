@@ -57,8 +57,6 @@ class Clf(object):
             return 0
         return max(self.depth(start=start.left), self.depth(start=start.right)) + 1
 
-    # def terminal_nodes(self, )
-
     def _h_val(self, dataset, classes):
         h_val = 0
         for class_val in classes:
@@ -136,6 +134,33 @@ class Clf(object):
         else:
             self.root = new_node
 
-    def predict(self, data):
+    def predict(self, dataset):
         """Return labels for test data."""
-        pass
+        return [self._find_terminal(row) for row in dataset]
+
+    def _find_terminal(self, row):
+        """Traverse down a branch to label a data point."""
+        cur_node = self.root
+        while type(cur_node) is Node:
+            if row[cur_node.col] < cur_node.split_value:
+                cur_node = cur_node.left
+            else:
+                cur_node = cur_node.right
+        return cur_node
+
+    def cross_validate(self, dataset, classes):
+        """Split a classified dataset in two, fit on one, predict the other."""
+        fitter, tester, test_labels = [], [], []
+        for i, d in enumerate(dataset):
+            if i % 2:
+                fitter.append(d)
+            else:
+                tester.append(d[:-1])
+                test_labels.append(d[-1])
+        self.fit(fitter, classes)
+        res_labels = self.predict(tester)
+        count = 0
+        for i, n in enumerate(test_labels):
+            if n == res_labels[i]:
+                count += 1
+        return count / len(test_labels)
