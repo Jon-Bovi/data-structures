@@ -69,6 +69,7 @@ class Clf(object):
     def _find_best_split(self, dataset):
         """Return the decision boundary where the total purity of both sides is best."""
         best_split = None
+
         best_purity = 1
         for col_idx in range(len(dataset[0])):
             for row_idx, row in enumerate(dataset):
@@ -77,8 +78,8 @@ class Clf(object):
                 purity = self._purity((left, right), (0, 1))
                 if purity < best_purity:
                     best_purity = purity
-                    best_split = (col_idx, boundary_val)
-        return best_split[0], best_split[1], left, right
+                    best_split = (col_idx, boundary_val, left, right)
+        return best_split
 
     def fit(self, dataset, classes, parent=None):
         """Construct a decision tree based on some incoming dataset; returns nothing."""
