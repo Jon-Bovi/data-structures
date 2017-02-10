@@ -1,10 +1,9 @@
 """Implement a decision tree in python."""
 
-import numpy as np
-
 
 def convert_csv(filename):
     """Covert from csv."""
+    import numpy as np
     data = np.loadtxt(filename,
                       delimiter=',',
                       unpack=True,
@@ -62,7 +61,7 @@ class Clf(object):
         h_val = 0
         for class_val in classes:
             if len(dataset) != 0:
-                proportion = [row[-1] for row in dataset].count(class_val) / len(dataset)
+                proportion = [row[-1] for row in dataset].count(class_val) / float(len(dataset))
                 h_val += (proportion * (1.0 - proportion))
         return h_val
 
@@ -71,7 +70,7 @@ class Clf(object):
         g_val = 0.0
         for split in splits:
             h_val = self._h_val(split, classes)
-            g_val += len(split) / sum([len(n) for n in splits]) * h_val
+            g_val += float(len(split)) / sum([len(n) for n in splits]) * h_val
         return g_val
 
     def _split(self, dataset, col_idx, boundary_val):
