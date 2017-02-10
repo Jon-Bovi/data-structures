@@ -54,9 +54,11 @@ class Clf(object):
         """Return the depth of the tree."""
         if start == 'root':
             start = self.root
-        if start is None:
+        if start > -1 or start is None:
             return 0
         return max(self.depth(start=start.left), self.depth(start=start.right)) + 1
+
+    # def terminal_nodes(self, )
 
     def _h_val(self, dataset, classes):
         h_val = 0
@@ -78,7 +80,7 @@ class Clf(object):
         """Split column data based on a boundary (data coordinate)."""
         left, right = [], []
         for row in dataset:
-            if row[col_idx] <= boundary_val:
+            if row[col_idx] < boundary_val:
                 left.append(row)
             else:
                 right.append(row)
@@ -111,10 +113,9 @@ class Clf(object):
 
         if not left or not right:
             label = self._get_majority_class(left + right)
-            # import pdb; pdb.set_trace()
             return label
 
-        if new_node.depth() > self.max_depth:
+        if new_node.depth() >= self.max_depth:
             new_node.left = self._get_majority_class(left)
             new_node.right = self._get_majority_class(right)
             return new_node
