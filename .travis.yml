@@ -8,3 +8,6 @@ install:
     - pip install -e .[test]
 #command to run tests
 script: py.test --cov=. --cov-report term-missing
+
+notifications:
+  email: false
