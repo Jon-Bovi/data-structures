@@ -2,22 +2,23 @@
 
 # data-structures
 
-Sample code (with tests) for classic data structures implemented in Python.
+Implementations of classic data structures implemented in Python, with tests!
 
 ## Decision Tree Classifier
 
-- Module: decision_tree.py
+- Module: decision_tree
 
-- Classes:
+- Initialize:
+    - Clf(min_leaf_size=1, max_depth=3)
+        
+- Methods:
+    - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
 
-    - Clf():
+    - predict(dataset): Predict class values for unclassified dataset, using prebuilt tree.
 
-        - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
+    - cross_validate(dataset, classes): Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
 
-        - predict(dataset): Predict class values for unclassified dataset, using prebuilt tree.
-
-        - cross_validate(dataset, classes): Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
-
+- convert_csv(file): Reads csv file into useable format.
 
 ## Hash Table
 
