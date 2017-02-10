@@ -10,6 +10,11 @@ def flowers():
     return convert_csv('flowers_data.csv')
 
 @pytest.fixture
+def flowers_sepal(flowers):
+    """Create a fixture for the last column which contains overlap."""
+    return [row[3:] for row in flowers]
+
+@pytest.fixture
 def clf():
     """Create a clf to run tests on."""
     from decision_tree import Clf
@@ -51,5 +56,10 @@ def test_find_best_split(clf):
 
 def test_find_best_split_value(clf, flowers):
     """Test find_best_split_gets_best_value."""
-    print(clf._find_best_split(flowers)[1])
     assert clf._find_best_split(flowers)[1] == 3.0
+
+
+def test_clf_has_root(clf, flowers):
+    """Test fit method creates a tree."""
+    clf.fit(flowers)
+    assert clf.root
