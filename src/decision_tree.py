@@ -24,16 +24,6 @@ class Node(object):
         self.label = label
         self.parent = parent
 
-    def depth(self):
-        """Return the depth of the node."""
-        if self.parent:
-            return 1 + self.parent.depth()
-        return 1
-
-    def children(self):
-        """Return non-none children of node."""
-        return [n for n in [self.left, self.right] if n is not None]
-
 
 class Clf(object):
     """Classifier decision tree.
