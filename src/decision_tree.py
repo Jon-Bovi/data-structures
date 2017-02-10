@@ -31,6 +31,10 @@ class Node(object):
             return 1 + self.parent.depth()
         return 1
 
+    def children(self):
+        """Return non-none children of node."""
+        return [n for n in [self.left, self.right] if n is not None]
+
 
 class Clf(object):
     """Classifier decision tree.
@@ -45,6 +49,14 @@ class Clf(object):
         self.min_leaf_size = min_leaf_size
         self.max_depth = max_depth
         self.root = None
+
+    def depth(self, start='root'):
+        """Return the depth of the tree."""
+        if start == 'root':
+            start = self.root
+        if start is None:
+            return 0
+        return max(self.depth(start=start.left), self.depth(start=start.right)) + 1
 
     def _h_val(self, dataset, classes):
         h_val = 0
