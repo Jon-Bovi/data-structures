@@ -33,12 +33,15 @@ class Node(object):
 
 
 class Clf(object):
-    """."""
+    """Classifier decision tree.
 
-    def __init__(self, iterable, min_leaf_size=1, max_depth=5):
+    clf.fit(self, data): construct a decision tree based on some incoming data
+        set; returns nothing
+    clf.predict(self, data): returns labels for your test data.
+    """
+
+    def __init__(self, min_leaf_size=1, max_depth=3):
         """Initialize clf."""
-        self._size = len(iterable)
-        self.num_cols = len(iterable[0])
         self.min_leaf_size = min_leaf_size
         self.max_depth = max_depth
         self.root = None
@@ -56,7 +59,7 @@ class Clf(object):
         g_val = 0.0
         for split in splits:
             h_val = self._h_val(split, classes)
-            g_val += len(split) / self._size * h_val
+            g_val += len(split) / sum([len(n) for n in splits]) * h_val
         return g_val
 
     def _split(self, dataset, col_idx, boundary_val):
@@ -90,16 +93,19 @@ class Clf(object):
         return max(set(classes), key=classes.count)
 
     def fit(self, dataset, classes, parent=None):
-        """Construct a decision tree based on some incoming dataset; returns nothing."""
+        """Construct a decision tree based on a dataset; returns nothing."""
         col_idx, split_value, left, right = self._find_best_split(dataset)
         new_node = Node(split_value, col_idx, parent=parent)
 
         if not left or not right:
             label = self._get_majority_class(left + right)
+            # import pdb; pdb.set_trace()
             return label
 
         if new_node.depth() > self.max_depth:
-            YOU SHALL NOT PASS
+            new_node.left = self._get_majority_class(left)
+            new_node.right = self._get_majority_class(right)
+            return new_node
 
         if self._h_val(left, classes) != 0 and len(left) > self.min_leaf_size:
             new_node.left = self.fit(left, classes, parent=new_node)
@@ -119,4 +125,5 @@ class Clf(object):
             self.root = new_node
 
     def predict(self, data):
-
+        """Return labels for test data."""
+        pass
