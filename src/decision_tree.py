@@ -30,10 +30,6 @@ class Node(object):
             return 1 + self.parent.depth()
         return 1
 
-    def children(self):
-        """Return non-none children of node."""
-        return [n for n in [self.left, self.right] if n is not None]
-
 
 class Clf(object):
     """Classifier decision tree.
