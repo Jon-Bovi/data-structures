@@ -5,21 +5,21 @@ import pytest
 @pytest.fixture
 def new_queue():
     """Return empty queue."""
-    from queue import Queue
+    from qqueue import Queue
     return Queue()
 
 
 @pytest.fixture
 def init_queue():
     """Return non empty queue."""
-    from queue import Queue
+    from qqueue import Queue
     return Queue([1, 2, 3])
 
 
 @pytest.fixture
 def once_queue():
     """Return list of queues."""
-    from queue import Queue
+    from qqueue import Queue
     q = Queue()
     q.enqueue("once")
     return q
@@ -32,7 +32,7 @@ def test_init(new_queue):
 
 def test_init_invalid_iterable():
     """Test init raises error if passed non-iterable argument."""
-    from queue import Queue
+    from qqueue import Queue
     with pytest.raises(ValueError):
         Queue(1234)
 

@@ -1,8 +1,24 @@
-[![Build Status](https://travis-ci.org/fordf/data-structures.svg?branch=hash)](https://travis-ci.org/fordf/data-structures)
+[![Build Status](https://travis-ci.org/fordf/data-structures.svg?branch=decision-tree)](https://travis-ci.org/fordf/data-structures)
 
 # data-structures
 
-Sample code (with tests) for classic data structures implemented in Python.
+Implementations of classic data structures implemented in Python, with tests!
+
+## Decision Tree Classifier
+
+- Module: decision_tree
+
+- Initialize:
+    - Clf(min_leaf_size=1, max_depth=3)
+        
+- Methods:
+    - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
+
+    - predict(dataset): Predict class values for unclassified dataset, using prebuilt tree.
+
+    - cross_validate(dataset, classes): Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
+
+- convert_csv(file): Reads csv file into useable format.
 
 ## Hash Table
 
@@ -24,7 +40,7 @@ Sample code (with tests) for classic data structures implemented in Python.
     - get(key): return value associated with key
     - set(key, value): add key, value pair to hash table
     - bracket notation supported
-    
+
 - Implementation:
 Fixed size list of buckets(lists) where each bucket can contain multiple kv-pairs.
 
