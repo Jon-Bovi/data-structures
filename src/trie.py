@@ -17,3 +17,12 @@ class Trie(object):
                 cur_dict = cur_dict[char]
         if '$' not in cur_dict:
             cur_dict['$'] = {}
+
+    def contains(self, string):
+        """Return whether string in in trie."""
+        cur_dict = self.dict
+        for char in string:
+            if char not in cur_dict:
+                return False
+            cur_dict = cur_dict[char]
+        return '$' in cur_dict

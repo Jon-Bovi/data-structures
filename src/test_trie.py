@@ -51,3 +51,21 @@ def test_insert_inserts_subword_of_existing_word(trie):
     trie.insert('goo')
     end_of_flog = trie.dict['g']['o']['o']
     assert '$' in end_of_flog and 'g' in end_of_flog
+
+
+def test_contains_true(trie):
+    """Test contains returns true for word in trie."""
+    trie.insert('word')
+    assert trie.contains('word')
+
+
+def test_contains_false(trie):
+    """Test contains returns false for word not in trie."""
+    trie.insert('word')
+    assert trie.contains('worm') is False
+
+
+def test_contains_subword_is_false(trie):
+    """Test contains return false for a subword of word in trie."""
+    trie.insert('floggin')
+    assert trie.contains('flog') is False
