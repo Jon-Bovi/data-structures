@@ -42,6 +42,7 @@ class Trie(object):
                 dicts.append(cur_dict)
                 cur_dict = cur_dict[char]
             cur_dict.pop('$')
+            self.size -= 1
         except KeyError:
             raise ValueError('"' + string + '" not in trie.')
         if not dicts[-1][string[-1]]:
