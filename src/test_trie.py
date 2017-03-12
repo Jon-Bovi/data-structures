@@ -1,12 +1,30 @@
 
 import pytest
 
+WORDS = ['wood', 'wired', 'women', 'word', 'alien', 'allen', 'okra', 'okay', 'wombat']
+TRAVERSALS = [
+    ['', ['wood', 'wired', 'women', 'word', 'alien', 'allen', 'okra', 'okay', 'wombat']],
+    ['w', ['wood', 'wired', 'women', 'word', 'wombat']],
+    ['wo', ['wood', 'women', 'word', 'wombat']],
+    ['wom', ['women', 'wombat']],
+    ['woo', ['wood']],
+    ['wood', ['wood']],
+    ['ok', ['okra', 'okay']]
+]
 
 @pytest.fixture
 def trie():
-    """Return initialized trie."""
+    """Return empty trie."""
     from trie import Trie
     trie = Trie()
+    return trie
+
+
+@pytest.fixture
+def filled_trie(trie):
+    """Return trie with words."""
+    for word in WORDS:
+        trie.insert(word)
     return trie
 
 
@@ -49,8 +67,8 @@ def test_insert_inserts_subword_of_existing_word(trie):
     """Test insert correctly inserts a subword of word already in trie."""
     trie.insert('google')
     trie.insert('goo')
-    end_of_flog = trie._dict['g']['o']['o']
-    assert '$' in end_of_flog and 'g' in end_of_flog
+    end_of_goo = trie._dict['g']['o']['o']
+    assert '$' in end_of_goo and 'g' in end_of_goo
 
 
 def test_contains_true(trie):
@@ -99,3 +117,32 @@ def test_remove_on_larger_word(trie):
     trie.insert('women')
     trie.remove('word')
     assert trie._dict == {'w': {'o': {'m': {'e': {'n': {'$': {}}}}}}}
+
+
+def test_size_of_empty(trie):
+    """Test size method returns 0 for empty trie."""
+    assert trie.size == 0
+
+
+def test_size_of_non_empty(filled_trie):
+    """Test size of trie equals number of words in trie."""
+    assert filled_trie.size == len(WORDS)
+
+
+def test_size_after_inserting_same_word(filled_trie):
+    """Test size stays same if word already in trie inserted again."""
+    filled_trie.insert('wood')
+    assert filled_trie.size == len(WORDS)
+
+
+def test_size_after_removal(filled_trie):
+    """Test size decreases by one after one word is removed."""
+    filled_trie.remove('wood')
+    assert filled_trie.size == len(WORDS) - 1
+
+
+@pytest.mark.parametrize('start, matches', TRAVERSALS)
+def test_traversals(start, matches, filled_trie):
+    """Test various traversals on trie."""
+    for match in list(filled_trie.traversal(start)):
+        assert match in matches
