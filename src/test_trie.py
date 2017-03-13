@@ -154,8 +154,8 @@ def test_traversals(start, matches, filled_trie):
 def test_autocomplete(start, matches, filled_trie):
     """Test autocomplete returns first n matches."""
     if matches:
-        for n in range(len(matches)):
+        for n in range(len(matches) + 2):
             result = filled_trie.autocomplete(start, n)
-            assert len(result) == n
+            assert len(result) == min(n, len(matches))
             for word in result:
                 assert start in word

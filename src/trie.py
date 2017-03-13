@@ -74,7 +74,6 @@ class Trie(object):
                 subtrie = subtrie[letter]
             except KeyError:
                 return
-                yield
         yield from self._depth_first_traverse(subtrie, start)
 
     def _depth_first_traverse(self, subtrie, word):
