@@ -9,8 +9,10 @@ TRAVERSALS = [
     ['wom', ['women', 'wombat']],
     ['woo', ['wood']],
     ['wood', ['wood']],
-    ['ok', ['okra', 'okay']]
+    ['ok', ['okra', 'okay']],
+    ['okaydokay', []],
 ]
+
 
 @pytest.fixture
 def trie():
@@ -146,3 +148,14 @@ def test_traversals(start, matches, filled_trie):
     """Test various traversals on trie."""
     for match in list(filled_trie.traversal(start)):
         assert match in matches
+
+
+@pytest.mark.parametrize('start, matches', TRAVERSALS)
+def test_autocomplete(start, matches, filled_trie):
+    """Test autocomplete returns first n matches."""
+    if matches:
+        for n in range(len(matches)):
+            result = filled_trie.autocomplete(start, n)
+            assert len(result) == n
+            for word in result:
+                assert start in word

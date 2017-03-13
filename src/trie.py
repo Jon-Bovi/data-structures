@@ -62,7 +62,7 @@ class Trie(object):
         try:
             for i in range(n):
                 n_matches.append(next(matches))
-        except StopIteration:
+        except (StopIteration, TypeError) as e:
             pass
         return n_matches
 
@@ -73,8 +73,9 @@ class Trie(object):
             try:
                 subtrie = subtrie[letter]
             except KeyError:
-                return None
-        return self._depth_first_traverse(subtrie, start)
+                return
+                yield
+        yield from self._depth_first_traverse(subtrie, start)
 
     def _depth_first_traverse(self, subtrie, word):
         """Yield words contained in given trie."""
