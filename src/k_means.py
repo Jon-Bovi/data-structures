@@ -2,74 +2,130 @@ import random
 import numpy as np
 
 
-def convert_csv(filename, cols=(0, 1, 2, 3)):
+def load_csv(filename, cols=()):
     """Covert from csv."""
     import numpy as np
     data = np.loadtxt(filename,
                       delimiter=',',
-                      unpack=True,
-                      skiprows=1,
                       usecols=cols)
-    return data.transpose()
+    return data
 
 
 class KMeansClassifier(object):
-    """."""
+    """
+    Unsupervised clustering algorithm.
 
-    def __init__(self, max_iter=3, min_step=1):
+    clf = KMeansClassifier(max_iter=None, min_step='auto')
+        -max_iter: the number of iterations before the algorithm stops
+        -min_step: the smallest difference in distance between an old centroid
+                   and a new centroid before the algorithm stops. If 'auto',
+                   min_step is calculated to be 1/1000th of largest first step.
+
+    clf.fit(data, k=2)
+        -k: number of nodes to generate
+
+    clf.predict(data)
+    """
+
+    def __init__(self, max_iter=None, min_step='auto'):
         """Initialize classifier instance."""
+        assert max_iter or min_step
+        if min_step is not None:
+            assert (isinstance(min_step, (int, float)) and min_step > 0) or min_step == 'auto'
+        if max_iter is not None:
+            assert isinstance(max_iter, int) and max_iter > 0
         self.max_iter = max_iter
         self.min_step = min_step
         self.centroids = []
-        self.fitted = False
 
-    def _distance(self, x, y):
-        """Return distance between points x and y."""
-        return np.sqrt(np.sum((x - y)**2))
+    def fit(self, data, k=None, init_centroids=None):
+        """
+        Find centroids of clusters.
 
-    def fit(self, data, k=2):
-        """Build classification scheme from given data."""
-        if k < 1 or k > len(data):
-            raise ValueError('k must be in range 1 - len(data)')
-        self.fitted = True
-        datas = [[x, 0] for x in data]
-        self.centroids = random.sample(list(datas), k)
-        for idx, centroid in enumerate(self.centroids):
-            centroid[1] = idx + 1
+        km_clf.fit(data, k=2, init_centroids=None)
+            - data: 2d numpy array
 
-        iterations = 0
-        while iterations < self.max_iter:
-            for row in datas:
-                closest = min(self.centroids, key=lambda x: self._distance(x[0], row[0]))
-                row[1] = closest[1]
-            for centroid in self.centroids:
-                cluster = [x for x in datas if x[1] == centroid[1]]
-                for idx, value in enumerate(centroid):
-                    centroid[0][idx] = sum([x[0][idx] for x in cluster]) / len(cluster)
-            iterations += 1
+            k or init_centroids required
+            - k: number of centroids to randomly initialize
+            - init_centroids: starting locations of centroids
+        """
+        if not isinstance(data, np.ndarray) or len(data.shape) != 2 or data.shape[1] == 0:
+            raise TypeError('data must be non-empty 2d numpy array')
+        if k is None and init_centroids is None:
+            raise ValueError('parameter k or init_centroids required')
+        if init_centroids is None:
+            if k < 1 or k > len(data):
+                raise ValueError('k must be in range 1 - len(data)')
+            self.centroids = data[random.sample(range(len(data)), k)]
+        else:
+            try:
+                self.centroids = np.array(init_centroids)
+                assert len(self.centroids.shape) == 2
+            except:
+                raise TypeError('init_centroids must be 2d np array or list of lists')
+            if len(self.centroids) > len(data):
+                raise IndexError('init_centroids can\'t be longer than data')
+            if self.centroids.shape[1] != data.shape[1]:
+                raise IndexError(
+                    '''init_centroids must be each be same shape
+                    as datapoints in data: {}'''.format(data[0].shape))
+        iters = 0
+        while True:
+            labels = self._predict(data)
+            prev = self.centroids.copy()
+            for i in range(len(self.centroids)):
+                cluster = data[labels == i]
+                if len(cluster):
+                    self.centroids[i] = np.mean(cluster, axis=0)
+            if self.min_step:
+                biggest_step = np.max(
+                    np.sqrt(np.sum((prev - self.centroids)**2, axis=1))
+                )
+                if self.min_step == 'auto':
+                    self.min_step = biggest_step / 1000
+                if biggest_step <= self.min_step:
+                    break
+            iters += 1
+            if self.max_iter and iters > self.max_iter:
+                break
 
     def predict(self, data):
         """Return predicted classes for given data."""
-        if not self.fitted:
+        if len(self.centroids) == 0:
             raise Exception("Classifier must be fit before using to predict.")
-        classes = []
-        for row in data:
-            classes.append(min(self.centroids, key=lambda c: self._distance(c[0], row))[1])
-        return classes
+        return self._predict(data)
 
-    def cross_validate(self, data):
-        """Split a classified dataset in two, fit on one, predict the other."""
-        fitter, tester, test_labels = [], [], []
-        for i, d in enumerate(data):
-            if i % 2:
-                fitter.append(d[:-1])
-            else:
-                tester.append(d[:-1])
-                test_labels.append(d[-1] + 1)
-        self.fit(fitter)
-        res_labels = self.predict(tester)
-        count = 0
-        for i, label in enumerate(test_labels):
-            if label == res_labels[i]:
-                count += 1
-        return count / len(test_labels)
+    def cross_validate(self, data, k=None, init_centroids=None, train_split=.7, label_col=-1):
+        """
+        Split a classified dataset in two, fit on one, predict the other.
+
+        km_clf.cross_validate(data, k=None, init_centroids=None, train_split=.7, label_col=-1)
+            - data: 2d numpy array
+
+            k or init_centroids required
+            - k: number of centroids to randomly initialize
+            - init_centroids: starting locations of centroids
+
+            - train_split: fraction of data to fit on, 1-fraction to test on
+            - label_col: column containing labels
+        """
+        data = data.copy()
+        np.random.shuffle(data)
+
+        split = int(len(data) * train_split)
+        train = data[:split, range(data.shape[1] - 1)]
+        test = data[split:]
+        labels = test[:, label_col]
+        test = test[:, range(test.shape[1] - 1)]
+
+        self.fit(train, k=k, init_centroids=init_centroids)
+        res_labels = self.predict(test)
+        count = np.sum(labels == res_labels)
+        print(count)
+        return count / len(labels)
+
+    def _predict(self, data):
+        dists = np.array(
+            [np.sqrt(np.sum((data - centroid)**2, axis=1)) for centroid in self.centroids]
+        )
+        return np.argmin(dists, axis=0)
