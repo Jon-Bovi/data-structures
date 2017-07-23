@@ -95,35 +95,6 @@ class KMeansClassifier(object):
             raise Exception("Classifier must be fit before using to predict.")
         return self._predict(data)
 
-    def cross_validate(self, data, k=None, init_centroids=None, train_split=.7, label_col=-1):
-        """
-        Split a classified dataset in two, fit on one, predict the other.
-
-        km_clf.cross_validate(data, k=None, init_centroids=None, train_split=.7, label_col=-1)
-            - data: 2d numpy array
-
-            k or init_centroids required
-            - k: number of centroids to randomly initialize
-            - init_centroids: starting locations of centroids
-
-            - train_split: fraction of data to fit on, 1-fraction to test on
-            - label_col: column containing labels
-        """
-        data = data.copy()
-        np.random.shuffle(data)
-
-        split = int(len(data) * train_split)
-        train = data[:split, range(data.shape[1] - 1)]
-        test = data[split:]
-        labels = test[:, label_col]
-        test = test[:, range(test.shape[1] - 1)]
-
-        self.fit(train, k=k, init_centroids=init_centroids)
-        res_labels = self.predict(test)
-        count = np.sum(labels == res_labels)
-        print(count)
-        return count / len(labels)
-
     def _predict(self, data):
         dists = np.array(
             [np.sqrt(np.sum((data - centroid)**2, axis=1)) for centroid in self.centroids]

@@ -1,4 +1,5 @@
 
+import os
 import pytest
 import numpy as np
 from k_means import KMeansClassifier, load_csv
@@ -18,7 +19,8 @@ GROUPED_DUPES = [
     [107, 195, 345]
 ]
 
-LABELED_DATA = load_csv('datas.csv')
+src = os.path.dirname(__file__)
+LABELED_DATA = load_csv(os.path.join(src, 'datas.csv'))
 DATA = LABELED_DATA[:, range(4)]
 NO_DUPE_DATA = np.delete(DATA.copy(), DUPES, axis=0)
 DUPE_DATA = DATA[DUPES]

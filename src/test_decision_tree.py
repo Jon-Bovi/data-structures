@@ -1,7 +1,8 @@
 """Test decision tree classifier implementation."""
 
+import os
 import pytest
-
+import numpy as np
 
 DATASET = [
     [2.771244718, 1.784783929, 0],
@@ -31,17 +32,19 @@ BEST_SPLIT = (
      [6.642287351, 3.319983761, 1]])
 
 
-@pytest.fixture
-def flowers():
-    """Convert flower data for testing from csv."""
-    from decision_tree import convert_csv
-    return convert_csv('flowers_data.csv')
+src = os.path.dirname(__file__)
+FLOWERS = np.loadtxt(
+    os.path.join(src, 'flowers_data.csv'),
+    delimiter=',',
+    skiprows=1,
+    usecols=(0, 1, 2, 3, 4),
+)
 
 
 @pytest.fixture
-def tree_sepal(dtree, flowers):
+def tree_sepal(dtree):
     """Create a fixture for the last column which contains overlap."""
-    sepal = [row[3:] for row in flowers]
+    sepal = [row[3:] for row in FLOWERS]
     dtree.fit(sepal, (0, 1))
     return dtree
 
@@ -54,9 +57,9 @@ def dtree():
 
 
 @pytest.fixture
-def fitted_dtree(dtree, flowers):
+def fitted_dtree(dtree):
     """Create a tree from flowers data."""
-    dtree.fit(flowers, (0, 1))
+    dtree.fit(FLOWERS, (0, 1))
     return dtree
 
 
@@ -65,9 +68,9 @@ def test_find_best_split(dtree):
     assert dtree._find_best_split(DATASET) == BEST_SPLIT
 
 
-def test_find_best_split_value(dtree, flowers):
+def test_find_best_split_value(dtree):
     """Test find_best_split_gets_best_value."""
-    assert dtree._find_best_split(flowers)[1] == 3.0
+    assert dtree._find_best_split(FLOWERS)[1] == 3.0
 
 
 def test_dtree_fit_has_root(fitted_dtree):

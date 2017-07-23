@@ -74,7 +74,8 @@ class Trie(object):
                 subtrie = subtrie[letter]
             except KeyError:
                 return
-        yield from self._depth_first_traverse(subtrie, start)
+        for word in self._depth_first_traverse(subtrie, start):
+            yield word
 
     def _depth_first_traverse(self, subtrie, word):
         """Yield words contained in given trie."""
@@ -82,4 +83,5 @@ class Trie(object):
             if letter == '$':
                 yield word
             else:
-                yield from self._depth_first_traverse(subtrie[letter], word + letter)
+                for w in self._depth_first_traverse(subtrie[letter], word + letter):
+                    yield w

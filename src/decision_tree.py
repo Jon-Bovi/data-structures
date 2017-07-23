@@ -1,15 +1,6 @@
 """Implement a decision tree in python."""
 
-
-def convert_csv(filename):
-    """Covert from csv."""
-    import numpy as np
-    data = np.loadtxt(filename,
-                      delimiter=',',
-                      unpack=True,
-                      skiprows=1,
-                      usecols=(0, 1, 2, 3, 4))
-    return data.transpose()
+import numpy as np
 
 
 class Node(object):
@@ -44,6 +35,41 @@ class DecisionTree(object):
         self.min_leaf_size = min_leaf_size
         self.max_depth = max_depth
         self.root = None
+
+    def fit(self, dataset, classes, parent=None):
+        """Construct a decision tree based on a dataset; returns nothing."""
+        col_idx, split_value, left, right = self._find_best_split(dataset)
+        new_node = Node(split_value, col_idx, parent=parent)
+
+        if not left or not right:
+            label = self._get_majority_class(left + right)
+            return label
+
+        if new_node.depth() >= self.max_depth:
+            new_node.left = self._get_majority_class(left)
+            new_node.right = self._get_majority_class(right)
+            return new_node
+
+        if self._h_val(left, classes) != 0 and len(left) > self.min_leaf_size:
+            new_node.left = self.fit(left, classes, parent=new_node)
+        else:
+            label = self._get_majority_class(left)
+            new_node.left = label
+
+        if self._h_val(right, classes) != 0 and len(right) > self.min_leaf_size:
+            new_node.right = self.fit(right, classes, parent=new_node)
+        else:
+            label = self._get_majority_class(right)
+            new_node.right = label
+
+        if new_node.parent:
+            return new_node
+        else:
+            self.root = new_node
+
+    def predict(self, dataset):
+        """Return labels for test data."""
+        return [self._find_terminal(row) for row in dataset]
 
     def depth(self, start='root'):
         """Return the depth of the tree."""
@@ -99,41 +125,6 @@ class DecisionTree(object):
         classes = [row[-1] for row in dataset]
         return max(set(classes), key=classes.count)
 
-    def fit(self, dataset, classes, parent=None):
-        """Construct a decision tree based on a dataset; returns nothing."""
-        col_idx, split_value, left, right = self._find_best_split(dataset)
-        new_node = Node(split_value, col_idx, parent=parent)
-
-        if not left or not right:
-            label = self._get_majority_class(left + right)
-            return label
-
-        if new_node.depth() >= self.max_depth:
-            new_node.left = self._get_majority_class(left)
-            new_node.right = self._get_majority_class(right)
-            return new_node
-
-        if self._h_val(left, classes) != 0 and len(left) > self.min_leaf_size:
-            new_node.left = self.fit(left, classes, parent=new_node)
-        else:
-            label = self._get_majority_class(left)
-            new_node.left = label
-
-        if self._h_val(right, classes) != 0 and len(right) > self.min_leaf_size:
-            new_node.right = self.fit(right, classes, parent=new_node)
-        else:
-            label = self._get_majority_class(right)
-            new_node.right = label
-
-        if new_node.parent:
-            return new_node
-        else:
-            self.root = new_node
-
-    def predict(self, dataset):
-        """Return labels for test data."""
-        return [self._find_terminal(row) for row in dataset]
-
     def _find_terminal(self, row):
         """Traverse down a branch to label a data point."""
         cur_node = self.root
@@ -144,19 +135,27 @@ class DecisionTree(object):
                 cur_node = cur_node.right
         return cur_node
 
-    def cross_validate(self, dataset, classes):
-        """Split a classified dataset in two, fit on one, predict the other."""
-        fitter, tester, test_labels = [], [], []
-        for i, d in enumerate(dataset):
-            if i % 2:
-                fitter.append(d)
-            else:
-                tester.append(d[:-1])
-                test_labels.append(d[-1])
-        self.fit(fitter, classes)
-        res_labels = self.predict(tester)
-        count = 0
-        for i, n in enumerate(test_labels):
-            if n == res_labels[i]:
-                count += 1
-        return count / len(test_labels)
+    def cross_validate(self, dataset, train_split=.7, label_col=-1):
+        """
+        Split a classified dataset in two, fit on one, predict the other.
+
+        clf.cross_validate(dataset, train_split=.7, label_col=-1)
+
+        - train_split: fraction of data to fit on, 1-fraction to test on
+        - label_col: column containing labels
+        """
+        data = dataset.copy()
+        np.random.shuffle(data)
+
+        split = int(len(data) * train_split)
+        cols = np.array(range(data.shape[1]))
+        not_label_cols = cols[cols != label_col]
+        train = data[:split]
+        test = data[split:]
+        labels = test[:, label_col]
+        test = test[:, not_label_cols]
+
+        self.fit(train, set(data[:, label_col]))
+        res_labels = self.predict(test)
+        count = np.sum(labels == res_labels)
+        return count / len(labels)
