@@ -52,11 +52,13 @@ class Node(object):
         return dep
 
     def balance(self):
+        """Balance from node."""
         right = self.right.depth() if self.right else 0
         left = self.left.depth() if self.left else 0
         return right - left
 
     def __str__(self, level=0):
+        """Display a strange sideways tree with values and balance at each node."""
         ret = "\t"*level+repr(self.val)+': '+repr(self.balance())+"\n"
         for child in [x for x in [self.left, self.right] if x]:
             ret += child.__str__(level+1)
@@ -206,7 +208,6 @@ class BST(object):
                     to_d.set_parents_child(child)
                     replacement = child
                 else:
-                    import pdb; pdb.set_trace()
                     lmost = self._get_leftmost(to_d)
                     replacement = lmost
                     if lmost.parent is to_d:
@@ -242,20 +243,17 @@ class BST(object):
             for child in node.children():
                 if child not in visited:
                     visited.append(child)
-                    queue.put(child)
-            while not queue.empty():
-                self._explore_bfs(queue.get(), queue, visited)
+                    queue.enqueue(child)
+            while len(queue):
+                self._explore_bfs(queue.dequeue(), queue, visited)
         return visited
 
     def _check_balance(self, node):
         """Bubble up from a node and check for unbalanced trees."""
-        while True:
+        while node:
             if abs(self.balance(start=node)) > 1:
                 return node
-            if node.parent:
-                node = node.parent
-            else:
-                break
+            node = node.parent
 
     def rebalance(self, node):
         """Rebalance a tree starting at node."""

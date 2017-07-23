@@ -10,17 +10,17 @@ class Stack(object):
         self._linkedlist = LinkedList(iterable)
         self._update_attr()
 
-    def push(self, val):
+    def push(self, data):
         """Add value to top of stack."""
-        self._linkedlist.push(val)
+        self._linkedlist.push(data)
         self._update_attr()
 
     def pop(self):
         """Remove and return top of stack."""
         try:
-            res = self._linkedlist.pop()
+            data = self._linkedlist.pop()
             self._update_attr()
-            return res
+            return data
         except IndexError:
             raise IndexError("Cannot pop from empty stack.")
 

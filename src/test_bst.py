@@ -1,7 +1,7 @@
 """Test for binary search tree data structures."""
 
 import pytest
-from random import randint
+import random
 from collections import namedtuple
 
 TEST_BST1 = [1, 3, 5, 4, 9, 8, 12, 11]
@@ -117,14 +117,10 @@ def test_size_is_equal_to_iterable(bst1):
 
 def test_size_is_increased_when_adding_nodes(bst2):
     """Test that size is increased correctly when removing a node."""
-    add_amt = randint(0, 100)
-    dupes = 0
-    for i in range(add_amt):
-        insert_val = randint(50, 1000)
-        if bst2.contains(insert_val):
-            dupes += 1
-        bst2.insert(insert_val)
-    assert bst2.size() == len(set(TEST_BST2)) + add_amt - dupes
+    add = random.sample(range(1000), random.randint(0,100))
+    for n in add:
+        bst2.insert(n)
+    assert bst2.size() == len(set(TEST_BST2) | set(add))
 
 
 @pytest.mark.parametrize('s, result', TEST_DEPTH)
@@ -138,7 +134,7 @@ def test_depth_returns_correct_val(s, result, bst2):
 def test_balance_returns_correct_val(s, result):
     """Test balance returns correct val in a full tree."""
     from bst import BST
-    b = BST(s,autobalance=False)
+    b = BST(s, autobalance=False)
     assert b.balance() == result
 
 
@@ -246,9 +242,6 @@ def test_breadth_first_bst4(bst4):
     """Test breadth first traversal of bst."""
     assert list(bst4.breadth_first()) == [11, 6, 19, 4, 8, 12, 43, 5, 17, 31, 49]
 
-"""Test self-balancing tree methods."""
-import pytest
-
 
 BALANCED = [50, 30, 70, 20, 40, 80, 60, 65, 75, 85, 34, 33, 36, 29, 41]
 TEST_DEEP = [19, 17, 24, 88, 25, 59, 49, 87, 79, 65, 74]
@@ -259,16 +252,16 @@ BAD = [425, 314, 649, 244, 362, 593, 751, 216, 319, 369, 505, 615, 682, 816, 370
 @pytest.fixture
 def balanced_avl():
     """Return balanced avl."""
-    from avl import AVL
-    new_avl = AVL(BALANCED)
+    from bst import BST
+    new_avl = BST(BALANCED)
     return new_avl
 
 
 @pytest.fixture(params=[BALANCED, TEST_DEEP, PROBLEMATIC, BAD])
 def diff_avl(request):
     """Return balanced avl."""
-    from avl import AVL
-    new_avl = AVL(request.param)
+    from bst import BST
+    new_avl = BST(request.param)
     return new_avl, request.param
 
 
@@ -276,8 +269,8 @@ def diff_avl(request):
 def random_avl():
     """Return large random avl."""
     import random
-    from avl import AVL
-    rando_avl = AVL()
+    from bst import BST
+    rando_avl = BST()
     for i in range(200):
         rando_avl.insert(random.randint(0, 100))
     return rando_avl
@@ -288,8 +281,8 @@ RANDOM = random_avl()
 
 def test_init_non_iterable():
     """If non iterable is passed to init, it should insert non iterable."""
-    from avl import AVL
-    avl = AVL(5)
+    from bst import BST
+    avl = BST(5)
     assert avl.root.val == 5
 
 
@@ -301,17 +294,17 @@ def test_check_balance_balanced_returns_none(balanced_avl):
 
 def test_check_balance_unbalanced_returns_unbalanced_subtree_root(balanced_avl):
     """Check balance should return root of unbalanced subtree."""
-    from bst import TreeNode
+    from bst import Node
     node = balanced_avl.search(36)
-    node.left = TreeNode(35, parent=node)
-    node.left.left = TreeNode(34.4, parent=node.left)
+    node.left = Node(35, parent=node)
+    node.left.left = Node(34.4, parent=node.left)
     assert balanced_avl._check_balance(node.left.left).val == 36
 
 
 def test_rebalance_left_rotation():
     """Test all the connections after a left rotation rebalance."""
-    from avl import AVL
-    lefty = AVL([1, 4, 8])
+    from bst import BST
+    lefty = BST([1, 4, 8])
     lefty.rebalance(lefty.root)
     assert lefty.root.val == 4
     children = lefty.root.children()
@@ -322,8 +315,8 @@ def test_rebalance_left_rotation():
 
 def test_rebalance_right_rotation():
     """Test all the connections after a right rotation rebalance."""
-    from avl import AVL
-    righty = AVL([8, 4, 1])
+    from bst import BST
+    righty = BST([8, 4, 1])
     righty.rebalance(righty.root)
     assert righty.root.val == 4
     children = righty.root.children()
@@ -334,8 +327,8 @@ def test_rebalance_right_rotation():
 
 def test_rebalance_right_left_rotation():
     """Test all the connections after a right rotation rebalance."""
-    from avl import AVL
-    refty = AVL([1, 8, 4])
+    from bst import BST
+    refty = BST([1, 8, 4])
     refty.rebalance(refty.root)
     assert refty.root.val == 4
     children = refty.root.children()
@@ -346,8 +339,8 @@ def test_rebalance_right_left_rotation():
 
 def test_rebalance_left_right_rotation():
     """Test all the connections after a right rotation rebalance."""
-    from avl import AVL
-    lighty = AVL([8, 1, 4])
+    from bst import BST
+    lighty = BST([8, 1, 4])
     lighty.rebalance(lighty.root)
     assert lighty.root.val == 4
     children = lighty.root.children()
@@ -376,9 +369,10 @@ def test_rebalance_after_delete_random_tree(value):
     """Test avl rebalances after deletions."""
     RANDOM.delete(value)
     nodes = RANDOM.pre_order()
-    for node in nodes:
-        actual_node = RANDOM.search(node)
-        assert abs(RANDOM.balance(actual_node)) <= 1
+    assert all(RANDOM.search(node).balance() <= 1 for node in nodes)
+    # for node in nodes:
+    #     actual_node = RANDOM.search(node)
+    #     assert abs(RANDOM.balance(actual_node)) <= 1
 
 
 def test_rebalance_after_delete_for_deep(diff_avl):

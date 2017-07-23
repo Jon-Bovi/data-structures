@@ -1,7 +1,8 @@
 """Test decision tree classifier implementation."""
 
+import os
 import pytest
-
+import numpy as np
 
 DATASET = [
     [2.771244718, 1.784783929, 0],
@@ -31,56 +32,58 @@ BEST_SPLIT = (
      [6.642287351, 3.319983761, 1]])
 
 
-@pytest.fixture
-def flowers():
-    """Convert flower data for testing from csv."""
-    from decision_tree import convert_csv
-    return convert_csv('flowers_data.csv')
+src = os.path.dirname(__file__)
+FLOWERS = np.loadtxt(
+    os.path.join(src, 'flowers_data.csv'),
+    delimiter=',',
+    skiprows=1,
+    usecols=(0, 1, 2, 3, 4),
+)
 
 
 @pytest.fixture
-def tree_sepal(clf, flowers):
+def tree_sepal(dtree):
     """Create a fixture for the last column which contains overlap."""
-    sepal = [row[3:] for row in flowers]
-    clf.fit(sepal, (0, 1))
-    return clf
+    sepal = [row[3:] for row in FLOWERS]
+    dtree.fit(sepal, (0, 1))
+    return dtree
 
 
 @pytest.fixture
-def clf():
-    """Create a clf to run tests on."""
-    from decision_tree import Clf
-    return Clf()
+def dtree():
+    """Create a dtree to run tests on."""
+    from decision_tree import DecisionTree
+    return DecisionTree()
 
 
 @pytest.fixture
-def tree(clf, flowers):
+def fitted_dtree(dtree):
     """Create a tree from flowers data."""
-    clf.fit(flowers, (0, 1))
-    return clf
+    dtree.fit(FLOWERS, (0, 1))
+    return dtree
 
 
-def test_find_best_split(clf):
+def test_find_best_split(dtree):
     """Test find_best_split on small dataset."""
-    assert clf._find_best_split(DATASET) == BEST_SPLIT
+    assert dtree._find_best_split(DATASET) == BEST_SPLIT
 
 
-def test_find_best_split_value(clf, flowers):
+def test_find_best_split_value(dtree):
     """Test find_best_split_gets_best_value."""
-    assert clf._find_best_split(flowers)[1] == 3.0
+    assert dtree._find_best_split(FLOWERS)[1] == 3.0
 
 
-def test_clf_fit_has_root(tree):
+def test_dtree_fit_has_root(fitted_dtree):
     """Test fit method creates a tree."""
-    assert tree.root
+    assert fitted_dtree.root
 
 
-def test_clf_fit(tree):
+def test_clf_fit(fitted_dtree):
     """Test fit method creates a split."""
-    assert tree.root.split_value == 3.0
+    assert fitted_dtree.root.split_value == 3.0
 
 
-def test_clf_fit_chilrend(tree):
+def test_clf_fit_chilrend(fitted_dtree):
     """Test class on the left is 1."""
-    assert tree.root.left == 0.0
-    assert tree.root.right == 1.0
+    assert fitted_dtree.root.left == 0.0
+    assert fitted_dtree.root.right == 1.0
