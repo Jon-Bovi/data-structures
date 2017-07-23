@@ -4,14 +4,15 @@
 
 ###Supervised Classifiers
 
-## K Nearest Neigbor (Knn) Classifier:
+## K-Nearest Neighbors (Knn) Classifier:
 
 - Module: knn
-
+"""
 K-Nearest Neigbour algorithm seeks to categorize new data based on the labels of the K closest data points. The distance between two points (p and q) is calculated as:
 ```
 d = sqrt(sum(p - q) ** 2)
 ```
+"""
 - Methods:
     - predict(dataset): Predict class values for unclassified dataset.
 

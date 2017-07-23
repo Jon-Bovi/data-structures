@@ -12,7 +12,7 @@ class Knn(object):
         if type(k) is not int or k > len(dataset) or k < 0:
             raise ValueError("k must be an integer value between 1 and the length of the dataset")
         self.dataset = dataset
-        self.k = 5
+        self.k = k
 
     def predict(self, data, k=None):
         """Given a data point, predict the class of that data, based on dataset."""
