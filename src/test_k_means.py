@@ -68,17 +68,6 @@ def test_max_iter():
     assert len(clf.predict(DATA[1:amt:2])) == amt // 2
 
 
-def test_x_val_perfect_matches(clf):
-    """Test we perfectly label dupe data when each group of dupe data is assigned a centroid/class."""
-    centroids = DATA[[x[0] for x in GROUPED_DUPES]]
-    labels = []
-    for d in DUPES:
-        labels.append(next(i for i, x in enumerate(GROUPED_DUPES) if d in x))
-    data = np.hstack((DUPE_DATA, np.array(labels).reshape(len(labels), 1)))
-    res = clf.cross_validate(data, init_centroids=centroids)
-    assert res == 1
-
-
 INVALID_DATA = [
     [3, 2, None, TypeError],
     [[3], 2, None, TypeError],
