@@ -2,7 +2,7 @@
 
 # Machine Learning
 
-###Supervised Classifiers
+### Supervised Classifiers
 
 ## K Nearest Neigbor (Knn) Classifier:
 
