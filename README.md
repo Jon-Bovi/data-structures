@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/fordf/data-structures.svg?branch=decision-tree)](https://travis-ci.org/fordf/data-structures)
 
-# Machine Learning - Supervised Classifiers
+# Machine Learning
+
+###Supervised Classifiers
 
 ## K Nearest Neigbor (Knn) Classifier:
 
@@ -32,8 +34,8 @@ The disadvantages of using the Knn classifier are:
 - Module: decision_tree
 
 - Initialize:
-    - `Clf(min_leaf_size=1, max_depth=3)`
-        
+    - `DecisionTree(min_leaf_size=1, max_depth=3)`
+
 - Methods:
     - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
 
@@ -43,6 +45,49 @@ The disadvantages of using the Knn classifier are:
 
 - convert_csv(file): Reads csv file into useable format.
 
+
+### Unsupervised Classifiers
+
+## K-Means Clustering
+
+- Module: k_means
+
+- Initialize:
+    - ```python
+    clf = KMeansClassifier(max_iter=None, min_step='auto')
+    ```
+        - max_iter: The number of iterations before the algorithm stops
+        - min_step: The smallest difference in distance between an old centroid
+                  and a new centroid before the algorithm stops. If 'auto',
+                  min_step is calculated to be 1/1000th of largest first step.
+
+- Methods:
+    - ```python
+    clf.fit(data, k=None, init_centroids=None)
+    ```
+    Find centroids of clusters.
+        - data: 2d numpy array
+
+        k or init_centroids required
+        - k: number of centroids to randomly initialize
+        - init_centroids: starting locations of centroids
+
+clf.predict(data)
+"""Return predicted classes for given data."""
+
+clf.cross_validate(data, k=None, init_centroids=None, train_split=.7, label_col=-1):
+"""
+Split a labeled dataset in two, fit on one, predict the other.
+    - data: 2d numpy array
+
+    k or init_centroids required
+    - k: number of centroids to randomly initialize
+    - init_centroids: starting locations of centroids
+
+    - train_split: fraction of data to fit on, 1-fraction to test on
+    - label_col: column containing labels
+"""
+```
 
 # Data Structures
 

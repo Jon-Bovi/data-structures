@@ -100,7 +100,7 @@ def test_remove_single_word_trie(trie):
 
 def test_remove_exception(trie):
     """Test remove raises exception if trying to remove word not in trie."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         trie.insert('word')
         trie.remove('wor')
 
@@ -111,6 +111,14 @@ def test_remove_subword_of_larger_word(trie):
     trie.insert('goog')
     trie.remove('goo')
     assert trie._dict == {'g': {'o': {'o': {'g': {'$': {}}}}}}
+
+
+def test_remove_larger_word_which_contains_word(trie):
+    """Test remove removes a word that is part of a larger word."""
+    trie.insert('goo')
+    trie.insert('goog')
+    trie.remove('goog')
+    assert trie._dict == {'g': {'o': {'o': {'$': {}}}}}
 
 
 def test_remove_on_larger_word(trie):

@@ -48,7 +48,7 @@ class Trie(object):
             subtrie.pop('$')
             self._size -= 1
         except KeyError:
-            raise ValueError('"' + string + '" not in trie.')
+            raise KeyError('"' + string + '" not in trie.')
         if not dicts[-1][string[-1]]:
             for i in range(-1, -len(dicts) - 1, -1):
                 dicts[i].pop(string[i])
@@ -79,7 +79,7 @@ class Trie(object):
     def _depth_first_traverse(self, subtrie, word):
         """Yield words contained in given trie."""
         for letter in subtrie:
-            if letter != '$':
-                yield from self._depth_first_traverse(subtrie[letter], word + letter)
-            else:
+            if letter == '$':
                 yield word
+            else:
+                yield from self._depth_first_traverse(subtrie[letter], word + letter)

@@ -39,48 +39,48 @@ def flowers():
 
 
 @pytest.fixture
-def tree_sepal(clf, flowers):
+def tree_sepal(dtree, flowers):
     """Create a fixture for the last column which contains overlap."""
     sepal = [row[3:] for row in flowers]
-    clf.fit(sepal, (0, 1))
-    return clf
+    dtree.fit(sepal, (0, 1))
+    return dtree
 
 
 @pytest.fixture
-def clf():
-    """Create a clf to run tests on."""
-    from decision_tree import Clf
-    return Clf()
+def dtree():
+    """Create a dtree to run tests on."""
+    from decision_tree import DecisionTree
+    return DecisionTree()
 
 
 @pytest.fixture
-def tree(clf, flowers):
+def fitted_dtree(dtree, flowers):
     """Create a tree from flowers data."""
-    clf.fit(flowers, (0, 1))
-    return clf
+    dtree.fit(flowers, (0, 1))
+    return dtree
 
 
-def test_find_best_split(clf):
+def test_find_best_split(dtree):
     """Test find_best_split on small dataset."""
-    assert clf._find_best_split(DATASET) == BEST_SPLIT
+    assert dtree._find_best_split(DATASET) == BEST_SPLIT
 
 
-def test_find_best_split_value(clf, flowers):
+def test_find_best_split_value(dtree, flowers):
     """Test find_best_split_gets_best_value."""
-    assert clf._find_best_split(flowers)[1] == 3.0
+    assert dtree._find_best_split(flowers)[1] == 3.0
 
 
-def test_clf_fit_has_root(tree):
+def test_dtree_fit_has_root(fitted_dtree):
     """Test fit method creates a tree."""
-    assert tree.root
+    assert fitted_dtree.root
 
 
-def test_clf_fit(tree):
+def test_clf_fit(fitted_dtree):
     """Test fit method creates a split."""
-    assert tree.root.split_value == 3.0
+    assert fitted_dtree.root.split_value == 3.0
 
 
-def test_clf_fit_chilrend(tree):
+def test_clf_fit_chilrend(fitted_dtree):
     """Test class on the left is 1."""
-    assert tree.root.left == 0.0
-    assert tree.root.right == 1.0
+    assert fitted_dtree.root.left == 0.0
+    assert fitted_dtree.root.right == 1.0

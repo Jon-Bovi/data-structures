@@ -31,7 +31,7 @@ class Node(object):
         return 1
 
 
-class Clf(object):
+class DecisionTree(object):
     """Classifier decision tree.
 
     clf.fit(self, data): construct a decision tree based on some incoming data
