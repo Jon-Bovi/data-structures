@@ -4,47 +4,49 @@
 
 ### Supervised Classifiers
 
-## K-Nearest Neighbors (Knn) Classifier:
-
-- Module: knn
-"""
-K-Nearest Neigbour algorithm seeks to categorize new data based on the labels of the K closest data points. The distance between two points (p and q) is calculated as:
-```
-d = sqrt(sum(p - q) ** 2)
-```
-"""
-- Methods:
-    - predict(dataset): Predict class values for unclassified dataset.
-
-- Initialize:
-    - `Knn(dataset, k=5)`
-
-The advantages of using  the Knn classifier are:
-- A low cost of learning
-- Often Successful when data is well mixed.
-
-The disadvantages of using the Knn classifier are:
-- Very inefficient for large data sets
-- There’s no real model to interpret
-- Performance depends on the number of dimensions
-- Inconsistent results when there’s ties in votes
-
-
 ## Decision Tree Classifier
 
-- Module: decision_tree
+- Version: 0.0.0.0.1
 
-- Initialize:
-    - `DecisionTree(min_leaf_size=1, max_depth=3)`
+#### Operations
+ ```python
+ from decision_tree import DecisionTree 
+ 
+dtree = DecisionTree(min_leaf_size=1, max_depth=3)
+ ```
+ ```python
+dtree.fit(dataset, classes)
+```
+Build a decision tree off of data.
+```python
+predict(dataset)
+```
+Predict class values for unclassified dataset, using prebuilt tree.
+```python
+cross_validate(dataset, classes)
+```
+Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
 
-- Methods:
-    - fit(dataset, classes): Build a decision tree off of data. Dataset should be a list of rows, with the final element of each row being the class value.
 
-    - predict(dataset): Predict class values for unclassified dataset, using prebuilt tree.
+## K-Nearest Neighbors (Knn) Classifier:
 
-    - cross_validate(dataset, classes): Splits a classified dataset in two, one to build the decision tree, the other to predict with. Returns the percentage of predicted labels that match actual labels.
+The [K-Nearest Neigbours algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) seeks to categorize new data based on the known labels of the K closest data points.
+The classifer needs not be fit, it directly compares the unlabeled data against the labeled training data.
 
-- convert_csv(file): Reads csv file into useable format.
+Implemented with: numpy
+
+#### Operations
+
+```python
+from knn import Knn
+knn = Knn(dataset, k=5)
+knn.predict(predict_data, labeled_data, k=5, label_col=-1)
+```
+Predict the classes of unlabeled data by comparison to labeled_data.
+- predict_data: data to be labeled
+- labeled_data
+- k: how many neighbors to group with
+- label_col: labeled_data, col index containing labels
 
 
 ### Unsupervised Classifiers
