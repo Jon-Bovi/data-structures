@@ -3,10 +3,11 @@
 
 from setuptools import setup
 
+
 setup(
     name="data-structures",
-    description="Python implementations of classic data structures",
-    version=0.2,
+    description="Python implementations of data structures.",
+    version=0.3,
     author=["Ford Fowler", "Claire Gatenby", "Casey O'Kane"],
     author_email=["fordjfowler@gmail.com",
                   'clairejgatenby@gmail.com',
@@ -21,6 +22,8 @@ setup(
                 'hashtable',
                 'priority_queue',
                 'bin_heap',
+                'graph',
+                'bst',
                 'trie',
                 'decision_tree',
                 'k_means',
