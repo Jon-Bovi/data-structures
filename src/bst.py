@@ -2,69 +2,6 @@
 from queue import Queue
 
 
-class Node(object):
-    """BST's Node object."""
-
-    def __init__(self, val, left=None, right=None, parent=None):
-        """Set attributes on node object."""
-        self.val = val
-        self.left = left
-        self.right = right
-        self.parent = parent
-
-    def is_leaf(self):
-        """Return whether node has no children."""
-        return not (self.right or self.left)
-
-    def children(self):
-        """Return non-none children of node."""
-        return [n for n in [self.left, self.right] if n is not None]
-
-    def left_or_right(self, val):
-        """Compare node to a value and return which path to take."""
-        if val < self.val:
-            return self.left, 'left'
-        return self.right, 'right'
-
-    def set_parents_child(self, new_child):
-        """Reassign parent's pointer to this node to new_child node."""
-        if self.parent:
-            if self.parent.left is self:
-                self.parent.left = new_child
-            else:
-                self.parent.right = new_child
-
-    def __iter__(self):
-        if self:
-            if self.left:
-                for n in self.left:
-                    yield n
-            yield self
-            if self.right:
-                for n in self.right:
-                    yield n
-
-    def depth(self):
-        dep = 1
-        children = [x for x in [self.left, self.right] if x]
-        if children:
-            dep += max([x.depth() for x in children])
-        return dep
-
-    def balance(self):
-        """Balance from node."""
-        right = self.right.depth() if self.right else 0
-        left = self.left.depth() if self.left else 0
-        return right - left
-
-    def __str__(self, level=0):
-        """Display a strange sideways tree with values and balance at each node."""
-        ret = "\t"*level+repr(self.val)+': '+repr(self.balance())+"\n"
-        for child in [x for x in [self.left, self.right] if x]:
-            ret += child.__str__(level+1)
-        return ret
-
-
 class BST(object):
     """AVL Binary search tree."""
 
@@ -77,8 +14,8 @@ class BST(object):
             try:
                 for val in iterable:
                     self.insert(val)
-            except TypeError:
-                self.insert(iterable)
+            except:
+                raise Exception
 
     def size(self):
         """Return number of nodes in bst.."""
@@ -361,6 +298,128 @@ class BST(object):
         old_root.parent = new_root
         right_root.parent = new_root
 
+    def __str__(self):
+        """Interactive print loop."""
+        from math import floor, ceil
+        from decimal import Decimal
+        fmt = ['                        {}',
+               '           {}                      {}',
+               '     {}        {}          {}        {}',
+               '  {}  {}  {}  {}    {}  {}  {}  {}']
+
+        def center(item):
+            stritem = str(item)
+            if len(stritem) < 5:
+                split = (4 - len(stritem)) / 2
+                return ' ' * floor(split) + stritem + ' ' * ceil(split)
+            if isinstance(item, (int, float)):
+                return center("{:.1E}".format(Decimal(item)).replace('+', ''))
+            return item[:4]
+
+        def children_of(nodes):
+            res = []
+            for node in nodes:
+                if node:
+                    res += [node.left, node.right]
+                else:
+                    res += [None, None]
+            return res
+
+        def get_input(prompt, options):
+            while True:
+                inp = input(prompt)
+                if inp in options:
+                    return inp
+
+        top = 0
+        root = self.root
+        try:
+            while True:
+                four_rows = [[root]]
+                for i in range(3):
+                    four_rows.append(children_of(four_rows[i]))
+                vals = []
+                for row in four_rows:
+                    row_vals = []
+                    for item in row:
+                        row_vals.append(item.val if item else '_')
+                    vals.append([center(v) for v in row_vals])
+                hunk = ''
+                for i, row in enumerate(fmt):
+                    hunk += row.format(*vals[i]) + '\n'
+                print(hunk)
+                valid = ''
+                if root.left.depth() > 2:
+                    valid += 'a'
+                if top != 0:
+                    valid += 'w'
+                if root.right.depth() > 2:
+                    valid += 'd'
+                inp = get_input('q(uit) / ' + valid + ': ', set(valid + 'q'))
+                if inp == 'q':
+                    return ''
+                top += {'a': 1, 'w': -1, 'd': 1}[inp]
+                root = {'a': root.left,
+                        'w': root.parent,
+                        'd': root.right}[inp]
+        except KeyboardInterrupt:
+            return ''
+
+
+class Node(object):
+    """BST's Node object."""
+
+    def __init__(self, val, left=None, right=None, parent=None):
+        """Set attributes on node object."""
+        self.val = val
+        self.left = left
+        self.right = right
+        self.parent = parent
+
+    def is_leaf(self):
+        """Return whether node has no children."""
+        return not (self.right or self.left)
+
+    def children(self):
+        """Return non-none children of node."""
+        return [n for n in [self.left, self.right] if n is not None]
+
+    def left_or_right(self, val):
+        """Compare node to a value and return which path to take."""
+        if val < self.val:
+            return self.left, 'left'
+        return self.right, 'right'
+
+    def set_parents_child(self, new_child):
+        """Reassign parent's pointer to this node to new_child node."""
+        if self.parent:
+            if self.parent.left is self:
+                self.parent.left = new_child
+            else:
+                self.parent.right = new_child
+
+    def __iter__(self):
+        if self:
+            if self.left:
+                for n in self.left:
+                    yield n
+            yield self
+            if self.right:
+                for n in self.right:
+                    yield n
+
+    def depth(self):
+        dep = 1
+        children = [x for x in [self.left, self.right] if x]
+        if children:
+            dep += max([x.depth() for x in children])
+        return dep
+
+    def balance(self):
+        """Balance from node."""
+        right = self.right.depth() if self.right else 0
+        left = self.left.depth() if self.left else 0
+        return right - left
 
 """
 def delete(self, val):
