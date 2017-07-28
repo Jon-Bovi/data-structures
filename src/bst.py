@@ -299,6 +299,7 @@ class BST(object):
         right_root.parent = new_root
 
     def __str__(self):
+        """Interactive print loop."""
         from math import floor, ceil
         from decimal import Decimal
         fmt = ['                        {}',
@@ -364,10 +365,6 @@ class BST(object):
         except KeyboardInterrupt:
             return ''
 
-    def balanced(self, frm='root'):
-        """Return whether tree is balanced from every node."""
-        pass
-
 
 class Node(object):
     """BST's Node object."""
@@ -423,13 +420,6 @@ class Node(object):
         right = self.right.depth() if self.right else 0
         left = self.left.depth() if self.left else 0
         return right - left
-
-    def __str__(self, level=0):
-        """Display a strange sideways tree with values and balance at each node."""
-        ret = "\t"*level+repr(self.val)+': '+repr(self.balance())+"\n"
-        for child in [x for x in [self.left, self.right] if x]:
-            ret += child.__str__(level+1)
-        return ret
 
 """
 def delete(self, val):
