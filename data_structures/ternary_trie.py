@@ -1,6 +1,6 @@
 """Module to implement a Ternary Search Tree."""
 
-from stack import Stack
+from data_structures import Stack
 
 class TreeNode(object):
     """Create Node objects for use in a binary tree data structure.

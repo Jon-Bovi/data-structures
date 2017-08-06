@@ -1,15 +1,16 @@
 """Module with implementation of Weighted Graph."""
-from qqueue import Queue
-from stack import Stack
-from collections import OrderedDict
+
 import sys
+from collections import OrderedDict
+
+from data_structures import Queue, Stack
 
 
 class Graph(object):
-    """Implementation of Graph Traversal."""
+    """Graph data structure."""
 
     def __init__(self):
-        """."""
+        """Initialize graph."""
         self.node_dict = {}
 
     def nodes(self):
@@ -26,16 +27,15 @@ class Graph(object):
                                   self.node_dict[node1][node2]))
         return edge_list
 
-    def weight(self, n1, n2):
-        """."""
-        return self.node_dict[n1][n2]
-
     def add_node(self, n):
-        """Add a node 'n' to the graph."""
+        """Add node n to the graph."""
         self.node_dict.setdefault(n, OrderedDict())
 
     def add_edge(self, n1, n2, weight=0):
-        """Add an edge to the graph with source, dest of 'n1', 'n2'. Add node if either not present."""
+        """
+        Add an edge to the graph from n1 to n2, weight optional.
+        Add nodes if not already in graph.
+        """
         self.add_node(n1)
         self.add_node(n2)
         if n2 in self.node_dict[n1]:
@@ -43,7 +43,7 @@ class Graph(object):
         self.node_dict[n1][n2] = weight
 
     def del_node(self, n):
-        """Delete the node 'n' from the graph. Raise error if no such node exists."""
+        """Delete node n from the graph. Raise error if no such node exists."""
         if n in self.node_dict:
             del self.node_dict[n]
             for node in self.node_dict:
@@ -55,53 +55,66 @@ class Graph(object):
             raise KeyError("Cannot remove node that does not exist.")
 
     def del_edge(self, n1, n2):
-        """Delete edge from 'n1' to 'n2'. Raise error if no such edge exists."""
+        """Delete edge from n1 to n2. Raise error if no such edge exists."""
         if n1 in self.node_dict and n2 in self.node_dict[n1]:
             del self.node_dict[n1][n2]
         else:
             raise KeyError("Cannot remove edge that does not exist.")
 
     def has_node(self, n):
-        """True or False based on if node 'n' is present in the graph."""
+        """Return whether node n is in graph."""
         return n in self.node_dict
 
     def neighbors(self, n):
-        """Return the list of all nodes connected to 'n' by edges. Raise error if n is not present."""
+        """
+        Return the list of all nodes connected to node n.
+        Raise error if n is not present.
+        """
         if n not in self.node_dict:
             raise KeyError("Cannot return neighbors of node that does not exist.")
         return self.node_dict[n]
 
     def adjacent(self, n1, n2):
-        """Return True/False for if an edge connects 'n1' and 'n2'. Raises error if either nodes not present."""
+        """
+        Return True/False for if an edge connects nodes n1 and n2.
+        Raise error if either nodes not present.
+        """
         if n1 in self.node_dict and n2 in self.node_dict:
             return n2 in self.node_dict[n1]
-        raise KeyError("Nodes not in graph!")
+        raise KeyError("Nodes not in graph.")
 
-    def depth_first_traversal(self, start, track=None):
-        """Graph traversal depth first."""
+    def weight(self, n1, n2):
+        """Return weight of an edge."""
+        try:
+            return self.node_dict[n1][n2]
+        except KeyError:
+            raise KeyError("Nodes not in graph.")
+
+    def depth_first_traversal(self, start, visited=None):
+        """Traverse graph depth first."""
         res = [start]
-        if track is None:
-            track = set()
-        track.add(start)
+        if visited is None:
+            visited = set()
+        visited.add(start)
         try:
             for n in self.node_dict[start]:
-                if n not in track:
-                    res += self.depth_first_traversal(n, track)
+                if n not in visited:
+                    res += self.depth_first_traversal(n, visited)
         except KeyError:
             raise KeyError(str(start) + ' not in graph')
         return res
 
     def breadth_first_traversal(self, start):
-        """Breadth version of graph traversal."""
+        """Iteratively traverse graph breadth first."""
         try:
             res = []
             queue = Queue([start])
-            track = set()
+            visited = set()
             while queue.head:
                 cur_node = queue.dequeue()
-                if cur_node not in track:
+                if cur_node not in visited:
                     res.append(cur_node)
-                    track.add(cur_node)
+                    visited.add(cur_node)
                     for child in self.node_dict[cur_node]:
                         queue.enqueue(child)
         except KeyError:
@@ -109,16 +122,16 @@ class Graph(object):
         return res
 
     def depth_first_traversal_iterative(self, start):
-        """Breadth version of graph traversal."""
+        """Iteratively traverse graph depth first."""
         try:
             res = []
             stack = Stack([start])
-            track = set()
+            visited = set()
             while stack.top:
                 cur_node = stack.pop()
-                if cur_node not in track:
+                if cur_node not in visited:
                     res.append(cur_node)
-                    track.add(cur_node)
+                    visited.add(cur_node)
                     for child in reversed(self.node_dict[cur_node]):
                         stack.push(child)
         except KeyError:
@@ -126,7 +139,7 @@ class Graph(object):
         return res
 
     def dijkstra(self, start, end):
-        """Dykstras shortest path implementation."""
+        """Find shortest path between start and end via Dijkstra's algorithm."""
         unvisited = self.nodes()
         distance = {}
         previous = {}
@@ -178,16 +191,14 @@ class Graph(object):
         return path_dict, distance
 
     def floyd_warshall_path(self, path_dict, start, end):
-            if path_dict[start][end] is None:
-                return []
-            path = [start]
-            while start != end:
-                start = path_dict[start][end]
-                path.append(start)
-            return path
-
-
-# ---------Time It-----------
+        """Return shortest path between start and end via floyd-warshall algorithm."""
+        if path_dict[start][end] is None:
+            return []
+        path = [start]
+        while start != end:
+            start = path_dict[start][end]
+            path.append(start)
+        return path
 
 
 if __name__ == '__main__':  # pragma: no cover

@@ -1,5 +1,6 @@
 """Module containing DoublyLinkedList class."""
-from linked_list import LinkedList
+
+from data_structures import LinkedList
 
 
 class DoublyLinkedList(LinkedList):

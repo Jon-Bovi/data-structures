@@ -1,5 +1,6 @@
 """Module with implementation of deque data structure."""
-from dll import DoublyLinkedList
+
+from data_structures import DoublyLinkedList
 
 
 class Deque(object):

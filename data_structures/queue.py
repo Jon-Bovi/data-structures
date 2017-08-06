@@ -1,5 +1,5 @@
 """Queue module."""
-from dll import DoublyLinkedList
+from data_structures import DoublyLinkedList
 
 
 class Queue(object):
