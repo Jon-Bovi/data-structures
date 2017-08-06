@@ -13,24 +13,10 @@ setup(
                   'clairejgatenby@gmail.com',
                   "okanecasey@gmail.com"],
     licencse="MIT",
-    package_dir={'': 'src'},
-    py_modules=["linked_list",
-                "dll",
-                "stack",
-                'queue',
-                'deque',
-                'hashtable',
-                'priority_queue',
-                'bin_heap',
-                'graph',
-                'bst',
-                'trie',
-                'decision_tree',
-                'k_means',
-                'knn',
-                ],
-    install_requires=['numpy'],
+    packages=['data_structures'],
+    package_dir={'data_structures': 'data_structures'},
+    install_requires=[],
     extras_require={
-        "test": ["pytest", "pytest-cov", "tox", 'numpy']
+        "test": ["pytest", "pytest-cov", "tox"]
     }
 )
