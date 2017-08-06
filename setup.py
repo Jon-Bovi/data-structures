@@ -3,14 +3,15 @@
 
 from setuptools import setup
 
+
 setup(
     name="data-structures",
-    description="Python implementations of classic data structures",
-    version=0.2,
-    author=["Ford Fowler", "Casey O'Kane", "Claire Gatenby"],
+    description="Python implementations of data structures.",
+    version=0.3,
+    author=["Ford Fowler", "Claire Gatenby", "Casey O'Kane"],
     author_email=["fordjfowler@gmail.com",
-                  "okanecasey@gmail.com",
-                  'clairejgatenby@gmail.com'],
+                  'clairejgatenby@gmail.com',
+                  "okanecasey@gmail.com"],
     licencse="MIT",
     packages=['data_structures'],
     package_dir={'data_structures': 'data_structures'},
