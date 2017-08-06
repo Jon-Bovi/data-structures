@@ -12,10 +12,10 @@ setup(
                   "okanecasey@gmail.com",
                   'clairejgatenby@gmail.com'],
     licencse="MIT",
-    package_dir={'': 'src'},
-    py_modules=["linked_list", "stack", "dll", 'decision_tree', 'qqueue'],
-    install_requires=['numpy'],
+    packages=['data_structures'],
+    package_dir={'data_structures': 'data_structures'},
+    install_requires=[],
     extras_require={
-        "test": ["pytest", "pytest-cov", "tox", 'numpy']
+        "test": ["pytest", "pytest-cov", "tox"]
     }
 )
