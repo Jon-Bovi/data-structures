@@ -11,7 +11,7 @@ Implementations of classic data structures implemented in Python, with tests!
 
 #### Operations:
 
-##### ```python
+```python
 btree = BinaryTree(iterable=None, autobalance=True)
 ```
 iterable: iterable of items to insert
@@ -19,42 +19,42 @@ autobalance: if True, tree will reorganize itself when needed to stay balanced
 
 
 
-##### ```python
+```python
 btree.insert(val)
 ```
 insert val into tree; if val already in tree, ignore
 
 
 
-##### ```python
+```python
 btree.search(val)
 ```
 return the node with a value of val; if not in tree return None
 
 
 
-##### ```python
+```python
 btree.contains(val)
 ```
 return whether val is in the tree
 
 
 
-##### ```python
+```python
 btree.delete(val)
 ```
 if val in tree, delete corresponding node; otherwise raise ValueError
 
 
 
-##### ```python
+```python
 print(btree)
 ```
 print first five rows of tree formatted like ex_tree below
 
 
 
-##### ```python
+```python
 display(btree)
 ```
 interactively move around and display tree
@@ -143,6 +143,72 @@ trie.autocomplete('ro', n=4)
 ```
 
 
+## Graph
+
+#### Module: `graph`
+
+```python
+Graph()
+```
+
+Methods:
+
+##### `add_node(n)`
+add node to graph
+
+##### `del_node(n)`
+delete node from graph along with edges it's part of
+
+##### `add_edge(n1, n2, weight=0)`
+add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
+        n1 or n2 are not already present in the graph, they are added.
+
+##### `del_edge(n1, n2)`
+deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
+        raises an error if no such edge exists
+
+##### `nodes()`
+return a list of all nodes in the graph
+
+##### `edges()`
+return a list of all edges in the graph
+
+##### `has_node(n)`
+True if node ‘n’ is contained in the graph, False if not.
+
+##### `neighbors(n)`
+returns the list of all nodes connected to ‘n’,
+        raises an error if n is not in graph
+
+##### `adjacent(n1, n2)`
+returns if there is an edge connecting n1 and n2,
+        raises an error if either of the supplied nodes are not in graph
+
+##### `depth_first_traversal(start)`
+Traverses graph depth first starting from 'start',
+        returns path
+
+##### `breadth_first_traversal(start)`
+Traverses graph breadth first starting from 'start',
+        returns path
+
+##### `depth_first_traversal_iterative(start)`
+Traverses graph depth first starting from 'start',
+        returns path, slower than recursive version
+
+##### `dijkstra(start, end)`
+return shortest path from start to end,
+        implemented with dijkstra's algorithm.
+
+##### `floyd_warshall()`
+return path_dictionary, distance_dictionary for every
+        possible path.
+
+##### `floyd_warshall_path(path, start, end)`
+return shortest path from start
+        to end.
+
+
 ## Hash Table
 
 #### Module: `hashtable`
@@ -224,7 +290,7 @@ stack.pop()
 Queue(iterable=None)
 ```
 
-Methods:
+#### Methods:
 
 ##### `enqueue(value)`
 add value to end of queue
@@ -242,6 +308,10 @@ return size of queue
 ## Deque (Double-Ended Queue)
 
 #### Module: `deque`
+
+```python
+Deque(iterable=None)
+```
 
 #### Methods:
 
@@ -371,70 +441,6 @@ Doubly-linked lists vs Singly-linked Lists:
     or you have to traverse all the way up to it from the head.
 
 
-## Graph
-
-#### Module: `graph`
-
-```python
-Graph()
-```
-
-Methods:
-
-##### `add_node(n)`
-add node to graph
-
-##### `del_node(n)`
-delete node from graph along with edges it's part of
-
-##### `add_edge(n1, n2, weight=0)`
-add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
-        n1 or n2 are not already present in the graph, they are added.
-
-##### `del_edge(n1, n2)`
-deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
-        raises an error if no such edge exists
-
-##### `nodes()`
-return a list of all nodes in the graph
-
-##### `edges()`
-return a list of all edges in the graph
-
-##### `has_node(n)`
-True if node ‘n’ is contained in the graph, False if not.
-
-##### `neighbors(n)`
-returns the list of all nodes connected to ‘n’,
-        raises an error if n is not in graph
-
-##### `adjacent(n1, n2)`
-returns if there is an edge connecting n1 and n2,
-        raises an error if either of the supplied nodes are not in graph
-
-##### `depth_first_traversal(start)`
-Traverses graph depth first starting from 'start',
-        returns path
-
-##### `breadth_first_traversal(start)`
-Traverses graph breadth first starting from 'start',
-        returns path
-
-##### `depth_first_traversal_iterative(start)`
-Traverses graph depth first starting from 'start',
-        returns path, slower than recursive version
-
-##### `dijkstra(start, end)`
-return shortest path from start to end,
-        implemented with dijkstra's algorithm.
-
-##### `floyd_warshall()`
-return path_dictionary, distance_dictionary for every
-        possible path.
-
-##### `floyd_warshall_path(path, start, end)`
-return shortest path from start
-        to end.
 
 ### Authors:
 - Ford Fowler
@@ -443,4 +449,3 @@ return shortest path from start
 - Marc Kessler-Wenicker
 - Casey O'Kane
 
-### Testing:
