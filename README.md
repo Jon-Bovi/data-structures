@@ -108,7 +108,7 @@ list(ex_tree.breadth_first())
 
 ## Trie
 
-#### Module: trie
+#### Module: `trie`
 
 #### Operations:
 
@@ -145,48 +145,80 @@ trie.autocomplete('ro', n=4)
 
 ## Hash Table
 
-- Module: hashtable
+#### Module: `hashtable`
 
-Initialize:
-- HashTable()
-- kwargs:
-        - size: set fixed number of buckets in table (default = 1024)
-        - hash_func: specify hashing function (default = 'additive')
+#### Operations:
 
-Hashing Functions:
+```python
+htable = HashTable(size=1024, hash_func='additive')
+```
+size: set fixed number of buckets in table
+hash_func: specify hashing function
+
+Available hashing functions:
 - 'additive': sum unicode number values of each character.
 - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
 - 'FNV': multiply everything by big prime numbers.
 
-Methods:
-- get(key): return value associated with key
-- set(key, value): add key, value pair to hash table
-- bracket notation supported
+***
 
-Implementation:
-Fixed size list of buckets(lists) where each bucket can contain multiple kv-pairs.
+```python
+htable['key'] = 'value'
+
+htable['key']
+> 'value'
+
+htable['key'] = 'diffvalue'
+
+htable['key']
+> 'diffvalue'
+
+len(htable)
+> 1
+
+htable['notakey']
+> KeyError
+```
+
 
 ## Stack
 
 Can be initialized with (or without) iterable argument: Stack(iterable=None)
 
-Module: stack
+#### Module: `stack`
 
-Attributes:
+#### Methods:
 
-- top: top/first node on stack
+- push(item): Add item to top of stack
+- pop(): Remove and return last pushed item
 
-Methods:
+```python
+stack = Stack()
 
-- pop(): remove head and return its value
-- push(value): insert new node at head of list
-- size/len: return size of stack
+stack.pop()
+> Index Error 'Cannot pop from empty stack'
+
+stack.push(4)
+stack.push(2)
+
+stack.pop()
+> 2
+
+len(stack)
+> 1
+
+stack = Stack([5, 4, 2, 99])
+stack.pop()
+> 99
+```
 
 ## Queue
 
-can be initialized with (or without) iterable argument: Queue(iterable=None)
+#### Module: `queue`
 
-Module: queue
+```python
+Queue(iterable=None)
+```
 
 Methods:
 
@@ -197,31 +229,18 @@ Methods:
 
 ## Deque (Double-Ended Queue)
 
-can be initialized with or without iterable argument
-
-Module: deque
-
-Attributes:
-
-- head
-
-- tail
+#### Module: `deque`
 
 Methods:
 
 - append(value): add value to end of deque
-
 - appendleft(value): add value to front of deque
-
 - pop(): remove last item in deque and return its value
-
 - popleft(): remove first item in deque and return its value
-
 - peek(): return value of last item in deque
-
 - peekleft(): return value of first item in deque
-
 - len(deque) / deque.size(): return size of deque
+
 
 ## Priority Queue
 
