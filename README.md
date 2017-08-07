@@ -5,6 +5,143 @@
 Implementations of classic data structures implemented in Python, with tests!
 
 
+## Binary Tree
+
+#### Module: bst
+
+#### Operations:
+
+```python
+btree = BinaryTree(iterable=None, autobalance=True)
+```
+iterable: iterable of items to insert
+autobalance: if True, tree will reorganize itself when needed to stay balanced
+
+***
+
+```python
+btree.insert(val)
+```
+insert val into tree; if val already in tree, ignore
+
+***
+
+```python
+btree.search(val)
+```
+return the node with a value of val; if not in tree return None
+
+***
+
+```python
+btree.contains(val)
+```
+return whether val is in the tree
+
+***
+
+```python
+btree.delete(val)
+```
+if val in tree, delete corresponding node; otherwise raise ValueError
+
+***
+
+```python
+print(btree)
+```
+print first five rows of tree formatted like ex_tree below
+
+***
+
+```python
+display(btree)
+```
+interactively move around and display tree
+
+
+#### Traversals:
+
+All traversal methods return generators,
+and have the kwargs:
+
+- start: traverse subtree starting at this node, defaults to root node.
+- attr: attribute to yield from each node, defaults to 'val'.
+        set to None to yield nodes themselves.
+
+ex_tree:
+                                                 17
+                        11                                                24
+           7                        14                       18                       25
+     3           8            _           _            _           _            _           26
+
+
+##### pre_order
+current -> left -> right (yields root first)
+```python
+list(ex_tree.pre_order())
+[17, 11, 7, 3, 8, 14, 24, 18, 25, 26]
+```
+
+##### post_order
+left -> right -> current (yields leftmost first)
+```python
+list(ex_tree.post_order())
+[3, 8, 7, 14, 11, 18, 26, 25, 24, 17]
+```
+
+##### in_order
+left -> current -> right (yields leftmost first)
+```python
+list(ex_tree.in_order())
+[3, 7, 8, 11, 14, 17, 18, 24, 25, 26]
+```
+
+##### breadth_first
+row by row, left to right
+```python
+list(ex_tree.breadth_first())
+[17, 11, 24, 7, 14, 18, 25, 3, 8, 26]
+```
+
+
+## Trie
+
+#### Module: trie
+
+#### Operations:
+
+```python
+trie = Trie()
+
+trie.insert('some string')
+
+trie.contains('some string')
+> True
+
+trie.contains('other string')
+> False
+
+trie.size
+> 1
+
+trie.remove('some string')
+
+trie.remove('some string')
+> KeyError "some string" not in trie
+```
+
+```python
+trie = Trie(['able', 'rough', 'robot', 'rogue', 'abrupt', 'aardvark', 'rodeo', 'rope', 'roost'])
+
+trie.autocomplete('')
+> ['able', 'abrupt', 'aardvark', 'rough', 'robot']
+
+trie.autocomplete('ro', n=4)
+> ['rough', 'robot', 'rogue', 'rodeo']
+```
+
+
 ## Hash Table
 
 - Module: hashtable
