@@ -12,8 +12,8 @@ Implementations of classic data structures implemented in Python, with tests!
 ```python
 BinaryTree(iterable=None, autobalance=True)
 ```
-iterable: iterable of items to insert
-autobalance: if True, tree will reorganize itself when needed to stay balance
+- iterable: iterable of items to insert
+- autobalance: if True, tree will reorganize itself when needed to stay balance
 
 #### Methods:
 
@@ -57,28 +57,28 @@ print(ex_tree)
 ```
 
 
-##### pre_order
+##### `pre_order`
 current -> left -> right (yields root first)
 ```python
 list(ex_tree.pre_order())
 [17, 11, 7, 3, 8, 14, 24, 18, 25, 26]
 ```
 
-##### post_order
+##### `post_order`
 left -> right -> current (yields leftmost first)
 ```python
 list(ex_tree.post_order())
 [3, 8, 7, 14, 11, 18, 26, 25, 24, 17]
 ```
 
-##### in_order
+##### `in_order`
 left -> current -> right (yields leftmost first)
 ```python
 list(ex_tree.in_order())
 [3, 7, 8, 11, 14, 17, 18, 24, 25, 26]
 ```
 
-##### breadth_first
+##### `breadth_first`
 row by row, left to right
 ```python
 list(ex_tree.breadth_first())
@@ -131,7 +131,7 @@ trie.autocomplete('ro', n=4)
 Graph()
 ```
 
-Methods:
+#### Methods:
 
 ##### `add_node(n)`
 add node to graph
@@ -193,22 +193,20 @@ return shortest path from start
 
 #### Module: `hashtable`
 
+```python
+HashTable(size=1024, hash_func='additive')
+```
+- size: set fixed number of buckets in table
+- hash_func:
+        - 'additive': sum unicode number values of each character.
+        - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
+        - 'FNV': multiply everything by big prime numbers.
+
 #### Operations:
 
 ```python
-htable = HashTable(size=1024, hash_func='additive')
-```
-size: set fixed number of buckets in table
-hash_func: specify hashing function
+htable = HashTable()
 
-Available hashing functions:
-- 'additive': sum unicode number values of each character.
-- 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
-- 'FNV': multiply everything by big prime numbers.
-
-
-
-```python
 htable['key'] = 'value'
 
 htable['key']
@@ -225,6 +223,22 @@ len(htable)
 htable['notakey']
 > KeyError
 ```
+
+## Binary Heap
+
+#### Module: `bin_heap`
+
+```python
+heap = BinaryHeap(iterable=None, minmax='min')
+```
+
+#### Methods:
+
+##### `push(value)`
+Add value to bottom of heap and sort as needed
+
+##### `pop(value)`
+Remove first/root node and return its value, move last node to root, sort as needed
 
 
 ## Stack
@@ -336,24 +350,6 @@ If multiple items of the same priority exist, pop item first inserted.
 
 ##### `peek()`
 return value of next item to be popped
-
-
-## Binary Heap
-
-#### Module: `bin_heap`
-
-```python
-heap = BinaryHeap(iterable=None, minmax='min')
-```
-
-#### Methods:
-
-##### `push(value)`
-Add value to bottom of heap and sort as needed
-
-##### `pop(value)`
-Remove first/root node and return its value, move last node to root, sort as needed
-
 
 ## Linked List
 
