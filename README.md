@@ -233,86 +233,120 @@ Methods:
 
 Methods:
 
-- append(value): add value to end of deque
-- appendleft(value): add value to front of deque
-- pop(): remove last item in deque and return its value
-- popleft(): remove first item in deque and return its value
-- peek(): return value of last item in deque
-- peekleft(): return value of first item in deque
-- len(deque) / deque.size(): return size of deque
+
+`append(value)`
+add value to end of deque
+
+`appendleft(value)`
+add value to front of deque
+
+`pop()`
+remove last item in deque and return its value
+
+`popleft()`
+remove first item in deque and return its value
+
+`peek()`
+return value of last item in deque
+
+`peekleft()`
+return value of first item in deque
+
+`len(deque)`
+return size of deque
 
 
 ## Priority Queue
 
-can be initialized with (or without) iterable argument: Queue(iterable=None)
+#### Module: `priority_queue`
 
-Module: priority_queue
+```python
+PriorityQueue(iterable=None)
+```
 
-Methods:
+#### Methods:
 
-- insert(data, priority): enqueue data with priority (defaults to 0), lower is
-        higher priority
+`insert(data, priority=0)`
+Enqueue data with priority (defaults to 0), lower is higher priority
 
-- pop(): remove and return item of highest priority. If multiple items of the same
-        priority exist, pop item first inserted.
+`pop()`
+Remove and return item of highest priority.
+If multiple items of the same priority exist, pop item first inserted.
 
-- peek(): return value of next item to be popped
+`peek()`
+return value of next item to be popped
+
 
 ## Binary Heap
 
-Module: bin_heap
+#### Module: `bin_heap`
 
-Optional arguments:
+```python
+heap = BinaryHeap(iterable=None, minmax='min')
+```
 
-- an iterable
+#### Methods:
 
-- minheap or maxheap ('min' or 'max') defaulted to 'min'
+`push(value)`
+Add value to bottom of heap and sort as needed
 
-Methods:
+`pop(value)`
+Remove first/root node and return its value, move last node to root, sort as needed
 
-- push(value): add value to bottom of heap and sort as needed
-
-- pop(value): remove first/root node and return its value, move last node to root, sort as needed
 
 ## Linked List
 
-Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
+#### Module: `linked_list`
 
-Module: linked_list
+```python
+LinkedList(iterable=None)
+```
 
 Attributes:
 
-- head: first node in linked list
+head: first node in linked list
 
 Methods:
 
-- pop(): remove head and return its value
+`pop()`
+remove head and return its value
 
-- push(value): insert new node at head of list
+`push(value)`
+insert new node at head of list
 
-- remove(node): find and remove node from list
+`remove(node)`
+find and remove node from list
 
-- search(value): find and return first node with value equal to argument
+`search(value)`
+find and return first node with value equal to argument
 
-- display(): print list in pseudo-tuple format
+`display()`
+print list in pseudo-tuple format
 
 ## Doubly-Linked List
 
-Can be initialized with (or without) iterable argument: DoublyLinkedList(iterable=None)
+#### Module: `dll`
 
-Module: dll
+```python
+DoublyLinkedList(iterable=None)
+```
 
 Methods:
 
-- push(value): insert value at head of list
+`push(value)`
+insert value at head of list
 
-- append(value): add value to tail of list
+`append(value)`
+add value to tail of list
 
-- pop(): remove head and return its value
+`pop()`
+remove head and return its value
 
-- shift(): remove tail and return its value
+`shift()`
+remove tail and return its value
 
-- remove(val): remove first instance of value in list, or raise exception if no matches
+`remove(val)`
+remove first instance of value in list, or raise exception if no matches
 
 Doubly-linked lists vs Singly-linked Lists:
 
@@ -328,48 +362,63 @@ Doubly-linked lists vs Singly-linked Lists:
 
 ## Graph
 
-Module: graph
+#### Module: `graph`
 
 Methods:
 
-- add_node(n): add node to graph
+`add_node(n)`
+add node to graph
 
-- del_node(n): delete node from graph along with edges it's part of
+`del_node(n)`
+delete node from graph along with edges it's part of
 
-- add_edge(n1, n2, weight=0): add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
+`add_edge(n1, n2, weight=0)`
+add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
         n1 or n2 are not already present in the graph, they are added.
 
-- del_edge(n1, n2): deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
+`del_edge(n1, n2)`
+deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
         raises an error if no such edge exists
 
-- nodes(): return a list of all nodes in the graph
+`nodes()`
+return a list of all nodes in the graph
 
-- edges(): return a list of all edges in the graph
+`edges()`
+return a list of all edges in the graph
 
-- has_node(n): True if node ‘n’ is contained in the graph, False if not.
+`has_node(n)`
+True if node ‘n’ is contained in the graph, False if not.
 
-- neighbors(n): returns the list of all nodes connected to ‘n’,
+`neighbors(n)`
+returns the list of all nodes connected to ‘n’,
         raises an error if n is not in graph
 
-- adjacent(n1, n2): returns if there is an edge connecting n1 and n2,
+`adjacent(n1, n2)`
+returns if there is an edge connecting n1 and n2,
         raises an error if either of the supplied nodes are not in graph
 
-- depth_first_traversal(start): Traverses graph depth first starting from 'start',
+`depth_first_traversal(start)`
+Traverses graph depth first starting from 'start',
         returns path
 
-- breadth_first_traversal(start): Traverses graph breadth first starting from 'start',
+`breadth_first_traversal(start)`
+Traverses graph breadth first starting from 'start',
         returns path
 
-- depth_first_traversal_iterative(start): Traverses graph depth first starting from 'start',
+`depth_first_traversal_iterative(start)`
+Traverses graph depth first starting from 'start',
         returns path, slower than recursive version
 
-- dijkstra(start, end): return shortest path from start to end,
+`dijkstra(start, end)`
+return shortest path from start to end,
         implemented with dijkstra's algorithm.
 
-- floyd_warshall(): return path_dictionary, distance_dictionary for every
+`floyd_warshall()`
+return path_dictionary, distance_dictionary for every
         possible path.
 
-- floyd_warshall_path(path, start, end): return shortest path from start
+`floyd_warshall_path(path, start, end)`
+return shortest path from start
         to end.
 
 ### Authors:
