@@ -7,52 +7,59 @@ Implementations of classic data structures implemented in Python, with tests!
 
 ## Binary Tree
 
-#### Module: bst
+#### Module: `bst`
 
 #### Operations:
 
 ```python
 btree = BinaryTree(iterable=None, autobalance=True)
 ```
-> iterable: iterable of items to insert
-> autobalance: if True, tree will reorganize itself when needed to stay balanced
+iterable: iterable of items to insert
+autobalance: if True, tree will reorganize itself when needed to stay balanced
 
+***
 
 ```python
 btree.insert(val)
 ```
-> insert val into tree; if val already in tree, ignore
+insert val into tree; if val already in tree, ignore
 
+***
 
 ```python
 btree.search(val)
 ```
-> return the node with a value of val; if not in tree return None
+return the node with a value of val; if not in tree return None
 
+***
 
 ```python
 btree.contains(val)
 ```
-> return whether val is in the tree
+return whether val is in the tree
 
+***
 
 ```python
 btree.delete(val)
 ```
-> if val in tree, delete corresponding node; otherwise raise ValueError
+if val in tree, delete corresponding node; otherwise raise ValueError
 
+***
 
 ```python
 print(btree)
 ```
-> print first five rows of tree formatted like ex_tree below
+print first five rows of tree formatted like ex_tree below
 
+***
 
 ```python
 display(btree)
 ```
-> interactively move around and display tree
+interactively move around and display tree
 
+***
 
 #### Traversals:
 
@@ -140,159 +147,153 @@ trie.autocomplete('ro', n=4)
 
 - Module: hashtable
 
-- Initialize:
-    - HashTable()
-    - kwargs:
+Initialize:
+- HashTable()
+- kwargs:
         - size: set fixed number of buckets in table (default = 1024)
         - hash_func: specify hashing function (default = 'additive')
 
-- Hashing Functions:
-    - 'additive': sum unicode number values of each character.
-    - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters
-                             and total accumulator.
-    - 'FNV': multiply everything by big prime numbers.
+Hashing Functions:
+- 'additive': sum unicode number values of each character.
+- 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
+- 'FNV': multiply everything by big prime numbers.
 
-- Methods:
-    - get(key): return value associated with key
-    - set(key, value): add key, value pair to hash table
-    - bracket notation supported
+Methods:
+- get(key): return value associated with key
+- set(key, value): add key, value pair to hash table
+- bracket notation supported
 
-- Implementation:
+Implementation:
 Fixed size list of buckets(lists) where each bucket can contain multiple kv-pairs.
 
 ## Stack
 
-- Can be initialized with (or without) iterable argument: Stack(iterable=None)
+Can be initialized with (or without) iterable argument: Stack(iterable=None)
 
-- Module: stack
+Module: stack
 
-- Attributes:
+Attributes:
 
-    - top: top/first node on stack
+- top: top/first node on stack
 
-- Methods:
+Methods:
 
-    - pop(): remove head and return its value
-
-    - push(value): insert new node at head of list
-
-    - size/len: return size of stack
+- pop(): remove head and return its value
+- push(value): insert new node at head of list
+- size/len: return size of stack
 
 ## Queue
 
-- can be initialized with (or without) iterable argument: Queue(iterable=None)
+can be initialized with (or without) iterable argument: Queue(iterable=None)
 
-- Module: queue
+Module: queue
 
-- Methods:
+Methods:
 
-    - enqueue(value): add value to end of queue
-
-    - dequeue(): remove head of queue and return its value
-
-    - peek(): return value of head of queue
-
-    - len()/size(): return size of queue
+- enqueue(value): add value to end of queue
+- dequeue(): remove head of queue and return its value
+- peek(): return value of head of queue
+- len()/size(): return size of queue
 
 ## Deque (Double-Ended Queue)
 
-- can be initialized with or without iterable argument
+can be initialized with or without iterable argument
 
-- Module: deque
+Module: deque
 
-- Attributes:
+Attributes:
 
-    - head
+- head
 
-    - tail
+- tail
 
-- Methods:
+Methods:
 
-    - append(value): add value to end of deque
+- append(value): add value to end of deque
 
-    - appendleft(value): add value to front of deque
+- appendleft(value): add value to front of deque
 
-    - pop(): remove last item in deque and return its value
+- pop(): remove last item in deque and return its value
 
-    - popleft(): remove first item in deque and return its value
+- popleft(): remove first item in deque and return its value
 
-    - peek(): return value of last item in deque
+- peek(): return value of last item in deque
 
-    - peekleft(): return value of first item in deque
+- peekleft(): return value of first item in deque
 
-    - len(deque) / deque.size(): return size of deque
+- len(deque) / deque.size(): return size of deque
 
 ## Priority Queue
 
-- can be initialized with (or without) iterable argument: Queue(iterable=None)
+can be initialized with (or without) iterable argument: Queue(iterable=None)
 
-- Module: priority_queue
+Module: priority_queue
 
-- Methods:
+Methods:
 
-    - insert(data, priority): enqueue data with priority (defaults to 0), lower is
-                higher priority
+- insert(data, priority): enqueue data with priority (defaults to 0), lower is
+        higher priority
 
-    - pop(): remove and return item of highest priority. If multiple items of the same
-                priority exist, pop item first inserted.
+- pop(): remove and return item of highest priority. If multiple items of the same
+        priority exist, pop item first inserted.
 
-    - peek(): return value of next item to be popped
+- peek(): return value of next item to be popped
 
 ## Binary Heap
 
-- Module: bin_heap
+Module: bin_heap
 
-- Optional arguments:
+Optional arguments:
 
-    - an iterable
+- an iterable
 
-    - minheap or maxheap ('min' or 'max') defaulted to 'min'
+- minheap or maxheap ('min' or 'max') defaulted to 'min'
 
-- Methods:
+Methods:
 
-    - push(value): add value to bottom of heap and sort as needed
+- push(value): add value to bottom of heap and sort as needed
 
-    - pop(value): remove first/root node and return its value, move last node to root, sort as needed
+- pop(value): remove first/root node and return its value, move last node to root, sort as needed
 
 ## Linked List
 
-- Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
+Can be initialized with (or without) iterable argument: LinkedList(iterable=None)
 
-- Module: linked_list
+Module: linked_list
 
-- Attributes:
+Attributes:
 
-    - head: first node in linked list
+- head: first node in linked list
 
-- Methods:
+Methods:
 
-    - pop(): remove head and return its value
+- pop(): remove head and return its value
 
-    - push(value): insert new node at head of list
+- push(value): insert new node at head of list
 
-    - remove(node): find and remove node from list
+- remove(node): find and remove node from list
 
-    - search(value): find and return first node with value equal to argument
+- search(value): find and return first node with value equal to argument
 
-    - display(): print list in pseudo-tuple format
+- display(): print list in pseudo-tuple format
 
 ## Doubly-Linked List
 
-- Can be initialized with (or without) iterable argument: DoublyLinkedList(iterable=None)
+Can be initialized with (or without) iterable argument: DoublyLinkedList(iterable=None)
 
-- Module: dll
+Module: dll
 
-- Methods:
+Methods:
 
-    - push(value): insert value at head of list
+- push(value): insert value at head of list
 
-    - append(value): add value to tail of list
+- append(value): add value to tail of list
 
-    - pop(): remove head and return its value
+- pop(): remove head and return its value
 
-    - shift(): remove tail and return its value
+- shift(): remove tail and return its value
 
-    - remove(val): remove first instance of value in list, or raise exception if no matches
+- remove(val): remove first instance of value in list, or raise exception if no matches
 
 Doubly-linked lists vs Singly-linked Lists:
 
@@ -308,49 +309,49 @@ Doubly-linked lists vs Singly-linked Lists:
 
 ## Graph
 
-- Module: graph
+Module: graph
 
-- Methods:
+Methods:
 
-    - add_node(n): add node to graph
+- add_node(n): add node to graph
 
-    - del_node(n): delete node from graph along with edges it's part of
+- del_node(n): delete node from graph along with edges it's part of
 
-    - add_edge(n1, n2, weight=0): add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
-                n1 or n2 are not already present in the graph, they are added.
+- add_edge(n1, n2, weight=0): add a new edge to the graph connecting ‘n1’ to ‘n2’, if either
+        n1 or n2 are not already present in the graph, they are added.
 
-    - del_edge(n1, n2): deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
-                raises an error if no such edge exists
+- del_edge(n1, n2): deletes the edge connecting ‘n1’ and ‘n2’ from the graph,
+        raises an error if no such edge exists
 
-    - nodes(): return a list of all nodes in the graph
+- nodes(): return a list of all nodes in the graph
 
-    - edges(): return a list of all edges in the graph
+- edges(): return a list of all edges in the graph
 
-    - has_node(n): True if node ‘n’ is contained in the graph, False if not.
+- has_node(n): True if node ‘n’ is contained in the graph, False if not.
 
-    - neighbors(n): returns the list of all nodes connected to ‘n’,
-                raises an error if n is not in graph
+- neighbors(n): returns the list of all nodes connected to ‘n’,
+        raises an error if n is not in graph
 
-    - adjacent(n1, n2): returns if there is an edge connecting n1 and n2,
-                raises an error if either of the supplied nodes are not in graph
+- adjacent(n1, n2): returns if there is an edge connecting n1 and n2,
+        raises an error if either of the supplied nodes are not in graph
 
-    - depth_first_traversal(start): Traverses graph depth first starting from 'start',
-                returns path
+- depth_first_traversal(start): Traverses graph depth first starting from 'start',
+        returns path
 
-    - breadth_first_traversal(start): Traverses graph breadth first starting from 'start',
-                returns path
+- breadth_first_traversal(start): Traverses graph breadth first starting from 'start',
+        returns path
 
-    - depth_first_traversal_iterative(start): Traverses graph depth first starting from 'start',
-                returns path, slower than recursive version
+- depth_first_traversal_iterative(start): Traverses graph depth first starting from 'start',
+        returns path, slower than recursive version
 
-    - dijkstra(start, end): return shortest path from start to end,
-                implemented with dijkstra's algorithm.
+- dijkstra(start, end): return shortest path from start to end,
+        implemented with dijkstra's algorithm.
 
-    - floyd_warshall(): return path_dictionary, distance_dictionary for every
-                possible path.
+- floyd_warshall(): return path_dictionary, distance_dictionary for every
+        possible path.
 
-    - floyd_warshall_path(path, start, end): return shortest path from start
-                to end.
+- floyd_warshall_path(path, start, end): return shortest path from start
+        to end.
 
 ### Authors:
 - Ford Fowler
