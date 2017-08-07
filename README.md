@@ -14,50 +14,44 @@ Implementations of classic data structures implemented in Python, with tests!
 ```python
 btree = BinaryTree(iterable=None, autobalance=True)
 ```
-iterable: iterable of items to insert
-autobalance: if True, tree will reorganize itself when needed to stay balanced
+> iterable: iterable of items to insert
+> autobalance: if True, tree will reorganize itself when needed to stay balanced
 
-***
 
 ```python
 btree.insert(val)
 ```
-insert val into tree; if val already in tree, ignore
+> insert val into tree; if val already in tree, ignore
 
-***
 
 ```python
 btree.search(val)
 ```
-return the node with a value of val; if not in tree return None
+> return the node with a value of val; if not in tree return None
 
-***
 
 ```python
 btree.contains(val)
 ```
-return whether val is in the tree
+> return whether val is in the tree
 
-***
 
 ```python
 btree.delete(val)
 ```
-if val in tree, delete corresponding node; otherwise raise ValueError
+> if val in tree, delete corresponding node; otherwise raise ValueError
 
-***
 
 ```python
 print(btree)
 ```
-print first five rows of tree formatted like ex_tree below
+> print first five rows of tree formatted like ex_tree below
 
-***
 
 ```python
 display(btree)
 ```
-interactively move around and display tree
+> interactively move around and display tree
 
 
 #### Traversals:
@@ -70,10 +64,10 @@ and have the kwargs:
         set to None to yield nodes themselves.
 
 ex_tree:
-                                                 17
-                        11                                                24
-           7                        14                       18                       25
-     3           8            _           _            _           _            _           26
+>                                                 17
+>                        11                                                24
+>           7                        14                       18                       25
+>     3           8            _           _            _           _            _           26
 
 
 ##### pre_order
