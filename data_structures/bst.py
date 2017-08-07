@@ -185,13 +185,13 @@ class BinaryTree(object):
             for child in self.in_order(start=start.right, attr=attr):
                 yield child
 
-    def breadth(self, root='root', attr='val'):
+    def breadth_first(self, start='root', attr='val'):
         """Return generator of breadth first traversal of tree rooted at root."""
-        if root == 'root':
-            root = self.root
+        if start == 'root':
+            start = self.root
         parent_queue = []
-        if root:
-            parent_queue.append(root)
+        if start:
+            parent_queue.append(start)
         while parent_queue:
             parent = parent_queue.pop(0)
             yield getattr(parent, attr) if attr else parent
@@ -356,13 +356,13 @@ class BinaryTree(object):
             return 'Empty'
         node_func = attrs_func
         args = [['val']]
-        head = display_rows_from(self.root, 5, node_func=node_func, args=args)
+        head = display_rows_from(self.root, 5, node_func, args=args)
         if self.root.depth > 5:
             head += '\n\t...'
         return head
 
 
-def display_rows_from(root, num_rows, max_len=4, node_func=None, args=()):
+def display_rows_from(root, num_rows, node_func, max_len=4, args=()):
     """Return printable tree."""
     width = shutil.get_terminal_size((96, 20)).columns
     rows = [[root]]
@@ -400,8 +400,8 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
             max_len = len(str(node_func(furthest_right, *args)))
             hunk = display_rows_from(root,
                                      num_rows,
+                                     node_func,
                                      max_len=max_len,
-                                     node_func=node_func,
                                      args=args)
             print(hunk)
 

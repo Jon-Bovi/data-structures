@@ -2,10 +2,16 @@
 class Trie(object):
     """Trie tree implemented with embedded dictionaries."""
 
-    def __init__(self):
+    def __init__(self, iterable=None):
         """Initialize root dictionary."""
         self._dict = {}
         self._size = 0
+        if iterable:
+            try:
+                for string in iterable:
+                    self.insert(string)
+            except:
+                raise ValueError('iterable must be iterable of strings')
 
     def insert(self, string):
         """Insert a string into the trie."""
