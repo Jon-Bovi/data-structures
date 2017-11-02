@@ -1,4 +1,5 @@
 """Implementation of Priority Queue."""
+from data_structures.bin_heap import BinaryHeap
 
 
 class PriorityQueue(object):
@@ -6,27 +7,36 @@ class PriorityQueue(object):
 
     def __init__(self, iterable=None):
         """Construct priority queue."""
-        self.queues = {}
-        if iterable is not None:
-            for data, priority in iterable:
-                self.insert(data, priority)
+        self._heap = BinaryHeap()
+        self._count = 0
+        if iterable:
+            try:
+                for item in iterable:
+                    self.insert(*item)
+            except TypeError:
+                raise TypeError("Optional argument of priority queue must be iterable.")
 
     def insert(self, data, priority=0):
-        """Test insert into pq."""
-        if priority in self.queues:
-            self.queues[priority].insert(0, data)
-        else:
-            self.queues[priority] = [data]
+        """Add item to queue given data and item's priority."""
+        self._heap.push((priority, self._count, data))
+        self._count += 1
 
     def pop(self):
-        """Test pop from pq."""
-        for priority in sorted(self.queues):
-            if len(self.queues[priority]) > 0:
-                return self.queues[priority].pop()
-        raise IndexError('Cannot pop from empty priority queue.')
+        """Remove and return first inserted item of highest priority."""
+        try:
+            return self._reformat(self._heap.pop())
+            self._count -= 1
+        except IndexError:
+            raise IndexError('Cannot pop from empty priority queue.')
 
     def peek(self):
         """Peek at the highest priority tuple."""
-        for priority in sorted(self.queues):
-            if len(self.queues[priority]) > 0:
-                return self.queues[priority][-1]
+        try:
+            return self._reformat(self._heap._list[0])
+        except IndexError:
+            raise IndexError("Cannot peek into empty priority queue.")
+
+    @staticmethod
+    def _reformat(item):
+        """Reformat tuple to way it was pushed."""
+        return item[2], item[0]
