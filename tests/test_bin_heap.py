@@ -1,33 +1,35 @@
 """Testing module for binary heap."""
 import pytest
+from random import sample, randint, choice
+from collections import namedtuple
 from data_structures import BinaryHeap
 
 
+iters = [
+    sample(range(100), randint(0, 100)) for _ in range(100)
+]
+
+
+Heap = namedtuple('Heap', (
+    'heap',
+    'iterable',
+    'minmax')
+)
+
+
 @pytest.fixture
-def empty_bin_heap():
+def empty_heap():
     """Return empty binary heap."""
     return BinaryHeap()
 
 
-@pytest.fixture
-def non_empty_bin_heap():
+@pytest.fixture(params=iters)
+def heap_fixture(request):
     """Return empty binary heap [1, 2, 4, 5, 3]."""
-    return BinaryHeap([5, 1, 4, 2, 3])
-
-
-def test_empty_init(empty_bin_heap):
-    """Test Binary Heap init without iterable."""
-    assert len(empty_bin_heap._list) == 0
-
-
-def test_non_empty_init(non_empty_bin_heap):
-    """Test Binary Heap init without iterable."""
-    assert len(non_empty_bin_heap._list) == 5
-
-
-def test_non_empty_init_values(non_empty_bin_heap):
-    """Test Binary Heap init without iterable."""
-    assert non_empty_bin_heap._list == [1, 2, 4, 5, 3]
+    iterable = request.param
+    minmax = choice(['min', 'max'])
+    heap = BinaryHeap(iterable, minmax)
+    return Heap(heap, iterable, minmax)
 
 
 def test_init_with_invalid_iterable():
@@ -36,60 +38,61 @@ def test_init_with_invalid_iterable():
         BinaryHeap(42)
 
 
-def test_pop_from_non_empty_heap(non_empty_bin_heap):
-    """Test popping from binary heap."""
-    assert non_empty_bin_heap.pop() == 1
-
-
-def test_push_from_non_empty_heap(non_empty_bin_heap):
-    """Test pushing from binary heap."""
-    non_empty_bin_heap.push(5)
-    assert non_empty_bin_heap._list == [1, 2, 4, 5, 3, 5]
-
-
-def test_pop_from_empty_heap(empty_bin_heap):
+def test_pop_from_empty_heap(empty_heap):
     """Test popping from empty heap."""
     with pytest.raises(IndexError, message='Cannot pop from an empty heap.'):
-        empty_bin_heap.pop()
+        empty_heap.pop()
 
 
-def test_push_to_empty_heap(empty_bin_heap):
+def test_push_to_empty_heap(empty_heap):
     """Test pushing to empty heap."""
-    empty_bin_heap.push(7)
-    assert empty_bin_heap._list == [7]
+    num = randint(-100, 100)
+    empty_heap.push(num)
+    assert empty_heap._list == [num]
 
 
-def test_valid_heap_basic(non_empty_bin_heap):
-    """Test heap function is ordering values correctly."""
-    assert non_empty_bin_heap._list == [1, 2, 4, 5, 3]
+def test_push_pop_to_empty_heap_is_empty(empty_heap):
+    """Test pushing to empty heap."""
+    num = randint(-100, 100)
+    empty_heap.push(num)
+    empty_heap.pop()
+    assert len(empty_heap._list) == 0
 
 
-def test_valid_heap_non_basic():
-    """Test heap from more complex heap list."""
-    bin_hp = BinaryHeap([1, 1.5, 3, 4, 2, 2.5, 6, 2, 8, 5.5, 3.5])
-    assert bin_hp._list == [1, 1.5, 2.5, 2, 2, 3, 6, 4, 8, 5.5, 3.5]
+def test_pushes_all_values(heap_fixture):
+    """Test Binary Heap pushes all items in the iterable."""
+    assert sorted(heap_fixture.heap._list) == sorted(heap_fixture.iterable)
 
 
-def test_pop_heap():
-    """Test heap function orders value correctly after pop."""
-    bin_hp = BinaryHeap([1, 1.5, 3, 4, 2, 2.5, 6, 2, 8, 5.5, 3.5])
-    bin_hp.pop()
-    assert bin_hp._list == [1.5, 2, 2.5, 3.5, 2, 3, 6, 4, 8, 5.5]
+def test_pop_returns_minmax(heap_fixture):
+    """Test popping from binary heap."""
+    if len(heap_fixture.iterable) == 0:
+        pytest.skip()
+    minmax = {'min': min, 'max': max}[heap_fixture.minmax]
+    assert heap_fixture.heap.pop() == minmax(heap_fixture.iterable)
 
 
-def test_push_heap():
-    """Test heap function orders value correctly after pop."""
-    bin_hp = BinaryHeap([1.5, 1, 3, 4, 2, 2.5, 6, 2, 8, 5.5])
-    bin_hp.push(3.5)
-    assert bin_hp._list == [1, 1.5, 2.5, 2, 2, 3, 6, 4, 8, 5.5, 3.5]
+def test_pop_removes_item(heap_fixture):
+    """Test pop removes item from heap."""
+    if len(heap_fixture.iterable) == 0:
+        pytest.skip()
+    popped = heap_fixture.heap.pop()
+    assert popped not in heap_fixture.heap._list
 
 
-def test_swap_parent_child():
-    """Test the parent and child values after swap."""
-    bin_hp = BinaryHeap([3, 1.5])
-    assert bin_hp._list[0] == 1.5 and bin_hp._list[1] == 3
-    bin_hp._swap(0, 1)
-    assert bin_hp._list[1] == 1.5 and bin_hp._list[0] == 3
+def test_push_minmax_is_popped_first(heap_fixture):
+    """Test pushing from binary heap."""
+    new_root = {'min': -100, 'max': 100}[heap_fixture.minmax]
+    heap_fixture.heap.push(new_root)
+    assert heap_fixture.heap.pop() == new_root
+
+
+def test_pops_in_order(heap_fixture):
+    """Assert heap pops items in sorted order."""
+    reverse = heap_fixture.minmax == 'max'
+    heap = heap_fixture.heap
+    popped = [heap.pop() for _ in range(len(heap._list))]
+    assert popped == sorted(heap_fixture.iterable, reverse=reverse)
 
 
 def test_swap_list():
@@ -98,28 +101,3 @@ def test_swap_list():
     assert bin_hp._list == [1.5, 3]
     bin_hp._swap(0, 1)
     assert bin_hp._list == [3, 1.5]
-
-
-def test_max_option():
-    """Test BinaryHeap with max heap option."""
-    maxheap = BinaryHeap([1, 2, 3], 'max')
-    assert maxheap._list == [3, 1, 2]
-
-
-def test_max_pop():
-    """Test pop on max heap."""
-    maxheap = BinaryHeap([1, 2, 3], 'max')
-    assert maxheap.pop() == 3
-
-
-def test_organize_right():
-    """Test organize right after pop."""
-    bin_hp = BinaryHeap([12, 13, 9, 15, 16, 3, 5])
-    bin_hp.pop()
-    bin_hp._list == [5, 13, 3, 15, 16, 9]
-
-
-def test_init_no_minmax():
-    """Test for when optional paramater is not 'min' or 'max'."""
-    with pytest.raises(TypeError, message="min/max optional parameter must be 'min' or 'max'"):
-        BinaryHeap(1.5, "apple")
