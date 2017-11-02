@@ -7,13 +7,14 @@ class BinaryHeap(object):
     def __init__(self, iterable=None, minmax='min'):
         """Construct new binary heap."""
         self._list = []
-        if minmax == 'min':
-            self._minmax = 1
-        elif minmax == 'max':
-            self._minmax = -1
-        else:
-            raise TypeError("min/max optional parameter must be 'min' or 'max'")
-        if iterable:
+        try:
+            self._minmax = {
+                'min': 1,
+                'max': -1
+            }[minmax]
+        except KeyError:
+            raise ValueError("min/max optional parameter must be 'min' or 'max'")
+        if iterable is not None:
             try:
                 for item in iterable:
                     self.push(item)
@@ -30,7 +31,7 @@ class BinaryHeap(object):
         try:
             self._swap(0, len(self._list) - 1)
             res = self._list.pop()
-            self._organize_children(0)
+            self._organize_branch(0)
             return res
         except IndexError:
             raise IndexError('Cannot pop from an empty heap.')
@@ -41,11 +42,6 @@ class BinaryHeap(object):
             self._swap(self._parent(i), i)
             i = self._parent(i)
 
-    def _organize_children(self, i):
-        """Organize from node at index i down."""
-        self._organize_branch(i, 2 * i + 1)
-        self._organize_branch(i, 2 * i + 2)
-
     def _swap(self, i, k):
         """Swap nodes at indexes i and k."""
         self._list[i], self._list[k] = self._list[k], self._list[i]
@@ -54,11 +50,19 @@ class BinaryHeap(object):
         """Return index of node i's parent."""
         return i // 2 + (i % 2 - 1)
 
-    def _organize_branch(self, parent_i, child_i):
+    def _minmaxchild(self, i):
+        """Get the min/max child of the parent at index i."""
+        children = [(self._minmax * self._list[c], c)
+                    for c in (2 * i + 1, 2 * i + 2) if c < len(self._list)]
+        return min(children)
+
+    def _organize_branch(self, parent_i):
         """Compare parent with child, swap and continue to organize if needed."""
-        if child_i < len(self._list):
+        try:
+            child_value, child_i = self._minmaxchild(parent_i)
             parent_value = self._minmax * self._list[parent_i]
-            child_value = self._minmax * self._list[child_i]
             if child_value < parent_value:
                 self._swap(parent_i, child_i)
-                self._organize_children(child_i)
+                self._organize_branch(child_i)
+        except ValueError:
+            return
