@@ -24,19 +24,15 @@ class PriorityQueue(object):
     def pop(self):
         """Remove and return first inserted item of highest priority."""
         try:
-            return self._reformat(self._heap.pop())
+            res = self._heap.pop()[2]
             self._count -= 1
+            return res
         except IndexError:
             raise IndexError('Cannot pop from empty priority queue.')
 
     def peek(self):
         """Peek at the highest priority tuple."""
         try:
-            return self._reformat(self._heap._list[0])
+            return self._heap._list[1][2]
         except IndexError:
-            raise IndexError("Cannot peek into empty priority queue.")
-
-    @staticmethod
-    def _reformat(item):
-        """Reformat tuple to way it was pushed."""
-        return item[2], item[0]
+            return
