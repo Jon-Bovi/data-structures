@@ -1,7 +1,6 @@
 """Module with implementation of Weighted Graph."""
 
 import sys
-from collections import OrderedDict
 
 from data_structures import Queue, Stack
 
@@ -19,21 +18,20 @@ class Graph(object):
 
     def edges(self):
         """Return a list of all edges in the graph."""
-        edge_list = []
-        for node1 in self.node_dict:
-            for node2 in self.node_dict[node1]:
-                edge_list.append((node1,
-                                  node2,
-                                  self.node_dict[node1][node2]))
-        return edge_list
+        return [
+            (n1, n2, w)
+            for n1, edges in self.node_dict.items()
+            for n2, w in edges.items()
+        ]
 
     def add_node(self, n):
         """Add node n to the graph."""
-        self.node_dict.setdefault(n, OrderedDict())
+        self.node_dict.setdefault(n, {})
 
     def add_edge(self, n1, n2, weight=0):
         """
         Add an edge to the graph from n1 to n2, weight optional.
+
         Add nodes if not already in graph.
         """
         self.add_node(n1)
@@ -56,9 +54,9 @@ class Graph(object):
 
     def del_edge(self, n1, n2):
         """Delete edge from n1 to n2. Raise error if no such edge exists."""
-        if n1 in self.node_dict and n2 in self.node_dict[n1]:
+        try:
             del self.node_dict[n1][n2]
-        else:
+        except KeyError:
             raise KeyError("Cannot remove edge that does not exist.")
 
     def has_node(self, n):
@@ -68,6 +66,7 @@ class Graph(object):
     def neighbors(self, n):
         """
         Return the list of all nodes connected to node n.
+
         Raise error if n is not present.
         """
         if n not in self.node_dict:
@@ -77,6 +76,7 @@ class Graph(object):
     def adjacent(self, n1, n2):
         """
         Return True/False for if an edge connects nodes n1 and n2.
+
         Raise error if either nodes not present.
         """
         if n1 in self.node_dict and n2 in self.node_dict:
