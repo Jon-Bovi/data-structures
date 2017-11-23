@@ -4,47 +4,6 @@ import math
 import shutil
 
 
-class BinaryTreeNode(object):
-    """Node object with helper methods for use in a Binary Tree."""
-
-    def __init__(self, val, left=None, right=None, parent=None):
-        """Set attributes on node object."""
-        self.val = val
-        self.left = left
-        self.right = right
-        self.parent = parent
-        self.depth = 1
-
-    @property
-    def balance(self):
-        """Balance from node."""
-        right = self.right.depth if self.right else 0
-        left = self.left.depth if self.left else 0
-        return right - left
-
-    def is_leaf(self):
-        """Return whether node has no children."""
-        return not (self.right or self.left)
-
-    def children(self):
-        """Return non-none children of node."""
-        return [node for node in [self.left, self.right] if node]
-
-    def left_or_right(self, val):
-        """Compare node to a value and return which path to take."""
-        if val < self.val:
-            return self.left, 'left'
-        return self.right, 'right'
-
-    def set_parents_child(self, new_child):
-        """Reassign parent's pointer to this node to new_child node."""
-        if self.parent:
-            if self.parent.left is self:
-                self.parent.left = new_child
-            else:
-                self.parent.right = new_child
-
-
 class BinaryTree(object):
     """
     AVL Binary search tree.
@@ -55,7 +14,10 @@ class BinaryTree(object):
         self.root = None
         self._size = 0
         self.autobalance = autobalance
+        self.rotations = 0
         if iterable:
+            if isinstance(iterable, range):
+                iterable = treegen(iterable)
             try:
                 for val in iterable:
                     self.insert(val)
@@ -195,11 +157,11 @@ class BinaryTree(object):
         while parent_queue:
             parent = parent_queue.pop(0)
             yield getattr(parent, attr) if attr else parent
-            left, right = parent.left, parent.right
             parent_queue.extend(parent.children())
 
     def _rebalance(self, node):
         """Rebalance a tree starting at node."""
+        self.rotations += 1
         if self.balance(from_=node) < 0:
             if self.balance(from_=node.right) <= 0:
                 r_root = self._lr(node)
@@ -343,23 +305,75 @@ class BinaryTree(object):
             from_ = nxt
         return from_
 
-    def size(self):
-        """Return number of nodes in bst.."""
-        return self._size
-
     def __len__(self):
         """Return number of nodes in bst."""
-        return self.size()
+        return self._size
+
+    def __repr__(self):
+        """Return representation of tree instance."""
+        instance, iD = super(BinaryTree, self).__repr__().split('object')
+        return '''%s {
+    size: %d,
+    depth: %d,
+    rotations: %d
+} %s
+        ''' % (
+            instance,
+            len(self),
+            0 if not self.root else self.root.depth,
+            self.rotations,
+            iD
+        )
 
     def __str__(self):
+        """Return string depiction of tree."""
         if self.root is None:
             return 'Empty'
-        node_func = attrs_func
-        args = [['val']]
-        head = display_rows_from(self.root, 5, node_func, args=args)
+        head = self.display_rows_from(self.root, 5, lambda n: n.val)
         if self.root.depth > 5:
             head += '\n\t...'
         return head
+
+
+class BinaryTreeNode(object):
+    """Node object with helper methods for use in a Binary Tree."""
+
+    def __init__(self, val, left=None, right=None, parent=None):
+        """Set attributes on node object."""
+        self.val = val
+        self.left = left
+        self.right = right
+        self.parent = parent
+        self.depth = 1
+
+    @property
+    def balance(self):
+        """Balance from node."""
+        right = self.right.depth if self.right else 0
+        left = self.left.depth if self.left else 0
+        return right - left
+
+    def is_leaf(self):
+        """Return whether node has no children."""
+        return not (self.right or self.left)
+
+    def children(self):
+        """Return non-none children of node."""
+        return [node for node in [self.left, self.right] if node]
+
+    def left_or_right(self, val):
+        """Compare node to a value and return which path to take."""
+        if val < self.val:
+            return self.left, 'left'
+        return self.right, 'right'
+
+    def set_parents_child(self, new_child):
+        """Reassign parent's pointer to this node to new_child node."""
+        if self.parent:
+            if self.parent.left is self:
+                self.parent.left = new_child
+            else:
+                self.parent.right = new_child
 
 
 def display_rows_from(root, num_rows, node_func, max_len=4, args=()):
@@ -381,9 +395,15 @@ def display_rows_from(root, num_rows, node_func, max_len=4, args=()):
 
 def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
     """Interactive print loop."""
-
     if binary_tree.root is None:
         print('Empty')
+        return
+
+    import curses
+
+    stdscr = curses.initscr()
+    stdscr.keypad(True)
+
     if node_func is None:
         if attrs is None:
             attrs = ['val']
@@ -403,7 +423,8 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
                                      node_func,
                                      max_len=max_len,
                                      args=args)
-            print(hunk)
+            stdscr.clear()
+            stdscr.addstr(hunk)
 
             valid_moves = ''
             if root.left and root.left.depth > (num_rows - 2):
@@ -414,8 +435,9 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
                 valid_moves += 'w'
             quits = {'q', 'quit', 'exit'}
 
+            stdscr.addstr('q(uit)/attr/' + valid_moves + ': ')
             while True:
-                inp = input('q(uit)/attr/' + valid_moves + ': ').strip()
+                inp = stdscr.getstr().decode()
                 if inp in set(valid_moves) | quits:
                     break
                 else:
@@ -425,9 +447,9 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
                         break
                     except AttributeError:
                         pass
-
+            print(inp)
             if inp in quits:
-                return
+                break
             if inp in valid_moves:
                 top += {'a': 1, 'w': -1, 'd': 1}[inp]
                 root = {'a': root.left,
@@ -439,7 +461,9 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
                 args = [inp_list]
 
     except KeyboardInterrupt:
-        return
+        pass
+    stdscr.keypad(False)
+    curses.endwin()
 
 
 def stringify_rows(rows, width, max_len):
@@ -466,24 +490,49 @@ def stringify_rows(rows, width, max_len):
 
 
 def children_of(nodes):
-        res = []
-        for node in nodes:
-            if node:
-                res += [node.left, node.right]
-            else:
-                res += [None, None]
-        return res
+    """Return children of a list of nodes."""
+    res = []
+    for node in nodes:
+        if node:
+            res += [node.left, node.right]
+        else:
+            res += [None, None]
+    return res
 
 
 def attrs_func(node, attrs):
+    """Get all attrs of a node, separated by colons."""
     res = ('{}:' * len(attrs)).format(*[getr(node, a) for a in attrs])[:-1]
     return res
 
 
-def getr(obj, toget, safe=True):
+def getr(obj, toget):
+    """Getattr with dots."""
     res = obj
     for attr in toget.split('.'):
         res = getattr(res, attr)
         if res is None:
             break
     return res
+
+
+def treegen(iterable):
+    """Yield items from sorted iterable to build tree balanced."""
+    iterable = sorted(iterable)
+    if len(iterable) < 2:
+        for x in iterable:
+            yield x
+    else:
+        h = len(iterable) // 2
+        l, m, r = treegen(iterable[:h]), iterable[h], treegen(iterable[h + 1:])
+        yield m
+        el, ri = True, True
+        while el or ri:
+            try:
+                yield next(l)
+            except:
+                el = False
+            try:
+                yield next(r)
+            except:
+                ri = False
