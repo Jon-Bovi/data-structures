@@ -5,9 +5,13 @@ from data_structures.bin_heap import BinaryHeap
 class PriorityQueue(object):
     """Priority list queue."""
 
-    def __init__(self, iterable=None):
+    def __init__(self, iterable=None, minmax='max'):
         """Construct priority queue."""
-        self._heap = BinaryHeap()
+        try:
+            self._minmax = {'max': -1, 'min': 1}[minmax]
+        except KeyError:
+            raise ValueError('minmax must be "min" or "max"')
+        self._heap = BinaryHeap(minmax=minmax)
         self._count = 0
         if iterable:
             try:
@@ -18,7 +22,7 @@ class PriorityQueue(object):
 
     def insert(self, data, priority=0):
         """Add item to queue given data and item's priority."""
-        self._heap.push((priority, self._count, data))
+        self._heap.push((priority, self._minmax * self._count, data))
         self._count += 1
 
     def pop(self):
