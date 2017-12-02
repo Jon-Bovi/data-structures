@@ -403,6 +403,7 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
 
     stdscr = curses.initscr()
     stdscr.keypad(True)
+    curses.nonl()
 
     if node_func is None:
         if attrs is None:
@@ -413,7 +414,7 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
         args = [attrs]
     furthest_right = binary_tree.node_furthest('right')
     root = binary_tree.root
-    top = 0
+    top, prev_inp = 0, ''
 
     try:
         while True:
@@ -438,6 +439,10 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
             stdscr.addstr('q(uit)/attr/' + valid_moves + ': ')
             while True:
                 inp = stdscr.getstr().decode()
+                if inp == '':
+                    inp = prev_inp
+                else:
+                    prev_inp = inp
                 if inp in set(valid_moves) | quits:
                     break
                 else:
@@ -447,7 +452,6 @@ def display(binary_tree, num_rows=5, node_func=None, args=(), attrs=None):
                         break
                     except AttributeError:
                         pass
-            print(inp)
             if inp in quits:
                 break
             if inp in valid_moves:
