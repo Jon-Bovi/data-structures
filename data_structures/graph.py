@@ -1,8 +1,8 @@
 """Module with implementation of Weighted Graph."""
 
 import sys
-
-from data_structures import Queue, Stack
+from collections import defaultdict
+from data_structures import Queue, BinaryHeap
 
 
 class Graph(object):
@@ -83,6 +83,9 @@ class Graph(object):
             return n2 in self.node_dict[n1]
         raise KeyError("Nodes not in graph.")
 
+    def __getitem__(self, item):
+        return self.neighbors(item)
+
     def weight(self, n1, n2):
         """Return weight of an edge."""
         try:
@@ -90,82 +93,75 @@ class Graph(object):
         except KeyError:
             raise KeyError("Nodes not in graph.")
 
-    def depth_first_traversal(self, start, visited=None):
+    def depth_first_traversal(self, start):
         """Traverse graph depth first."""
-        res = [start]
-        if visited is None:
-            visited = set()
-        visited.add(start)
-        try:
-            for n in self.node_dict[start]:
-                if n not in visited:
-                    res += self.depth_first_traversal(n, visited)
-        except KeyError:
+        if start not in self.node_dict:
             raise KeyError(str(start) + ' not in graph')
+
+        def depth_recurse(from_, visited):
+            res = [from_]
+            visited.add(from_)
+            for node in list(self.node_dict[from_]), len(self.node_dict[from_]):
+                if node not in visited:
+                    res += depth_recurse(node, visited)
+            return res
+
+        return depth_recurse(start, set())
+
+    def depth_first_traversal_iterative(self, start):
+        """Iteratively traverse graph depth first."""
+        if start not in self.node_dict:
+            raise KeyError(str(start) + ' not in graph')
+        res, stack, visited = [], [start], set()
+        while stack:
+            cur_node = stack.pop()
+            if cur_node not in visited:
+                res.append(cur_node)
+                visited.add(cur_node)
+                for node in self.node_dict[cur_node]:
+                    if node not in visited:
+                        stack.append(node)
         return res
 
     def breadth_first_traversal(self, start):
         """Iteratively traverse graph breadth first."""
-        try:
-            res = []
-            queue = Queue([start])
-            visited = set()
-            while queue.head:
-                cur_node = queue.dequeue()
-                if cur_node not in visited:
-                    res.append(cur_node)
-                    visited.add(cur_node)
-                    for child in self.node_dict[cur_node]:
-                        queue.enqueue(child)
-        except KeyError:
+        if start not in self.node_dict:
             raise KeyError(str(start) + ' not in graph')
-        return res
-
-    def depth_first_traversal_iterative(self, start):
-        """Iteratively traverse graph depth first."""
-        try:
-            res = []
-            stack = Stack([start])
-            visited = set()
-            while stack.top:
-                cur_node = stack.pop()
-                if cur_node not in visited:
-                    res.append(cur_node)
-                    visited.add(cur_node)
-                    for child in reversed(self.node_dict[cur_node]):
-                        stack.push(child)
-        except KeyError:
-            raise KeyError(str(start) + ' not in graph')
+        res, queue, visited = [], Queue([start]), {start}
+        while queue.head:
+            cur_node = queue.dequeue()
+            res.append(cur_node)
+            for node in self.node_dict[cur_node]:
+                if node not in visited:
+                    visited.add(node)
+                    queue.enqueue(node)
         return res
 
     def dijkstra(self, start, end):
         """Find shortest path between start and end via Dijkstra's algorithm."""
-        unvisited = self.nodes()
-        distance = {}
-        previous = {}
-        for node in unvisited:
-            distance[node] = sys.maxsize
+        previous, unvisited = {}, BinaryHeap([(0, start)])
+        distance = defaultdict(lambda: float('inf'))
         distance[start] = 0
-        while len(unvisited) > 0:
-            node = unvisited[0]
-            smallest_curr = sys.maxsize
-            for d in distance:
-                if d in unvisited and distance[d] < smallest_curr:
-                    node = d
-                    smallest_curr = distance[d]
-            unvisited.remove(node)
-            for neighbor in self.neighbors(node).keys():
+        while True:
+            try:
+                dist, node = unvisited.pop()
+            except IndexError:
+                break
+            if distance[node] > distance[end]:
+                break
+            for neighbor in self.neighbors(node):
                 alt_path = distance[node] + self.weight(node, neighbor)
                 if alt_path < distance[neighbor]:
                     distance[neighbor] = alt_path
                     previous[neighbor] = node
+                    unvisited.push((distance[neighbor], neighbor))
         result = []
         result.append(end)
         curr = end
         while curr in previous:
             result.append(previous[curr])
             curr = previous[curr]
-        return result
+        return result[::-1], distance[end]
 
     def floyd_warshall(self):
         """Find all shortest paths and distances via floyd-warshall alg."""
@@ -175,7 +171,7 @@ class Graph(object):
             distance[from_node] = {}
             path_dict[from_node] = {}
             for node in self.nodes():
-                distance[from_node][node] = sys.maxsize
+                distance[from_node][node] = float('inf')
                 path_dict[from_node][node] = None
             distance[from_node][from_node] = 0
             neighbors = self.neighbors(from_node)
@@ -199,6 +195,18 @@ class Graph(object):
             start = path_dict[start][end]
             path.append(start)
         return path
+
+    @classmethod
+    def from_dict(cls, gdict):
+        from itertools import chain, repeat
+        inst = cls()
+        try:
+            for fr, (to, w) in chain(*(zip(repeat(k), v.items()) for k, v in gdict.items())):
+                inst.add_edge(fr, to, w)
+        except AttributeError:
+            for fr, to in chain(*(zip(repeat(k), v) for k, v in gdict.items())):
+                inst.add_edge(fr, to)
+        return inst
 
 
 if __name__ == '__main__':  # pragma: no cover
