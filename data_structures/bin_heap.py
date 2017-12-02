@@ -1,4 +1,5 @@
 """Module containing implementation of a binary heap."""
+from operator import lt, gt
 
 
 class BinaryHeap(object):
@@ -8,9 +9,9 @@ class BinaryHeap(object):
         """Construct new binary heap."""
         self._list = [0]
         try:
-            self._minmax = {
-                'min': 1,
-                'max': -1
+            self._minmax, self._compare = {
+                'min': (min, lt),
+                'max': (max, gt)
             }[minmax]
         except KeyError:
             raise ValueError("min/max optional parameter must be 'min' or 'max'")
@@ -38,8 +39,9 @@ class BinaryHeap(object):
 
     def _organize_up(self, child_i):
         """Organize heap starting from node i and moving up towards root."""
+        # import pdb; pdb.set_trace()
         parent_i = child_i // 2
-        while child_i > 1 and self._minmax * self._list[child_i] < self._minmax * self._list[parent_i]:
+        while parent_i > 0 and self._compare(self._list[child_i], self._list[parent_i]):
             self._swap(parent_i, child_i)
             child_i, parent_i = parent_i, parent_i // 2
 
@@ -49,17 +51,17 @@ class BinaryHeap(object):
 
     def _minmaxchild(self, i):
         """Get the min/max child of the parent at index i."""
-        children = [(self._minmax * self._list[c], c)
+        children = [(self._list[c], c)
                     for c in (2 * i, 2 * i + 1) if c < len(self._list)]
-        return min(children)
+        return self._minmax(children)
 
     def _organize_down(self, parent_i):
         """Compare parent with child, swap and continue to organize if needed."""
         try:
             while True:
                 child_value, child_i = self._minmaxchild(parent_i)
-                parent_value = self._minmax * self._list[parent_i]
-                if child_value < parent_value:
+                parent_value = self._list[parent_i]
+                if self._compare(child_value, parent_value):
                     self._swap(parent_i, child_i)
                     parent_i = child_i
                 else:
