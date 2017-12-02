@@ -29,7 +29,7 @@ class BinaryHeap(object):
     def pop(self):
         """Swap root with last item -> remove old root -> heapify heap."""
         try:
-            self.swap(1, -1)
+            self._swap(1, -1)
             to_pop = self._list.pop()
             self._organize_down(1)
             return to_pop
