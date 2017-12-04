@@ -138,30 +138,25 @@ class Graph(object):
         return res
 
     def dijkstra(self, start, end):
-        """Find shortest path between start and end via Dijkstra's algorithm."""
-        previous, unvisited = {}, BinaryHeap([(0, start)])
-        distance = defaultdict(lambda: float('inf'))
-        distance[start] = 0
-        while True:
-            try:
-                dist, node = unvisited.pop()
-            except IndexError:
+        """
+        Find shortest path between start and end via Dijkstra's algorithm.
+        I use my own heap, with heapq, it's about 10 times faster...
+
+        Returns: path, distance
+        """
+        heap, visited = BinaryHeap([(0, start, [])]), set()
+        while heap:
+            curdist, node, path = heap.pop()
+            path = path + [node]
+            if node == end:
                 break
-            if distance[node] > distance[end]:
-                break
-            for neighbor in self.neighbors(node):
-                alt_path = distance[node] + self.weight(node, neighbor)
-                if alt_path < distance[neighbor]:
-                    distance[neighbor] = alt_path
-                    previous[neighbor] = node
-                    unvisited.push((distance[neighbor], neighbor))
-        result = []
-        result.append(end)
-        curr = end
-        while curr in previous:
-            result.append(previous[curr])
-            curr = previous[curr]
-        return result[::-1], distance[end]
+            if node not in visited:
+                visited.add(node)
+                for neighbor, weight in self.neighbors(node).items():
+                    heap.push((curdist + weight, neighbor, path))
+        else:
+            return [], None
+        return curdist, path
 
     def floyd_warshall(self):
         """Find all shortest paths and distances via floyd-warshall alg."""
