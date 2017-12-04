@@ -198,9 +198,9 @@ HashTable(size=1024, hash_func='additive')
 ```
 - size: set fixed number of buckets in table
 - hash_func:
-        - 'additive': sum unicode number values of each character.
-        - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
-        - 'FNV': multiply everything by big prime numbers.
+  - 'additive': sum unicode number values of each character.
+  - 'OAT'/'one-at-a-time': perform basic bitwise operations on individual characters and total accumulator.
+  - 'FNV': multiply everything by big prime numbers.
 
 #### Operations:
 
