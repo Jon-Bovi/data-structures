@@ -39,7 +39,6 @@ class BinaryHeap(object):
 
     def _organize_up(self, child_i):
         """Organize heap starting from node i and moving up towards root."""
-        # import pdb; pdb.set_trace()
         parent_i = child_i // 2
         while parent_i > 0 and self._compare(self._list[child_i], self._list[parent_i]):
             self._swap(parent_i, child_i)
@@ -68,3 +67,6 @@ class BinaryHeap(object):
                     return
         except ValueError:
             return
+
+    def __bool__(self):
+        return len(self._list) > 1
