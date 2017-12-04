@@ -20,7 +20,6 @@ setup(
                   ""],
     licencse="MIT",
     packages=['data_structures'],
-    package_dir={'data_structures': 'data_structures'},
     install_requires=[],
     extras_require={
         "test": ["pytest", "pytest-cov", "tox"]
